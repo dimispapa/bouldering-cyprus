@@ -6,11 +6,26 @@ tasks:
   - command: . ${GITPOD_REPO_ROOT}/.vscode/uptime.sh &
 vscode:
   extensions:
-    - ms-python.python
-    - formulahendry.auto-close-tag
+    - esbenp.prettier-vscode
     - eventyret.bootstrap-4-cdn-snippet
-    - hookyqr.beautify
+    - formulahendry.auto-close-tag
+    - github.vscode-pull-request-github
+    - gitpod.gitpod-remote-ssh
+    - gitpod.gitpod-desktop
+    - junstyle.vscode-django-support
     - matt-rudge.auto-open-preview-panel
+    - ms-python.black-formatter
+    - ms-python.debugpy
+    - ms-python.python
+    - ms-python.vscode-pylance
+    - ms-python.flake8
     - ms-toolsai.jupyter
     - ms-toolsai.jupyter-keymap
     - ms-toolsai.jupyter-renderers
+    - ms-toolsai.vscode-jupyter-cell-tags
+    - ms-toolsai.vscode-jupyter-slideshow
+    - redhat.vscode-yaml
+    - vivaxy.vscode-conventional-commits
+    - numso.prettier-standard-vscode
+    - aeschli.vscode-css-formatter
+    - ms-azuretools.vscode-docker
