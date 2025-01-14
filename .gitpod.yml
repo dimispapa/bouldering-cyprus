@@ -28,5 +28,4 @@ vscode:
     - vivaxy.vscode-conventional-commits
     - numso.prettier-standard-vscode
     - aeschli.vscode-css-formatter
-    - ms-azuretools.vscode-docker
     - github.copilot
