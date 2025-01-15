@@ -1,5 +1,5 @@
 ---
-name: User story
+name: Story
 about: Issue for user stories
 title: ''
 labels: story
