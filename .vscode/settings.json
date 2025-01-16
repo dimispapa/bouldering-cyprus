@@ -13,7 +13,7 @@
       "**/CVS": true
    },
    "files.autoSave": "on",
-   "workbench.colorTheme": "Visual Studio Dark",
+   "workbench.colorTheme": "Default Dark Modern",
    "terminal.integrated.gpuAcceleration": "canvas",
    "extensions.autoUpdate": true,
    "extensions.autoCheckUpdates": true,
