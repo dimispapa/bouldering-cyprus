@@ -1,36 +1,32 @@
+{% extends 'base.html' %}
 {% load static %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cyprus Bouldering Guide Book</title>
-    <link rel="stylesheet" href="{% static 'shop/styles.css' %}">
-</head>
-<body>
-    <div class="product-details">
-        <h1>Cyprus Bouldering Guide Book</h1>
-        <div class="product-description">
-            <p>Discover the best bouldering spots in Cyprus with this comprehensive guide book. Packed with detailed maps, route descriptions, and stunning photography, this guide is a must-have for any climbing enthusiast.</p>
-        </div>
-        <div class="product-price">
-            <p>Price: €32.00</p>
-        </div>
-        <div class="product-gallery">
-            <h2>Sneak Peek Gallery</h2>
-            <img src="{% static 'shop/images/guide1.jpg' %}" alt="Guide Image 1">
-            <img src="{% static 'shop/images/guide2.jpg' %}" alt="Guide Image 2">
-            <img src="{% static 'shop/images/guide3.jpg' %}" alt="Guide Image 3">
-        </div>
-        <div class="add-to-cart">
-            <form action="" method="post">
-                {% csrf_token %}
-                <label for="quantity">Quantity:</label>
-                <input type="number" id="quantity" name="quantity" value="1" min="1">
-                <button type="submit">Add to Cart</button>
-            </form>
-        </div>
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'shop/shop.css' %}" />
+{% endblock %}
+
+{% block content %}
+  <div class="product-details">
+    <h1>Cyprus Bouldering Guide Book</h1>
+    <div class="product-description">
+      <p>Discover the best bouldering spots in Cyprus with this comprehensive guide book. Packed with all the essential information and more: detailed maps, clear directions to sectors, route descriptions, and stunning photography, this guide is a must-have for any climbing enthusiast.</p>
     </div>
-</body>
-</html>
+    <div class="product-price">
+      <p>Price: €32.00</p>
+    </div>
+    <div class="product-gallery">
+      <h2>Sneak Peek Gallery</h2>
+      <img src="{% static 'shop/images/guide1.jpg' %}" alt="Guide Image 1" />
+      <img src="{% static 'shop/images/guide2.jpg' %}" alt="Guide Image 2" />
+      <img src="{% static 'shop/images/guide3.jpg' %}" alt="Guide Image 3" />
+    </div>
+    <div class="add-to-cart">
+      <form action="" method="post">
+        {% csrf_token %}
+        <label for="quantity">Quantity:</label>
+        <input type="number" id="quantity" name="quantity" value="1" min="1" />
+        <button type="submit">Add to Cart</button>
+      </form>
+    </div>
+  </div>
+{% endblock %}
