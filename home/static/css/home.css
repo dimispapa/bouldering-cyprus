@@ -1,0 +1,48 @@
+/* Hero Section */
+.hero-section {
+    position: relative;
+    height: 100vh; /* Full viewport height */
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-image: url("../../../static/images/climber_hanging_alikou_640.webp"); /* Fallback */
+  }
+  
+  .hero-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.5); /* Optional overlay for readability */
+    padding: 20px;
+    border-radius: 8px;
+  }
+  
+  .content-section {
+    padding: 50px;
+    background-color: #f8f9fa;
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+  
+  /* Responsive Background Images */
+  @media (min-width: 641px) {
+    .hero-section {
+      background-image: url("../../../static/images/climber_hanging_alikou_1024.webp");
+    }
+  }
+  
+  @media (min-width: 1025px) {
+    .hero-section {
+      background-image: url("../../../static/images/climber_hanging_alikou_1440.webp");
+    }
+  }
+  
+  @media (min-width: 1441px) {
+    .hero-section {
+      background-image: url("../../../static/images/climber_hanging_alikou_1920.webp");
+    }
+  }
+  

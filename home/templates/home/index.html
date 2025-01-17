@@ -1,14 +1,20 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% load static %}
 
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/home.css' %}" />
+{% endblock %}
+
 {% block content %}
-<div class="container">
-  <div class="row">
-    <div class="col">
+  <div class="hero-section">
+    <div class="hero-overlay">
       <h1>Welcome to Bouldering Cyprus</h1>
-      <p>
-        Bouldering Cyprus is the ultimate guide to the best bouldering spots in Cyprus. Discover the most popular climbing areas, find detailed route descriptions, and explore stunning photography. Whether you're a beginner or an experienced climber, Bouldering Cyprus has something for everyone.
-      </p>
+      <p>Bouldering Cyprus is the ultimate guide to the best bouldering spots in Cyprus. Discover the most popular climbing areas, find detailed route descriptions, and explore stunning photography. Whether you're a beginner or an experienced climber, Bouldering Cyprus has something for everyone.</p>
     </div>
   </div>
-  {% endblock %}
+
+  <div class="content-section">
+    <p>Here is some additional scrolling content...</p>
+    <p>More text as you scroll down...</p>
+  </div>
+{% endblock %}

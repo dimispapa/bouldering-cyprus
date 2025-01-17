@@ -51,7 +51,7 @@
     <!-- Header -->
     <header>
       <!-- Navbar -->
-      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <nav class="navbar navbar-expand-lg navbar-light fixed-top primary-colour">
         <div class="container-fluid">
           <a class="navbar-brand" href="{% url 'home' %}">Bouldering Cyprus</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
@@ -73,14 +73,14 @@
     </header>
 
     <!-- Main Content -->
-    <main class="container my-4">
+    <main>
       {% block content %}
         <!-- Content from child templates will be injected here -->
       {% endblock %}
     </main>
 
     <!-- Footer -->
-    <footer class="bg-light text-center py-3">
+    <footer class="primary-colour text-center py-3">
       <div class="container">
         <p>
           <a href="#">Privacy Policy</a> |
@@ -88,9 +88,11 @@
         </p>
         <p>&copy; {{ year|default:2025 }} Bouldering Cyprus. All Rights Reserved.</p>
         <div class="d-flex justify-content-center">
-          <a href="https://facebook.com" target="_blank" class="mx-2">Facebook</a>
-          <a href="https://instagram.com" target="_blank" class="mx-2">Instagram</a>
-          <a href="https://youtube.com" target="_blank" class="mx-2">YouTube</a>
+          <p>
+            <a href="https://facebook.com" target="_blank" class="mx-2 fs-1"><i class="fa-brands fa-facebook"></i></a>
+            <a href="https://instagram.com/bouldering_cyprus/" target="_blank" class="mx-2 fs-1"><i class="fa-brands fa-instagram"></i></a>
+            <a href="https://www.youtube.com/@cyprusbouldering9957" target="_blank" class="mx-2 fs-1"><i class="fa-brands fa-youtube"></i></a>
+          </p>
         </div>
       </div>
     </footer>
@@ -98,6 +100,5 @@
     {% block postload_js %}
 
     {% endblock %}
-
   </body>
 </html>
