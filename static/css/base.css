@@ -15,6 +15,10 @@ body {
     font-size: 18px;
 }
 
+.navbar a.nav-link:hover {
+    color: #787875;
+}
+
 .navbar, footer {
     font-family: "Courier Prime", serif;
     font-weight: 700;
@@ -43,6 +47,7 @@ h1, h2 {
 /* Transparent Navbar */
 .navbar-transparent {
     background-color: transparent !important;
+    text-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
     transition: background-color 0.3s ease;
 }
 
