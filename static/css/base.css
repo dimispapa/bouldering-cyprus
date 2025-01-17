@@ -1,15 +1,84 @@
+/* Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+
+body {
+    font-family: "Courier Prime", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.navbar-brand {
+    font-size: 28px;
+}
+
+.navbar a.nav-link {
+    font-size: 18px;
+}
+
+.navbar, footer {
+    font-family: "Courier Prime", serif;
+    font-weight: 700;
+    font-style: normal;
+}
+
+h1, h2 {
+    font-family: "Playfair Display", serif;
+    font-optical-sizing: auto;
+    font-weight: 800;
+    font-style: normal;
+}
+
 /* Base Colours */
 .primary-colour {
-  color: #3a3a37;
-  background-color: #efe9cc;
+    color: #3a3a37;
+    background-color: #efe9cc;
 }
 
 .secondary-colour {
-  color: #efe9cc;
-  background-color: #3a3a37;
+    color: #efe9cc;
+    background-color: #3a3a37;
 }
 
+/* Header */
+/* Transparent Navbar */
+.navbar-transparent {
+    background-color: transparent !important;
+    transition: background-color 0.3s ease;
+}
+
+/* Solid Navbar */
+.navbar-scrolled {
+    background-color: #efe9cc !important;
+    /* Solid color for navbar */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    /* Optional shadow for distinction */
+}
+
+/* Navbar Text Color */
+.navbar a.nav-link, .navbar .navbar-brand {
+    color: #fff;
+    /* White text on transparent background */
+    transition: color 0.3s ease;
+}
+
+.navbar-scrolled a.nav-link, .navbar-scrolled .navbar-brand {
+    color: #3a3a37;
+    /* Adjust text color for solid background */
+}
+
+
 /* Footer */
+footer {
+    position: sticky;
+    bottom: 0;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+    z-index: 1;
+    /* Ensure footer stays above the content */
+}
+
 footer a {
     text-decoration: none;
     color: #3a3a37;
