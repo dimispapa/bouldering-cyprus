@@ -18,6 +18,10 @@
     z-index: 1; /* Place above the hero image */
     padding: 200px 20px; /* Add padding for spacing */
   }
+
+.content-section h1, .content-section h2 {
+  color: #ed6c2c;
+}
   
 /* Text Boxes */
 .text-box {

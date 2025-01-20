@@ -1,46 +1,44 @@
 /* Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
 
-body {
-    font-family: "Courier Prime", serif;
+/* General Font */
+.body {
+    font-family: "Roboto Mono", serif;
+    font-optical-sizing: auto;
     font-weight: 400;
     font-style: normal;
 }
 
-.navbar-brand {
-    font-size: 28px;
-}
-
-.navbar a.nav-link {
-    font-size: 18px;
-}
-
-.navbar a.nav-link:hover {
-    color: #787875;
-}
-
-.navbar, footer {
-    font-family: "Courier Prime", serif;
-    font-weight: 700;
-    font-style: normal;
-}
-
-h1, h2 {
-    font-family: "Playfair Display", serif;
+/* Header fonts */
+.navbar, footer, h1, h2 {
+    font-family: "Montserrat", serif;
     font-optical-sizing: auto;
     font-weight: 800;
     font-style: normal;
 }
 
+.navbar .navbar-brand {
+    font-size: 28px;
+}
+
+.navbar .nav-link {
+    font-size: 18px;
+}
+
+.navbar .navbar-brand:hover,
+.navbar .nav-link:hover {
+    color: #000000;
+}
+
 /* Base Colours */
 .primary-colour {
-    color: #3a3a37;
-    background-color: #efe9cc;
+    color: #000000;
+    background-color: #f4edd2;
 }
 
 .secondary-colour {
-    color: #efe9cc;
-    background-color: #3a3a37;
+    color: #ed6c2c;
+    background-color: #f4edd2;
 }
 
 /* Header */
@@ -53,7 +51,7 @@ h1, h2 {
 
 /* Solid Navbar */
 .navbar-scrolled {
-    background-color: #efe9cc !important;
+    background-color: #f4edd2 !important;
     /* Solid color for navbar */
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     /* Optional shadow for distinction */
@@ -67,17 +65,19 @@ h1, h2 {
 }
 
 .navbar-scrolled a.nav-link, .navbar-scrolled .navbar-brand {
-    color: #3a3a37;
+    color: #000000;
     /* Adjust text color for solid background */
 }
 
+.navbar-scrolled a.nav-link:hover, .navbar-scrolled .navbar-brand:hover {
+    color: #ed6c2c;
+    /* Adjust text color for solid background */
+}
 
 /* Footer */
 footer {
     position: sticky;
     bottom: 0;
-    background-color: #333;
-    color: #fff;
     text-align: center;
     padding: 10px 0;
     z-index: 1;
@@ -86,9 +86,9 @@ footer {
 
 footer a {
     text-decoration: none;
-    color: #3a3a37;
+    color: #000000;
 }
 
 footer a:hover {
-    text-decoration: underline;
+    color: #ed6c2c;
 }
