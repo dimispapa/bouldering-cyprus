@@ -17,6 +17,21 @@
     font-style: normal;
 }
 
+/* Functional info */
+.info-font {
+    font-family: "Roboto Mono", serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+}
+
+/* Header */
+/* Navbar */
+.navbar {
+    color: #000000;
+    background-color: #f4edd2;
+}
+
 .navbar .navbar-brand {
     font-size: 28px;
 }
@@ -30,18 +45,6 @@
     color: #000000;
 }
 
-/* Base Colours */
-.primary-colour {
-    color: #000000;
-    background-color: #f4edd2;
-}
-
-.secondary-colour {
-    color: #ed6c2c;
-    background-color: #f4edd2;
-}
-
-/* Header */
 /* Transparent Navbar */
 .navbar-transparent {
     background-color: transparent !important;
@@ -76,6 +79,8 @@
 
 /* Footer */
 footer {
+    color: #000000;
+    background-color: #f4edd2;
     position: sticky;
     bottom: 0;
     text-align: center;
