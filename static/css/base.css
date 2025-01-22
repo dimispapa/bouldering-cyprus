@@ -10,7 +10,7 @@
 }
 
 /* Header fonts */
-.navbar, footer, h1, h2 {
+h1, h2 {
     font-family: "Montserrat", serif;
     font-optical-sizing: auto;
     font-weight: 800;
@@ -18,7 +18,7 @@
 }
 
 /* Functional info */
-.info-font {
+.button-primary, .navbar, .footer {
     font-family: "Roboto Mono", serif;
     font-optical-sizing: auto;
     font-weight: 400;
@@ -75,6 +75,25 @@
 .navbar-scrolled a.nav-link:hover, .navbar-scrolled .navbar-brand:hover {
     color: #ed6c2c;
     /* Adjust text color for solid background */
+}
+
+/* Buttons */
+.button-primary {
+    background-color: #ed6c2c;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+
+}
+
+.button-primary:hover {
+    background-color: #c65923;
+    color: #ffffff;
 }
 
 /* Footer */
