@@ -2,42 +2,45 @@ document.addEventListener('DOMContentLoaded', () => {
   const textBoxes = document.querySelectorAll('.text-box')
   const heroImages = document.querySelectorAll('.hero-image')
 
-  // IntersectionObserver for hero images
-  const heroImageObserver = new IntersectionObserver(
-    entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible') // Show the current hero image
-          console.log(`Image ${entry.target.id} became visible`)
-        } else {
-          entry.target.classList.remove('visible') // Hide the hero image
-          console.log(`Image ${entry.target.id} is now hidden`)
-        }
-      })
-    },
-    {
-      threshold: 0.5 // Trigger when 50% of the element is visible
-    }
-  )
+  // Ensure the number of hero images matches the number of text boxes
+  if (heroImages.length < textBoxes.length) {
+    console.warn('Not enough hero images for the text boxes.')
+  }
 
-  // Observe each hero image
-  heroImages.forEach(image => heroImageObserver.observe(image))
+  // Function to update hero image visibility
+  const updateHeroImage = index => {
+    heroImages.forEach((image, i) => {
+      if (i === index) {
+        image.classList.add('visible')
+      } else {
+        image.classList.remove('visible')
+      }
+    })
+  }
 
   // IntersectionObserver for text boxes
   const textBoxObserver = new IntersectionObserver(
-    (entries, observer) => {
+    entries => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          entry.target.classList.add('visible') // Add 'visible' class to trigger animation
-          observer.unobserve(entry.target) // Stop observing once it's visible
+          entry.target.classList.add('visible') // Show the text box
+
+          // Find the index of the visible text box
+          const index = Array.from(textBoxes).indexOf(entry.target)
+
+          // Update hero image based on text box index
+          updateHeroImage(index)
         }
       })
     },
     {
-      threshold: 0.5 // Trigger when 50% of the element is visible
+      threshold: 0.5 // Trigger when 50% of the text box is visible
     }
   )
 
   // Observe each text box
   textBoxes.forEach(box => textBoxObserver.observe(box))
+
+  // Initialize the first hero image
+  updateHeroImage(0)
 })

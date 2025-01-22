@@ -1,6 +1,6 @@
 /* Hero Section */
 .hero-section {
-  position: relative;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
@@ -13,11 +13,11 @@
 }
 
 .hero-image {
-  position: relative;
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  height: 100vh;
+  height: 100%;
   background-size: cover;
   background-position: center;
   /* Fallback color */
@@ -39,8 +39,8 @@
   position: relative;
   /* Place above the hero image */
   z-index: 1;
-  /* Add padding for spacing */
-  padding: 200px 20px;
+  /* Start content below the initial hero image */
+  margin-top: 100vh;
 }
 
 .content-section h1, .content-section h2 {
@@ -49,17 +49,18 @@
 
 /* Text Boxes */
 .text-box {
+  width: 100%;
   max-width: 800px;
-  /* Space between text boxes to reveal background */
-  margin: 300px auto;
-  padding: 20px;
+  /* Add spacing between text boxes */
+  margin: 200px auto;
+  padding: 50px;
   font-size: 1.2rem;
   line-height: 1.8;
-  color: #333;
+  text-align: center;
   /* Semi-transparent white background */
   background-color: rgba(255, 255, 255, 0.9);
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
   /* Initially hidden */
   opacity: 0;
   /* Start slightly off-screen */
@@ -87,6 +88,14 @@
   #hero-image3 {
     background-image: url("../../../static/images/hero_image3/climbers_walking_with_pads_kato_droushia_640.webp");
   }
+
+  #hero-image4 {
+    background-image: url("../../../static/images/hero_image4/climbing_secret_garden_640.webp");
+  }
+
+  #hero-image5 {
+    background-image: url("../../../static/images/hero_image5/bouldering_group_sunset_640.webp");
+  }
 }
 
 @media (min-width: 641px) {
@@ -100,6 +109,14 @@
 
   #hero-image3 {
     background-image: url("../../../static/images/hero_image3/climbers_walking_with_pads_kato_droushia_1024.webp");
+  }
+
+  #hero-image4 {
+    background-image: url("../../../static/images/hero_image4/climbing_secret_garden_1024.webp");
+  }
+
+  #hero-image5 {
+    background-image: url("../../../static/images/hero_image5/bouldering_group_sunset_1024.webp");
   }
 }
 
@@ -115,6 +132,14 @@
   #hero-image3 {
     background-image: url("../../../static/images/hero_image3/climbers_walking_with_pads_kato_droushia_1440.webp");
   }
+
+  #hero-image4 {
+    background-image: url("../../../static/images/hero_image4/climbing_secret_garden_1440.webp");
+  }
+
+  #hero-image5 {
+    background-image: url("../../../static/images/hero_image5/bouldering_group_sunset_1440.webp");
+  }
 }
 
 @media (min-width: 1441px) {
@@ -128,5 +153,13 @@
 
   #hero-image3 {
     background-image: url("../../../static/images/hero_image3/climbers_walking_with_pads_kato_droushia_1920.webp");
+  }
+
+  #hero-image4 {
+    background-image: url("../../../static/images/hero_image4/climbing_secret_garden_1920.webp");
+  }
+
+  #hero-image5 {
+    background-image: url("../../../static/images/hero_image5/bouldering_group_sunset_1920.webp");
   }
 }

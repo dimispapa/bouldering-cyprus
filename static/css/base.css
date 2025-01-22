@@ -81,9 +81,8 @@
 footer {
     color: #000000;
     background-color: #f4edd2;
-    position: sticky;
-    bottom: 0;
     text-align: center;
+    font-size: 1rem;
     padding: 10px 0;
     z-index: 1;
     /* Ensure footer stays above the content */
