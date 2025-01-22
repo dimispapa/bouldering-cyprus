@@ -50,9 +50,8 @@
 /* Text Boxes */
 .text-box {
   width: 100%;
-  max-width: 800px;
   /* Add spacing between text boxes */
-  margin: 200px auto;
+  margin: 500px auto;
   padding: 50px;
   font-size: 1.2rem;
   line-height: 1.8;
@@ -67,6 +66,13 @@
   transform: translateY(50px);
   /* Smooth fade-in and slide-up */
   transition: opacity 1s ease, transform 1s ease;
+}
+
+.text-content {
+  max-width: 800px; /* Center the text content */
+  margin: 0 auto; /* Horizontally center the content */
+  padding: 0 20px; /* Add padding for small screens */
+  text-align: center;
 }
 
 .text-box.visible {
