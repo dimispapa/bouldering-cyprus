@@ -43,6 +43,7 @@ h1, h2 {
 .navbar .navbar-brand:hover,
 .navbar .nav-link:hover {
     color: #000000;
+    font-weight: 600;
 }
 
 /* Transparent Navbar */
