@@ -1,64 +1,132 @@
 /* Hero Section */
 .hero-section {
-    position: fixed; /* Keeps the image fixed */
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh; /* Full viewport height */
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed; /* Parallax effect */
-    background-image: url("../../../static/images/climber_hanging_alikou_640.webp"); /* Fallback image */
-    z-index: -1; /* Ensure the hero stays behind the content */
-  }
-  
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 100%;
+  /* Full viewport height */
+  height: 100vh;
+  /* Ensure the hero stays behind the content */
+  z-index: -1;
+  /* Prevent overflow of child elements */
+  overflow: hidden;
+}
+
+.hero-image {
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-size: cover;
+  background-position: center;
+  /* Fallback color */
+  background-color: #ffffff;
+  /* Initially hidden */
+  opacity: 0;
+  /* Smooth fade-in effect */
+  transition: opacity 1s ease;
+
+}
+
+.hero-image.visible {
+  /* Fully visible when scrolled into view */
+  opacity: 1;
+}
+
 /* Content Section */
 .content-section {
-    position: relative;
-    z-index: 1; /* Place above the hero image */
-    padding: 200px 20px; /* Add padding for spacing */
-  }
+  position: relative;
+  /* Place above the hero image */
+  z-index: 1;
+  /* Add padding for spacing */
+  padding: 200px 20px;
+}
 
 .content-section h1, .content-section h2 {
   color: #ed6c2c;
 }
-  
+
 /* Text Boxes */
 .text-box {
-    max-width: 800px;
-    margin: 300px auto; /* Space between text boxes to reveal background */
-    padding: 20px;
-    font-size: 1.2rem;
-    line-height: 1.8;
-    color: #333;
-    background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white background */
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    opacity: 0; /* Initially hidden */
-    transform: translateY(50px); /* Start slightly off-screen */
-    transition: opacity 1s ease, transform 1s ease; /* Smooth fade-in and slide-up */
-  }
+  max-width: 800px;
+  /* Space between text boxes to reveal background */
+  margin: 300px auto;
+  padding: 20px;
+  font-size: 1.2rem;
+  line-height: 1.8;
+  color: #333;
+  /* Semi-transparent white background */
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  /* Initially hidden */
+  opacity: 0;
+  /* Start slightly off-screen */
+  transform: translateY(50px);
+  /* Smooth fade-in and slide-up */
+  transition: opacity 1s ease, transform 1s ease;
+}
 
 .text-box.visible {
   opacity: 1;
-  transform: translateY(0); /* Bring into view */
+  /* Bring into view */
+  transform: translateY(0);
 }
-  
+
 /* Responsive Background Images */
-@media (min-width: 641px) {
-.hero-section {
-    background-image: url("../../../static/images/climber_hanging_alikou_1024.webp");
+@media (max-width: 640px) {
+  #hero-image1 {
+    background-image: url("../../../static/images/hero_image1/climber_hanging_alikou_640.webp");
+  }
+
+  #hero-image2 {
+    background-image: url("../../../static/images/hero_image2/female_climbers_kato_akamas_640.webp");
+  }
+
+  #hero-image3 {
+    background-image: url("../../../static/images/hero_image3/climbers_walking_with_pads_kato_droushia_640.webp");
+  }
 }
+
+@media (min-width: 641px) {
+  #hero-image1 {
+    background-image: url("../../../static/images/hero_image1/climber_hanging_alikou_1024.webp");
+  }
+
+  #hero-image2 {
+    background-image: url("../../../static/images/hero_image2/female_climbers_kato_akamas_1024.webp");
+  }
+
+  #hero-image3 {
+    background-image: url("../../../static/images/hero_image3/climbers_walking_with_pads_kato_droushia_1024.webp");
+  }
 }
 
 @media (min-width: 1025px) {
-.hero-section {
-    background-image: url("../../../static/images/climber_hanging_alikou_1440.webp");
-}
+  #hero-image1 {
+    background-image: url("../../../static/images/hero_image1/climber_hanging_alikou_1440.webp");
+  }
+
+  #hero-image2 {
+    background-image: url("../../../static/images/hero_image2/female_climbers_kato_akamas_1440.webp");
+  }
+
+  #hero-image3 {
+    background-image: url("../../../static/images/hero_image3/climbers_walking_with_pads_kato_droushia_1440.webp");
+  }
 }
 
 @media (min-width: 1441px) {
-.hero-section {
-    background-image: url("../../../static/images/climber_hanging_alikou_1920.webp");
-}
+  #hero-image1 {
+    background-image: url("../../../static/images/hero_image1/climber_hanging_alikou_1920.webp");
+  }
+
+  #hero-image2 {
+    background-image: url("../../../static/images/hero_image2/female_climbers_kato_akamas_1920.webp");
+  }
+
+  #hero-image3 {
+    background-image: url("../../../static/images/hero_image3/climbers_walking_with_pads_kato_droushia_1920.webp");
+  }
 }
