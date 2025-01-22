@@ -85,15 +85,19 @@
         <div class="row">
           <!-- Privacy and Contact Links -->
           <div class="col-4">
-            <p><a href="#">Privacy Policy</a></p>
-            <p><a href="#">Contact Us</a></p>
+            <p>
+              <a href="#">Privacy Policy</a>
+            </p>
+            <p>
+              <a href="#">Contact Us</a>
+            </p>
           </div>
-    
+
           <!-- Copyright Section -->
           <div class="col-4">
             <p>&copy; {{ year|default:2025 }} Bouldering Cyprus. All Rights Reserved.</p>
           </div>
-    
+
           <!-- Social Media Section -->
           <div class="col-4">
             <p>Follow Us</p>
@@ -105,7 +109,7 @@
           </div>
         </div>
       </div>
-    </footer>    
+    </footer>
 
     {% block postload_js %}
       <script src="{% static 'js/navbar.js' %}"></script>
