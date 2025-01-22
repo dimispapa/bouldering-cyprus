@@ -47,6 +47,63 @@
   color: #ed6c2c;
 }
 
+/* Scroll-Down Arrow */
+.scroll-down-arrow {
+  position: absolute;
+  bottom: 5%;
+  left: 50%;
+  transform: translateX(-50%);
+  cursor: pointer;
+  font-size: 3rem;
+  color: #fff;
+  animation: bounce 2s infinite;
+  z-index: 2;
+  display: none; /* Hide by default */
+}
+
+.scroll-down-arrow:hover {
+  color: #000;
+}
+
+.scroll-down-arrow:first-of-type {
+  display: block; /* Show the first arrow initially */
+}
+
+/* Scroll-to-Top Arrow */
+.scroll-to-top-arrow {
+  position: relative;
+  bottom: 5%; /* Place above the footer */
+  text-align: center;
+  cursor: pointer;
+}
+
+.scroll-to-top-arrow a {
+  text-decoration: none;
+  color: #fff; /* White arrow color */
+  font-size: 3rem; /* Size of the arrow */
+  transition: color 0.3s ease;
+}
+
+.scroll-to-top-arrow a:hover {
+  color: #ed6c2c; /* Change arrow color on hover */
+}
+
+/* Bounce Animation */
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateX(-50%) translateY(0);
+  }
+
+  40% {
+    transform: translateX(-50%) translateY(-10px);
+  }
+
+  60% {
+    transform: translateX(-50%) translateY(-5px);
+  }
+}
+
+
 /* Text Boxes */
 .text-box {
   width: 100%;
@@ -69,9 +126,12 @@
 }
 
 .text-content {
-  max-width: 800px; /* Center the text content */
-  margin: 0 auto; /* Horizontally center the content */
-  padding: 0 20px; /* Add padding for small screens */
+  max-width: 800px;
+  /* Center the text content */
+  margin: 0 auto;
+  /* Horizontally center the content */
+  padding: 0 20px;
+  /* Add padding for small screens */
   text-align: center;
 }
 
