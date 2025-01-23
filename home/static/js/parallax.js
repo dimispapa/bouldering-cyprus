@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const heroImages = document.querySelectorAll('.hero-image') // Hero images
   const scrollDownArrow = document.getElementById('scroll-down-arrow') // Down arrow
   const scrollToTopArrow = document.getElementById('scroll-to-top-arrow') // Up arrow
-  const navbarHeight = document.querySelector('.navbar')?.offsetHeight || 0 // Navbar height
+  const navbarHeight = document.querySelector('.navbar')?.offsetHeight + 100 || 0 // Navbar height
 
   // Function to update hero image visibility
   const updateHeroImage = index => {
@@ -78,6 +78,14 @@ document.addEventListener('DOMContentLoaded', () => {
       behavior: 'smooth'
     })
   })
+
+  // Add click event listeners to each side navigation dot
+  document.querySelectorAll('.side-navigation li').forEach(function(dot) {
+    dot.addEventListener('click', function() {
+      let textBox = document.querySelector(dot.getAttribute('data-target'));
+      smoothScrollTo(textBox);
+    });
+  });
 
   // Initialize visibility
   updateHeroImage(0) // Ensure the first hero image is visible

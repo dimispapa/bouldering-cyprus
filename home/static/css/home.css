@@ -55,15 +55,16 @@
   transform: translateX(-50%);
   cursor: pointer;
   font-size: 3rem;
-  color: #cbdbe2;
+  color: #caa098;
   animation: bounce 2s infinite;
-  z-index: 1000; /* Ensure it's above other elements */
+  z-index: 1000;
+  /* Ensure it's above other elements */
   cursor: pointer;
   transition: color 0.3s ease;
 }
 
 #scroll-down-arrow:hover {
-  color: #000;
+  color: #ed6c2c;
 }
 
 /* Scroll-to-Top Arrow */
@@ -78,13 +79,13 @@
   animation: bounce 2s infinite;
 }
 
-#scroll-to-top-arrow > a {
-  color: #cbdbe2;
+#scroll-to-top-arrow>a {
+  color: #caa098;
   /* Default arrow color */
   transition: color 0.3s ease;
 }
 
-#scroll-to-top-arrow > a:hover {
+#scroll-to-top-arrow>a:hover {
   color: #ed6c2c;
   /* Change arrow color on hover */
 }
@@ -103,7 +104,6 @@
     transform: translateX(-50%) translateY(-5px);
   }
 }
-
 
 /* Text Boxes */
 .text-box {
@@ -229,4 +229,49 @@
   #hero-image5 {
     background-image: url("../../../static/images/hero_image5/bouldering_group_sunset_1920.webp");
   }
+}
+
+.side-navigation {
+  position: fixed;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 999;
+}
+
+.side-navigation ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  animation: bounce 2s infinite;
+}
+
+.side-navigation ul:hover {
+  animation-play-state: paused;
+}
+
+.side-navigation li {
+  width: 10px;
+  height: 10px;
+  background-color: #caa098;
+  border-radius: 50%;
+  margin: 10px 0;
+  cursor: pointer;
+  position: relative;
+}
+
+.side-navigation li:hover {
+  background-color: #ed6c2c;
+}
+
+.side-navigation li:hover::after {
+  content: attr(title);
+  position: absolute;
+  right: 15px;
+  white-space: nowrap;
+  background-color: #333;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
 }
