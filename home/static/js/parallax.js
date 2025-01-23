@@ -46,8 +46,17 @@ document.addEventListener('DOMContentLoaded', () => {
           // Show the current text box
           entry.target.classList.add('visible')
 
+          // Hide the scroll down arrow
+          if (index === 0) {
+            scrollDownArrow.classList.add('hidden')
+          }
+
           // Update hero image based on text box index
           updateHeroImage(index)
+        }
+        else if (index === 0) {
+          // Unhide the scroll down arrow
+          scrollDownArrow.classList.remove('hidden')
         }
       })
     },

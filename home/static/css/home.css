@@ -69,11 +69,13 @@
 /* Scroll-to-Top Arrow */
 #scroll-to-top-arrow {
   position: relative;
+  left: 50%;
   bottom: 5%;
   /* Place above the footer */
   text-align: center;
   cursor: pointer;
   font-size: 3rem;
+  animation: bounce 2s infinite;
 }
 
 #scroll-to-top-arrow > a {
