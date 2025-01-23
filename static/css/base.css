@@ -27,11 +27,6 @@ h1, h2 {
 
 /* Header */
 /* Navbar */
-.navbar {
-    color: #000000;
-    background-color: #f4edd2;
-}
-
 .navbar .navbar-brand {
     font-size: 28px;
 }
@@ -55,7 +50,7 @@ h1, h2 {
 
 /* Solid Navbar */
 .navbar-scrolled {
-    background-color: #f4edd2 !important;
+    background-color: rgba(244, 237, 210, 0.9) !important;
     /* Solid color for navbar */
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     /* Optional shadow for distinction */
@@ -84,12 +79,16 @@ h1, h2 {
     color: #ffffff;
     border: none;
     padding: 10px 20px;
-    font-size: 1rem;
+    font-size: 1.4rem;
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
     text-decoration: none;
-
+    display: inline-block;
+    width: 100%;
+    max-width: 300px;
+    box-sizing: border-box;
+    text-align: center;
 }
 
 .button-primary:hover {
@@ -105,7 +104,7 @@ h1, h2 {
 /* Footer */
 footer {
     color: #000000;
-    background-color: #f4edd2;
+    background-color: rgba(244, 237, 210, 0.9);
     text-align: center;
     font-size: 1rem;
     padding: 10px 0;
@@ -120,4 +119,36 @@ footer a {
 
 footer a:hover {
     color: #ed6c2c;
+}
+
+/* Responsive Navbar and Footer */
+@media (max-width: 576px) {
+    footer .social-media-icons {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    footer .social-media-icons a {
+        margin-bottom: 2px;
+    }
+}
+
+@media (max-width: 768px) {
+    .navbar .navbar-brand {
+        font-size: 20px;
+    }
+
+    .navbar .nav-link {
+        font-size: 16px;
+    }
+
+    footer {
+        font-size: 0.875rem;
+    }
+
+    .button-primary {
+        font-size: 1rem;
+        max-width: fit-content;
+    }
 }
