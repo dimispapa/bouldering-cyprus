@@ -1,8 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
   const textBoxes = document.querySelectorAll('.text-box') // Text boxes
   const heroImages = document.querySelectorAll('.hero-image') // Hero images
-  const scrollDownArrows = document.querySelectorAll('.scroll-down-arrow') // Down arrows
-  const scrollToTopArrow = document.querySelector('.scroll-to-top-arrow') // Up arrow
+  const scrollDownArrow = document.getElementById('scroll-down-arrow') // Down arrow
+  const scrollToTopArrow = document.getElementById('scroll-to-top-arrow') // Up arrow
   const navbarHeight = document.querySelector('.navbar')?.offsetHeight || 0 // Navbar height
 
   // Function to update hero image visibility
@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
     })
   }
 
-  // Smooth scrolling function
+  // Smooth scrolling function taking into account the navbar height
   const smoothScrollTo = targetElement => {
     const targetPosition =
       targetElement.getBoundingClientRect().top + window.scrollY - navbarHeight
@@ -28,15 +28,12 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Add click event listeners to each down arrow
-  scrollDownArrows.forEach((arrow, index) => {
-    arrow.addEventListener('click', e => {
-      e.preventDefault()
+  scrollDownArrow.addEventListener('click', e => {
+    e.preventDefault()
 
-      // Scroll to the corresponding text box
-      if (textBoxes[index]) {
-        smoothScrollTo(textBoxes[index])
-      }
-    })
+    // Scroll to the corresponding text box
+    const targetElement = document.querySelector(scrollDownArrow.getAttribute('data-target'))
+    smoothScrollTo(targetElement)
   })
 
   // IntersectionObserver for text boxes
@@ -51,11 +48,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
           // Update hero image based on text box index
           updateHeroImage(index)
-
-          // Hide the current down arrow
-          if (scrollDownArrows[index]) {
-            scrollDownArrows[index].style.display = 'none'
-          }
         }
       })
     },
@@ -80,11 +72,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Initialize visibility
   updateHeroImage(0) // Ensure the first hero image is visible
-  scrollDownArrows.forEach((arrow, index) => {
-    if (index === 0) {
-      arrow.style.display = 'block' // Show the first arrow
-    } else {
-      arrow.style.display = 'none' // Hide all other arrows initially
-    }
-  })
 })

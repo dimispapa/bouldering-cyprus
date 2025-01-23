@@ -48,44 +48,43 @@
 }
 
 /* Scroll-Down Arrow */
-.scroll-down-arrow {
+#scroll-down-arrow {
   position: absolute;
   bottom: 5%;
   left: 50%;
   transform: translateX(-50%);
   cursor: pointer;
   font-size: 3rem;
-  color: #fff;
+  color: #cbdbe2;
   animation: bounce 2s infinite;
-  z-index: 2;
-  display: none; /* Hide by default */
-}
-
-.scroll-down-arrow:hover {
-  color: #000;
-}
-
-.scroll-down-arrow:first-of-type {
-  display: block; /* Show the first arrow initially */
-}
-
-/* Scroll-to-Top Arrow */
-.scroll-to-top-arrow {
-  position: relative;
-  bottom: 5%; /* Place above the footer */
-  text-align: center;
+  z-index: 1000; /* Ensure it's above other elements */
   cursor: pointer;
-}
-
-.scroll-to-top-arrow a {
-  text-decoration: none;
-  color: #fff; /* White arrow color */
-  font-size: 3rem; /* Size of the arrow */
   transition: color 0.3s ease;
 }
 
-.scroll-to-top-arrow a:hover {
-  color: #ed6c2c; /* Change arrow color on hover */
+#scroll-down-arrow:hover {
+  color: #000;
+}
+
+/* Scroll-to-Top Arrow */
+#scroll-to-top-arrow {
+  position: relative;
+  bottom: 5%;
+  /* Place above the footer */
+  text-align: center;
+  cursor: pointer;
+  font-size: 3rem;
+}
+
+#scroll-to-top-arrow > a {
+  color: #cbdbe2;
+  /* Default arrow color */
+  transition: color 0.3s ease;
+}
+
+#scroll-to-top-arrow > a:hover {
+  color: #ed6c2c;
+  /* Change arrow color on hover */
 }
 
 /* Bounce Animation */
