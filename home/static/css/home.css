@@ -113,9 +113,8 @@
   padding: 50px;
   font-size: 1.2rem;
   line-height: 1.8;
-  text-align: center;
   /* Semi-transparent background */
-  background-color: rgba(244, 237, 210, 0.9);
+  background-color: white;
   border-radius: 10px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
   /* Initially hidden */
@@ -126,6 +125,10 @@
   transition: opacity 1s ease, transform 1s ease;
 }
 
+#text-box1 {
+  padding-bottom: 30px;
+}
+
 .text-content {
   max-width: 800px;
   /* Center the text content */
@@ -133,7 +136,7 @@
   /* Horizontally center the content */
   padding: 0 20px;
   /* Add padding for small screens */
-  text-align: center;
+  text-align: left;
 }
 
 .text-box.visible {

@@ -2,7 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
 
 /* General Font */
-.body {
+body {
     font-family: "Roboto Mono", serif;
     font-optical-sizing: auto;
     font-weight: 400;
@@ -10,20 +10,18 @@
 }
 
 /* Header fonts */
-h1, h2 {
-    font-family: "Montserrat", serif;
-    font-optical-sizing: auto;
-    font-weight: 800;
-    font-style: normal;
+h1 {
+    font-size: 2rem;
+    margin-bottom: 20px;
 }
 
 /* Functional info */
-.button-primary, .navbar, .footer {
+/* .button-primary, .navbar, .footer, h1, h2 {
     font-family: "Roboto Mono", serif;
     font-optical-sizing: auto;
     font-weight: 400;
     font-style: normal;
-}
+} */
 
 /* Header */
 /* Navbar */
@@ -50,7 +48,7 @@ h1, h2 {
 
 /* Solid Navbar */
 .navbar-scrolled {
-    background-color: rgba(244, 237, 210, 0.9) !important;
+    background-color: rgba(255, 255, 255, 0.9) !important;
     /* Solid color for navbar */
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     /* Optional shadow for distinction */
@@ -75,24 +73,24 @@ h1, h2 {
 
 /* Buttons */
 .button-primary {
-    background-color: #ed6c2c;
-    color: #ffffff;
+    background-color: #f4edd2;
+    box-shadow: 5px 5px 4px rgb(237, 108, 44);
+    color: #000;
     border: none;
     padding: 10px 20px;
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
     text-decoration: none;
     display: inline-block;
-    width: 100%;
-    max-width: 300px;
     box-sizing: border-box;
     text-align: center;
+    margin-top: 30px;
 }
 
 .button-primary:hover {
-    background-color: #c65923;
+    background-color: rgb(237, 108, 44);
     color: #ffffff;
 }
 
@@ -104,7 +102,7 @@ h1, h2 {
 /* Footer */
 footer {
     color: #000000;
-    background-color: rgba(244, 237, 210, 0.9);
+    background-color: rgba(255, 255, 255, 0.9);
     text-align: center;
     font-size: 1rem;
     padding: 10px 0;
