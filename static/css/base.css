@@ -9,11 +9,15 @@ body {
     font-style: normal;
 }
 
-h1, h2, .text-content {
+h1, h2, h3, h4, h5, h6, .text-content {
     font-family: "Roboto Condensed", serif;
     font-optical-sizing: auto;
     font-weight: 400;
     font-style: normal;
+}
+
+.content-section h1, .content-section h2 {
+    color: #ed6c2c;
 }
 
 /* Header */
@@ -40,8 +44,13 @@ h1, h2, .text-content {
 }
 
 /* Headings */
-h1, h2 {
+h1 {
     font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+h2 {
+    font-size: 1.6rem;
     margin-bottom: 20px;
 }
 
@@ -71,7 +80,7 @@ h1, h2 {
 }
 
 /* Buttons */
-.button-primary {
+.button-large {
     background-color: #f4edd2;
     box-shadow: 5px 5px 4px rgb(237, 108, 44);
     color: #000;
@@ -90,7 +99,24 @@ h1, h2 {
 
 }
 
-.button-primary:hover {
+.button-small {
+    background-color: #f4edd2;
+    box-shadow: 5px 5px 4px rgb(237, 108, 44);
+    color: #000;
+    border: none;
+    padding: 5px 10px;
+    font-size: 1.2rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    box-sizing: border-box;
+    text-align: center;
+    max-width: fit-content;
+}
+
+.button-large:hover, .button-small:hover {
     background-color: rgb(237, 108, 44);
     color: #ffffff;
 }
@@ -107,7 +133,9 @@ footer {
     font-size: 1.2rem;
     padding: 10px 5px;
     z-index: 1;
-    /* Ensure footer stays above the content */
+    position: relative;
+    bottom: 0;
+    width: 100%;
 }
 
 footer a {
@@ -121,26 +149,8 @@ footer a:hover {
 
 /* Responsive Navbar and Footer */
 @media (max-width: 768px) {
-    .navbar .navbar-brand {
+    .navbar .navbar-brand, h1 {
         font-size: 1.6rem;
-    }
-
-    .navbar .nav-link {
-        font-size: 1rem;
-    }
-
-    footer {
-        font-size: 1rem;
-    }
-
-    .button-primary {
-        font-size: 1rem;
-    }
-}
-
-@media (max-width: 576px) {
-    .navbar .navbar-brand {
-        font-size: 1.4rem;
     }
 
     .navbar .nav-link {
@@ -148,10 +158,28 @@ footer a:hover {
     }
 
     footer {
-        font-size: 0.8rem;
+        font-size: 1.2rem;
     }
 
-    .button-primary {
-        font-size: 0.8rem;
+    .button-large, .text-content {
+        font-size: 1.2rem;
     }
-} 
+}
+
+@media (max-width: 576px) {
+    .navbar .navbar-brand, h1 {
+        font-size: 1.4rem;
+    }
+
+    .navbar .nav-link {
+        font-size: 1rem;
+    }
+
+    footer {
+        font-size: 1rem;
+    }
+
+    .button-large, .text-content {
+        font-size: 1rem;
+    }
+}
