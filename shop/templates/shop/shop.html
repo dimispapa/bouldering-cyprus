@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'shop/css/shop.css' %}" />
+{% endblock %}
+
+{% block content %}
+  <!-- Hero Section -->
+  <div class="hero-section">
+    <!-- Hero Image 1 -->
+    <div id="shop-image1" class="hero-image"></div>
+    <!-- Hero Image 1 -->
+    <div id="shop-image2" class="hero-image"></div>
+  </div>
+
+  <!-- Scrolling Content Section -->
+  <div class="content-section">
+    <!-- Product Information -->
+    <div id="text-box-1" class="text-box">
+      <div class="text-content">
+        <h1>Cyprus Bouldering Guide Book</h1>
+        <p>Discover the best bouldering spots in Cyprus with this comprehensive guide book. Packed with essential information: detailed maps, directions to sectors, route descriptions, and stunning photography.</p>
+        <p>This guidebook includes over 700 boulder problems ranging from Font 3 to 8A, located in Akamas National Park and the Inia/Droushia villages of Paphos.</p>
+        <div class="product-price">
+          <p>Price: €32.00</p>
+        </div>
+        <!-- Add to Cart Form -->
+        <div class="add-to-cart">
+          <form action="" method="post">
+            {% csrf_token %}
+            <label for="quantity">Quantity:</label>
+            <input type="number" id="quantity" name="quantity" value="1" min="1" />
+            <button type="submit" class="button-small">Add to Cart</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Product Features -->
+    <div id="text-box-2" class="text-box">
+      <div class="text-content">
+        <h2>Features</h2>
+        <ul>
+          <li>More than 700 boulder problems</li>
+          <li>Graded difficulty: Font 3 to 8A</li>
+          <li>Detailed directions to sectors</li>
+          <li>Illustrated maps and GPS location QR codes</li>
+          <li>Award-winning photography by Silvio Augusto Rusmigo</li>
+        </ul>
+        <hr>
+        <h2>Sneak Peek</h2>
+        <div class="product-gallery container-fluid">
+          <div class="row">
+            <div class="col-6 col-md-3">
+              <img src="{% static 'shop/images/guide1.jpg' %}" alt="Guide Image 1" class="gallery-thumbnail" data-bs-toggle="modal" data-bs-target="#galleryModal" data-bs-image="{% static 'shop/images/guide1.jpg' %}" />
+            </div>
+            <div class="col-6 col-md-3">
+              <img src="{% static 'shop/images/guide2.jpg' %}" alt="Guide Image 2" class="gallery-thumbnail" data-bs-toggle="modal" data-bs-target="#galleryModal" data-bs-image="{% static 'shop/images/guide2.jpg' %}" />
+            </div>
+            <div class="col-6 col-md-3">
+              <img src="{% static 'shop/images/guide3.jpg' %}" alt="Guide Image 3" class="gallery-thumbnail" data-bs-toggle="modal" data-bs-target="#galleryModal" data-bs-image="{% static 'shop/images/guide3.jpg' %}" />
+            </div>
+            <div class="col-6 col-md-3">
+              <img src="{% static 'shop/images/guide4.jpg' %}" alt="Guide Image 4" class="gallery-thumbnail" data-bs-toggle="modal" data-bs-target="#galleryModal" data-bs-image="{% static 'shop/images/guide4.jpg' %}" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Gallery -->
+  <div class="modal fade" id="galleryModal" tabindex="-1" aria-labelledby="galleryModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="galleryModalLabel">Sneak Peek Gallery</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <img id="modalImage" src="" alt="Gallery Image" class="img-fluid" />
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block postload_js %}
+  {{ block.super }}
+  <script src="{% static 'shop/js/shop.js' %}"></script>
+{% endblock %}
