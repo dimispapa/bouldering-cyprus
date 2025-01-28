@@ -1,7 +1,7 @@
 /* Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
 
-/* General Font */
+/* Fonts */
 body {
     font-family: "Roboto Mono", serif;
     font-optical-sizing: auto;
@@ -9,28 +9,21 @@ body {
     font-style: normal;
 }
 
-/* Header fonts */
-h1 {
-    font-size: 2rem;
-    margin-bottom: 20px;
-}
-
-/* Functional info */
-/* .button-primary, .navbar, .footer, h1, h2 {
-    font-family: "Roboto Mono", serif;
+h1, h2, .text-content {
+    font-family: "Roboto Condensed", serif;
     font-optical-sizing: auto;
     font-weight: 400;
     font-style: normal;
-} */
+}
 
 /* Header */
 /* Navbar */
 .navbar .navbar-brand {
-    font-size: 28px;
+    font-size: 2rem;
 }
 
 .navbar .nav-link {
-    font-size: 18px;
+    font-size: 1.4rem;
 }
 
 .navbar .navbar-brand:hover,
@@ -44,6 +37,12 @@ h1 {
     background-color: transparent !important;
     text-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
     transition: background-color 0.3s ease;
+}
+
+/* Headings */
+h1, h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
 }
 
 /* Solid Navbar */
@@ -87,6 +86,8 @@ h1 {
     box-sizing: border-box;
     text-align: center;
     margin-top: 30px;
+    max-width: fit-content;
+
 }
 
 .button-primary:hover {
@@ -103,9 +104,8 @@ h1 {
 footer {
     color: #000000;
     background-color: rgba(255, 255, 255, 0.9);
-    text-align: center;
-    font-size: 1rem;
-    padding: 10px 0;
+    font-size: 1.2rem;
+    padding: 10px 5px;
     z-index: 1;
     /* Ensure footer stays above the content */
 }
@@ -120,33 +120,38 @@ footer a:hover {
 }
 
 /* Responsive Navbar and Footer */
-@media (max-width: 576px) {
-    footer .social-media-icons {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    footer .social-media-icons a {
-        margin-bottom: 2px;
-    }
-}
-
 @media (max-width: 768px) {
     .navbar .navbar-brand {
-        font-size: 20px;
+        font-size: 1.6rem;
     }
 
     .navbar .nav-link {
-        font-size: 16px;
+        font-size: 1rem;
     }
 
     footer {
-        font-size: 0.875rem;
+        font-size: 1rem;
     }
 
     .button-primary {
         font-size: 1rem;
-        max-width: fit-content;
     }
 }
+
+@media (max-width: 576px) {
+    .navbar .navbar-brand {
+        font-size: 1.4rem;
+    }
+
+    .navbar .nav-link {
+        font-size: 1.2rem;
+    }
+
+    footer {
+        font-size: 0.8rem;
+    }
+
+    .button-primary {
+        font-size: 0.8rem;
+    }
+} 
