@@ -12,37 +12,54 @@
   <!-- Content Section -->
   <div class="container mt-5 mb-5 content-section">
     <!-- Product Details -->
-    <div class="row mt-4">
-      <div class="col-md-8">
-        <h1>Cyprus Bouldering Guide Book</h1>
-        <p class="roboto-mono">Discover the best bouldering spots in Cyprus with this comprehensive guide book. Packed with essential information: detailed maps, directions to sectors, route descriptions, and stunning photography.</p>
-        <p class="roboto-mono">This guidebook includes over 700 boulder problems ranging from Font 3 to 8A, located around Akamas National Park and the Inia/Droushia villages of Paphos.</p>
-        <h3>€32.00</h3>
+    {% for product in products %}
+      <div class="row mt-4">
+        <div class="col-md-8">
+          <!-- Product Name -->
+          <h1>{{ product.name }}</h1>
+          <!-- Product Description -->
+          {{ product.description|safe }}
+          <!-- Product Price -->
+          <h3>€{{ product.price }}</h3>
+          <!-- Product Stock -->
+          {% if product.stock > 0 %}
+            <p>
+              <strong>In Stock</strong>
+            </p>
+          {% else %}
+            <p>
+              <strong>Out of Stock</strong>
+            </p>
+          {% endif %}
+          <!-- Quantity Selector & Add to Cart -->
+          <div class="d-flex align-items-center mt-3 p-1">
+            <form action="" method="post">
+              {% csrf_token %}
+              <label for="quantity">Quantity:</label>
+              <input type="number" id="quantity" name="quantity" value="1" min="1" />
+              <button type="submit" class="button-small">Add to Cart</button>
+            </form>
+          </div>
+        </div>
 
-        <!-- Quantity Selector & Add to Cart -->
-        <div class="d-flex align-items-center mt-3 p-1">
-          <form action="" method="post">
-            {% csrf_token %}
-            <label for="quantity">Quantity:</label>
-            <input type="number" id="quantity" name="quantity" value="1" min="1" />
-            <button type="submit" class="button-small">Add to Cart</button>
-          </form>
+        <!-- Sneak Peek Gallery -->
+        <div class="col-md-4">
+          <h4>Gallery</h4>
+          <div class="d-flex flex-wrap">
+            {% for image in product.gallery_images.all %}
+              <img src="{{ image.image.url }}" alt="Gallery Image" class="img-thumbnail m-1" style="width: 100px; height: 100px; cursor: pointer;" onclick="openModal({{ forloop.counter0 }})" />
+            {% empty %}
+              <p>No gallery images available.</p>
+            {% endfor %}
+          </div>
         </div>
       </div>
-
-      <!-- Sneak Peek Gallery -->
-      <div class="col-md-4">
-        <h4>Gallery</h4>
-        <div class="d-flex flex-wrap">
-          {% for image in product.gallery_images.all %}
-            <img src="{{ image.image.url }}" alt="Gallery Image" class="img-thumbnail m-1" style="width: 100px; height: 100px; cursor: pointer;" onclick="openModal({{ forloop.counter0 }})" />
-          {% endfor %}
-        </div>
-      </div>
-    </div>
+    {% empty %}
+      <p>No products available.</p>
+    {% endfor %}
   </div>
 
-  <!-- Hero Image 2-->
+  <!-- Hero Image 2 -->
   <div id="hero-image2"></div>
 
   <!-- Modal Slideshow -->
