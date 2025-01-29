@@ -6,27 +6,21 @@
 {% endblock %}
 
 {% block content %}
-  <!-- Hero Section -->
-  <div class="hero-section">
-    <!-- Hero Image 1 -->
-    <div id="shop-image1" class="hero-image"></div>
-    <!-- Hero Image 1 -->
-    <div id="shop-image2" class="hero-image"></div>
-  </div>
+  <!-- Hero Image -->
+  <div id="hero-image"></div>
 
-  <!-- Scrolling Content Section -->
-  <div class="content-section">
-    <!-- Product Information -->
-    <div id="text-box-1" class="text-box">
-      <div class="text-content">
+  <!-- Content Section -->
+  <div class="container mt-5 mb-5 content-section">
+    <!-- Product Details -->
+    <div class="row mt-4">
+      <div class="col-md-8">
         <h1>Cyprus Bouldering Guide Book</h1>
-        <p>Discover the best bouldering spots in Cyprus with this comprehensive guide book. Packed with essential information: detailed maps, directions to sectors, route descriptions, and stunning photography.</p>
-        <p>This guidebook includes over 700 boulder problems ranging from Font 3 to 8A, located in Akamas National Park and the Inia/Droushia villages of Paphos.</p>
-        <div class="product-price">
-          <p>Price: €32.00</p>
-        </div>
-        <!-- Add to Cart Form -->
-        <div class="add-to-cart">
+        <p class="roboto-mono">Discover the best bouldering spots in Cyprus with this comprehensive guide book. Packed with essential information: detailed maps, directions to sectors, route descriptions, and stunning photography.</p>
+        <p class="roboto-mono">This guidebook includes over 700 boulder problems ranging from Font 3 to 8A, located around Akamas National Park and the Inia/Droushia villages of Paphos.</p>
+        <h3>€32.00</h3>
+
+        <!-- Quantity Selector & Add to Cart -->
+        <div class="d-flex align-items-center mt-3 p-1">
           <form action="" method="post">
             {% csrf_token %}
             <label for="quantity">Quantity:</label>
@@ -35,58 +29,39 @@
           </form>
         </div>
       </div>
-    </div>
 
-    <!-- Product Features -->
-    <div id="text-box-2" class="text-box">
-      <div class="text-content">
-        <h2>Features</h2>
-        <ul>
-          <li>More than 700 boulder problems</li>
-          <li>Graded difficulty: Font 3 to 8A</li>
-          <li>Detailed directions to sectors</li>
-          <li>Illustrated maps and GPS location QR codes</li>
-          <li>Award-winning photography by Silvio Augusto Rusmigo</li>
-        </ul>
-        <hr>
-        <h2>Sneak Peek</h2>
-        <div class="product-gallery container-fluid">
-          <div class="row">
-            <div class="col-6 col-md-3">
-              <img src="{% static 'shop/images/guide1.jpg' %}" alt="Guide Image 1" class="gallery-thumbnail" data-bs-toggle="modal" data-bs-target="#galleryModal" data-bs-image="{% static 'shop/images/guide1.jpg' %}" />
-            </div>
-            <div class="col-6 col-md-3">
-              <img src="{% static 'shop/images/guide2.jpg' %}" alt="Guide Image 2" class="gallery-thumbnail" data-bs-toggle="modal" data-bs-target="#galleryModal" data-bs-image="{% static 'shop/images/guide2.jpg' %}" />
-            </div>
-            <div class="col-6 col-md-3">
-              <img src="{% static 'shop/images/guide3.jpg' %}" alt="Guide Image 3" class="gallery-thumbnail" data-bs-toggle="modal" data-bs-target="#galleryModal" data-bs-image="{% static 'shop/images/guide3.jpg' %}" />
-            </div>
-            <div class="col-6 col-md-3">
-              <img src="{% static 'shop/images/guide4.jpg' %}" alt="Guide Image 4" class="gallery-thumbnail" data-bs-toggle="modal" data-bs-target="#galleryModal" data-bs-image="{% static 'shop/images/guide4.jpg' %}" />
-            </div>
-          </div>
+      <!-- Sneak Peek Gallery -->
+      <div class="col-md-4">
+        <h4>Gallery</h4>
+        <div class="d-flex flex-wrap">
+          {% for image in product.gallery_images.all %}
+            <img src="{{ image.image.url }}" alt="Gallery Image" class="img-thumbnail m-1" style="width: 100px; height: 100px; cursor: pointer;" onclick="openModal({{ forloop.counter0 }})" />
+          {% endfor %}
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Modal Gallery -->
-  <div class="modal fade" id="galleryModal" tabindex="-1" aria-labelledby="galleryModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
+  <!-- Hero Image 2-->
+  <div id="hero-image2"></div>
+
+  <!-- Modal Slideshow -->
+  <div id="galleryModal" class="modal fade" tabindex="-1">
+    <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="galleryModalLabel">Sneak Peek Gallery</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <h5 class="modal-title">Gallery</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
-        <div class="modal-body">
-          <img id="modalImage" src="" alt="Gallery Image" class="img-fluid" />
+        <div class="modal-body text-center">
+          <img id="modalImage" src="" class="img-fluid" />
+        </div>
+        <div class="modal-footer">
+          <button onclick="prevImage()" class="btn btn-secondary">Previous</button>
+          <button onclick="nextImage()" class="btn btn-secondary">Next</button>
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
         </div>
       </div>
     </div>
   </div>
-{% endblock %}
-
-{% block postload_js %}
-  {{ block.super }}
-  <script src="{% static 'shop/js/shop.js' %}"></script>
 {% endblock %}
