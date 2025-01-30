@@ -154,7 +154,7 @@ if ENVIRONMENT == "PROD":
     AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
     AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
     AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
-    AWS_QUERYSTRING_AUTH = False  # Makes URLs cleaner and cacheable
+    # AWS_QUERYSTRING_AUTH = False  # Makes URLs cleaner and cacheable
 
     # Static and media files
     STATICFILES_STORAGE = "custom_storages.StaticStorage"
