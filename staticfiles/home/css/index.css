@@ -1,0 +1,276 @@
+/* Hero Section */
+.hero-section {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  /* Full viewport height */
+  height: 100vh;
+  /* Ensure the hero stays behind the content */
+  z-index: -1;
+  /* Prevent overflow of child elements */
+  overflow: hidden;
+}
+
+.hero-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  /* Fallback color */
+  background-color: #f4edd2;
+  /* Initially hidden */
+  opacity: 0;
+  /* Smooth fade-in effect */
+  transition: opacity 1s ease;
+
+}
+
+.hero-image.visible {
+  /* Fully visible when scrolled into view */
+  opacity: 1;
+}
+
+/* Content Section */
+.content-section {
+  position: relative;
+  /* Place above the hero image */
+  z-index: 1;
+  /* Start content below the initial hero image */
+  margin-top: 100vh;
+}
+
+/* Scroll-Down Arrow */
+#scroll-down-arrow {
+  position: absolute;
+  bottom: 5%;
+  left: 50%;
+  transform: translateX(-50%);
+  cursor: pointer;
+  font-size: 3rem;
+  color: #caa098;
+  animation: bounce 2s infinite;
+  z-index: 1000;
+  /* Ensure it's above other elements */
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+#scroll-down-arrow:hover {
+  color: #ed6c2c;
+}
+
+/* Scroll-to-Top Arrow */
+#scroll-to-top-arrow {
+  position: relative;
+  left: 50%;
+  bottom: 5%;
+  /* Place above the footer */
+  text-align: center;
+  cursor: pointer;
+  font-size: 3rem;
+  animation: bounce 2s infinite;
+}
+
+#scroll-to-top-arrow>a {
+  color: #caa098;
+  /* Default arrow color */
+  transition: color 0.3s ease;
+}
+
+#scroll-to-top-arrow>a:hover {
+  color: #ed6c2c;
+  /* Change arrow color on hover */
+}
+
+/* Bounce Animation */
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateX(-50%) translateY(0);
+  }
+
+  40% {
+    transform: translateX(-50%) translateY(-10px);
+  }
+
+  60% {
+    transform: translateX(-50%) translateY(-5px);
+  }
+}
+
+/* Text Boxes */
+.text-box {
+  width: 100%;
+  /* Add spacing between text boxes */
+  margin: 500px auto;
+  padding: 50px;
+  font-size: 1.2rem;
+  line-height: 1.8;
+  /* Semi-transparent background */
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  /* Initially hidden */
+  opacity: 0;
+  /* Start slightly off-screen */
+  transform: translateY(50px);
+  /* Smooth fade-in and slide-up */
+  transition: opacity 1s ease, transform 1s ease;
+}
+
+#text-box1 {
+  padding-bottom: 30px;
+}
+
+.text-content {
+  max-width: 800px;
+  /* Center the text content */
+  margin: 0 auto;
+  /* Horizontally center the content */
+  padding: 0 20px;
+  /* Add padding for small screens */
+  text-align: left;
+}
+
+.text-box.visible {
+  opacity: 1;
+  /* Bring into view */
+  transform: translateY(0);
+}
+
+/* Responsive Background Images */
+@media (max-width: 640px) {
+  #hero-image1 {
+    background-image: url("../../../../static/images/hero_image1/climber_hanging_alikou_640.webp");
+  }
+
+  #hero-image2 {
+    background-image: url("../../../../static/images/hero_image2/female_climbers_kato_akamas_640.webp");
+  }
+
+  #hero-image3 {
+    background-image: url("../../../../static/images/hero_image3/climbers_walking_with_pads_kato_droushia_640.webp");
+  }
+
+  #hero-image4 {
+    background-image: url("../../../../static/images/hero_image4/climbing_secret_garden_640.webp");
+  }
+
+  #hero-image5 {
+    background-image: url("../../../../static/images/hero_image5/bouldering_group_sunset_640.webp");
+  }
+}
+
+@media (min-width: 641px) {
+  #hero-image1 {
+    background-image: url("../../../../static/images/hero_image1/climber_hanging_alikou_1024.webp");
+  }
+
+  #hero-image2 {
+    background-image: url("../../../../static/images/hero_image2/female_climbers_kato_akamas_1024.webp");
+  }
+
+  #hero-image3 {
+    background-image: url("../../../../static/images/hero_image3/climbers_walking_with_pads_kato_droushia_1024.webp");
+  }
+
+  #hero-image4 {
+    background-image: url("../../../../static/images/hero_image4/climbing_secret_garden_1024.webp");
+  }
+
+  #hero-image5 {
+    background-image: url("../../../../static/images/hero_image5/bouldering_group_sunset_1024.webp");
+  }
+}
+
+@media (min-width: 1025px) {
+  #hero-image1 {
+    background-image: url("../../../../static/images/hero_image1/climber_hanging_alikou_1440.webp");
+  }
+
+  #hero-image2 {
+    background-image: url("../../../../static/images/hero_image2/female_climbers_kato_akamas_1440.webp");
+  }
+
+  #hero-image3 {
+    background-image: url("../../../../static/images/hero_image3/climbers_walking_with_pads_kato_droushia_1440.webp");
+  }
+
+  #hero-image4 {
+    background-image: url("../../../../static/images/hero_image4/climbing_secret_garden_1440.webp");
+  }
+
+  #hero-image5 {
+    background-image: url("../../../../static/images/hero_image5/bouldering_group_sunset_1440.webp");
+  }
+}
+
+@media (min-width: 1441px) {
+  #hero-image1 {
+    background-image: url("../../../../static/images/hero_image1/climber_hanging_alikou_1920.webp");
+  }
+
+  #hero-image2 {
+    background-image: url("../../../../static/images/hero_image2/female_climbers_kato_akamas_1920.webp");
+  }
+
+  #hero-image3 {
+    background-image: url("../../../../static/images/hero_image3/climbers_walking_with_pads_kato_droushia_1920.webp");
+  }
+
+  #hero-image4 {
+    background-image: url("../../../../static/images/hero_image4/climbing_secret_garden_1920.webp");
+  }
+
+  #hero-image5 {
+    background-image: url("../../../../static/images/hero_image5/bouldering_group_sunset_1920.webp");
+  }
+}
+
+.side-navigation {
+  position: fixed;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 999;
+}
+
+.side-navigation ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  animation: bounce 2s infinite;
+}
+
+.side-navigation ul:hover {
+  animation-play-state: paused;
+}
+
+.side-navigation li {
+  width: 10px;
+  height: 10px;
+  background-color: #caa098;
+  border-radius: 50%;
+  margin: 10px 0;
+  cursor: pointer;
+  position: relative;
+}
+
+.side-navigation li:hover {
+  background-color: #ed6c2c;
+}
+
+.side-navigation li:hover::after {
+  content: attr(title);
+  position: absolute;
+  right: 15px;
+  white-space: nowrap;
+  background-color: #333;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+}

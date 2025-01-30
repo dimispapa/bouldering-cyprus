@@ -1,0 +1,185 @@
+/* Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
+
+/* Fonts */
+body, .roboto-mono {
+    font-family: "Roboto Mono", serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+}
+
+h1, h2, h3, h4, h5, h6, .roboto-condensed {
+    font-family: "Roboto Condensed", serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.content-section h1, .content-section h2 {
+    color: #ed6c2c;
+}
+
+/* Header */
+/* Navbar */
+.navbar .navbar-brand {
+    font-size: 2rem;
+}
+
+.navbar .nav-link {
+    font-size: 1.4rem;
+}
+
+.navbar .navbar-brand:hover,
+.navbar .nav-link:hover {
+    color: #000000;
+    font-weight: 600;
+}
+
+/* Transparent Navbar */
+.navbar-transparent {
+    background-color: transparent !important;
+    text-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+}
+
+/* Headings */
+h1 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+h2 {
+    font-size: 1.6rem;
+    margin-bottom: 20px;
+}
+
+/* Solid Navbar */
+.navbar-scrolled {
+    background-color: rgba(255, 255, 255, 0.9) !important;
+    /* Solid color for navbar */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    /* Optional shadow for distinction */
+}
+
+/* Navbar Text Color */
+.navbar a.nav-link, .navbar .navbar-brand {
+    color: #fff;
+    /* White text on transparent background */
+    transition: color 0.3s ease;
+}
+
+.navbar-scrolled a.nav-link, .navbar-scrolled .navbar-brand {
+    color: #000000;
+    /* Adjust text color for solid background */
+}
+
+.navbar-scrolled a.nav-link:hover, .navbar-scrolled .navbar-brand:hover {
+    color: #ed6c2c;
+    /* Adjust text color for solid background */
+}
+
+/* Buttons */
+.button-large {
+    background-color: #f4edd2;
+    box-shadow: 5px 5px 4px rgb(237, 108, 44);
+    color: #000;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    box-sizing: border-box;
+    text-align: center;
+    margin-top: 30px;
+    max-width: fit-content;
+
+}
+
+.button-small {
+    background-color: #f4edd2;
+    box-shadow: 5px 5px 4px rgb(237, 108, 44);
+    color: #000;
+    border: none;
+    padding: 5px 10px;
+    font-size: 1.2rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    box-sizing: border-box;
+    text-align: center;
+    max-width: fit-content;
+}
+
+.button-large:hover, .button-small:hover {
+    background-color: rgb(237, 108, 44);
+    color: #ffffff;
+}
+
+/* Display */
+.hidden {
+    display: none;
+}
+
+/* Footer */
+footer {
+    color: #000000;
+    background-color: rgba(255, 255, 255, 0.9);
+    font-size: 1.2rem;
+    padding: 10px 5px;
+    z-index: 1;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+
+footer a {
+    text-decoration: none;
+    color: #000000;
+}
+
+footer a:hover {
+    color: #ed6c2c;
+}
+
+/* Responsive Navbar and Footer */
+@media (max-width: 768px) {
+    .navbar .navbar-brand, h1 {
+        font-size: 1.6rem;
+    }
+
+    .navbar .nav-link {
+        font-size: 1.2rem;
+    }
+
+    footer {
+        font-size: 1.2rem;
+    }
+
+    .button-large, .text-content {
+        font-size: 1.2rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .navbar .navbar-brand, h1 {
+        font-size: 1.4rem;
+    }
+
+    .navbar .nav-link {
+        font-size: 1rem;
+    }
+
+    footer {
+        font-size: 1rem;
+    }
+
+    .button-large, .text-content {
+        font-size: 1rem;
+    }
+}
