@@ -27,15 +27,12 @@ ENVIRONMENT = os.environ.get("DJANGO_ENV", "DEV")  # Default to 'DEV'
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get("SECRET_KEY", '')
+SECRET_KEY = os.environ.get("SECRET_KEY", "")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = ENVIRONMENT == "DEV"
 
-ALLOWED_HOSTS = [
-    "bouldering-cyprus-53e1273cde1e.herokuapp.com",
-    "127.0.0.1"
-]
+ALLOWED_HOSTS = ["bouldering-cyprus-53e1273cde1e.herokuapp.com", "127.0.0.1"]
 
 
 # Application definition
@@ -90,7 +87,17 @@ WSGI_APPLICATION = "bouldering_cy.wsgi.application"
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 if ENVIRONMENT == "PROD":
-    DATABASES = {"default": dj_database_url.parse(os.environ.get("DATABASE_URL"))}
+    DATABASES = {
+        "default": dj_database_url.parse(
+            os.environ.get(
+                "DATABASE_URL",
+                {
+                    "ENGINE": "django.db.backends.sqlite3",
+                    "NAME": BASE_DIR / "db.sqlite3",
+                },
+            )
+        )
+    }
 
 else:
     DATABASES = {
@@ -123,7 +130,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
-LANGUAGE_CODE = "en-uk"
+LANGUAGE_CODE = "en-gb"
 
 TIME_ZONE = "Europe/Nicosia"
 
@@ -138,21 +145,28 @@ USE_TZ = True
 STATIC_URL = "/static/"
 STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 # AWS S3 settings
 if ENVIRONMENT == "PROD":
+    # Cache control
+    AWS_S3_OBJECT_PARAMETERS = {
+        'Expires': 'Thu, 31 Dec 2099 20:00:00 GMT',
+        'CacheControl': 'max-age=94608000',
+    }
+
+    # AWS S3 Bucket config
     AWS_STORAGE_BUCKET_NAME = os.environ.get("AWS_STORAGE_BUCKET_NAME")
     AWS_S3_REGION_NAME = os.environ.get("AWS_S3_REGION_NAME")
     AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
     AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
     AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
+    AWS_QUERYSTRING_AUTH = False  # Makes URLs cleaner and cacheable
 
     # Static and media files
-    STATICFILES_STORAGE =  "custom_storages.StaticStorage"
+    STATICFILES_STORAGE = "custom_storages.StaticStorage"
     STATICFILES_LOCATION = "static"
     DEFAULT_FILE_STORAGE = "custom_storages.MediaStorage"
     MEDIAFILES_LOCATION = "media"
