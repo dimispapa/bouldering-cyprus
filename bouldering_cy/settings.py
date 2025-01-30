@@ -27,7 +27,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get("SECRET_KEY", "")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False if 'PRODUCTION' in os.environ else True
+PRODUCTION = os.environ.get("PRODUCTION", "False").lower() == "true"
+DEBUG = not PRODUCTION
 
 ALLOWED_HOSTS = ["bouldering-cyprus-53e1273cde1e.herokuapp.com", "127.0.0.1"]
 
@@ -82,7 +83,7 @@ WSGI_APPLICATION = "bouldering_cy.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-if 'PRODUCTION' in os.environ:
+if PRODUCTION:
     DATABASES = {"default": dj_database_url.parse(os.environ.get("DATABASE_URL", ""))}
 
 else:
@@ -136,7 +137,7 @@ MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 # AWS S3 settings
-if 'PRODUCTION' in os.environ:
+if PRODUCTION:
     # Cache control
     AWS_S3_OBJECT_PARAMETERS = {
         "Expires": "Thu, 31 Dec 2099 20:00:00 GMT",
