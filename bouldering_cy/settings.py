@@ -20,9 +20,6 @@ if os.path.isfile("env.py"):
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Get the environment
-ENVIRONMENT = os.environ.get("ENVIRON", "DEV")  # Default to 'DEV'
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
@@ -30,10 +27,9 @@ ENVIRONMENT = os.environ.get("ENVIRON", "DEV")  # Default to 'DEV'
 SECRET_KEY = os.environ.get("SECRET_KEY", "")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = ENVIRONMENT == "DEV"
+DEBUG = False if 'PRODUCTION' in os.environ else True
 
 ALLOWED_HOSTS = ["bouldering-cyprus-53e1273cde1e.herokuapp.com", "127.0.0.1"]
-
 
 # Application definition
 
@@ -86,7 +82,7 @@ WSGI_APPLICATION = "bouldering_cy.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-if ENVIRONMENT == "PROD":
+if 'PRODUCTION' in os.environ:
     DATABASES = {"default": dj_database_url.parse(os.environ.get("DATABASE_URL", ""))}
 
 else:
@@ -140,7 +136,7 @@ MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 # AWS S3 settings
-if ENVIRONMENT == "PROD":
+if 'PRODUCTION' in os.environ:
     # Cache control
     AWS_S3_OBJECT_PARAMETERS = {
         "Expires": "Thu, 31 Dec 2099 20:00:00 GMT",
