@@ -21,7 +21,7 @@ if os.path.isfile("env.py"):
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Get the environment
-ENVIRONMENT = os.environ.get("DJANGO_ENV", "DEV")  # Default to 'DEV'
+ENVIRONMENT = os.environ.get("ENVIRON", "DEV")  # Default to 'DEV'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
