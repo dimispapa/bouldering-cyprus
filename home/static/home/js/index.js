@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Smooth scrolling function taking into account the navbar height
   const smoothScrollTo = targetElement => {
+
     const targetPosition =
       targetElement.getBoundingClientRect().top + window.scrollY - navbarHeight
 
@@ -32,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
     e.preventDefault()
 
     // Scroll to the corresponding text box
-    const targetElement = document.querySelector(scrollDownArrow.getAttribute('data-target'))
+    let targetElement = document.getElementById(scrollDownArrow.getAttribute('data-target'))
     smoothScrollTo(targetElement)
   })
 
@@ -46,18 +47,26 @@ document.addEventListener('DOMContentLoaded', () => {
           // Show the current text box
           entry.target.classList.add('visible')
 
+          // Reset data attribute to appropriate text box
+          scrollDownArrow.setAttribute('data-target', textBoxes[index + 1].id)
+
           // Hide the scroll down arrow
-          if (index === 0) {
+          if (index === textBoxes.length) {
             scrollDownArrow.classList.add('hidden')
+          }
+          else {
+            // Unhide the scroll down arrow
+            scrollDownArrow.classList.remove('hidden')
           }
 
           // Update hero image based on text box index
           updateHeroImage(index)
         }
-        else if (index === 0) {
-          // Unhide the scroll down arrow
-          scrollDownArrow.classList.remove('hidden')
+        else {
+          // Reset data attribute to first text box
+          scrollDownArrow.setAttribute('data-target', textBoxes[0].id)
         }
+
       })
     },
     {
