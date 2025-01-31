@@ -62,13 +62,31 @@
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
               <li class="nav-item">
-                <a class="nav-link mx-3 {% if request.path == home_url %}active" aria-current="page{% endif %}" href="{% url 'home' %}"><i class="fa-solid fa-house"></i> Home</a>
+                <a class="nav-link mx-3 {% if request.path == home_url %}
+                    active
+                    page
+                  {% endif %}"
+                  href="{% url 'home' %}">
+                  <i class="fa-solid fa-house"></i> Home
+                </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link mx-3 {% if request.path == shop_url %}active" aria-current="page{% endif %}" href="{% url 'shop' %}"><i class="fa-solid fa-book"></i> Buy the Guidebook</a>
+                <a class="nav-link mx-3 {% if request.path == shop_url %}
+                    active
+                    page
+                  {% endif %}"
+                  href="{% url 'shop' %}">
+                  <i class="fa-solid fa-book"></i> Buy the Guidebook
+                </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link mx-3 {% if request.path == rental_url %}active" aria-current="page{% endif %}" href="#"><i class="fa-solid fa-layer-group"></i> Rent a Crashpad</a>
+                <a class="nav-link mx-3 {% if request.path == rental_url %}
+                    active
+                    page
+                  {% endif %}"
+                  href="#">
+                  <i class="fa-solid fa-layer-group"></i> Rent a Crashpad
+                </a>
               </li>
             </ul>
           </div>
@@ -89,15 +107,12 @@
         <div class="row align-items-center">
           <!-- Privacy and Contact Links -->
           <div class="col-4 d-flex flex-column justify-content-center">
-            <ul class="list-unstyled mb-0 text-center">
-              <li>
-                <a href="#">Privacy Policy</a>
-              </li>
-              <hr />
-              <li>
-                <a href="#">Contact Us</a>
-              </li>
-            </ul>
+            <p class="border-bottom border-secondary mb-3 pb-3">
+              <a href="#">Privacy Policy</a>
+            </p>
+            <p>
+              <a href="#">Contact Us</a>
+            </p>
           </div>
 
           <!-- Copyright Section -->
@@ -109,8 +124,7 @@
 
           <!-- Social Media Section -->
           <div class="col-4 d-flex flex-column justify-content-center">
-            <p>Follow Us</p>
-            <hr />
+            <p class="border-bottom border-secondary mb-3 pb-3">Follow Us</p>
             <div class="social-media-icons d-flex justify-content-around w-100">
               <a href="https://facebook.com" target="_blank" class="fs-2 social-icons"><i class="fa-brands fa-facebook"></i></a>
               <a href="https://instagram.com/bouldering_cyprus/" target="_blank" class="fs-2 social-icons"><i class="fa-brands fa-instagram"></i></a>

@@ -50,6 +50,7 @@
   bottom: 5%;
   left: 50%;
   transform: translateX(-50%);
+  text-align: center;
   cursor: pointer;
   font-size: 3rem;
   color: #caa098;
@@ -76,13 +77,13 @@
   animation: bounce 2s infinite;
 }
 
-#scroll-to-top-arrow>a {
+#scroll-to-top-arrow {
   color: #caa098;
   /* Default arrow color */
   transition: color 0.3s ease;
 }
 
-#scroll-to-top-arrow>a:hover {
+#scroll-to-top-arrow:hover {
   color: #ed6c2c;
   /* Change arrow color on hover */
 }

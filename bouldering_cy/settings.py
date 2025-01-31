@@ -129,7 +129,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-# AWS S3 settings in PRODUCTION
+# Static/Media files - AWS S3 settings in PRODUCTION
 if PRODUCTION:
     # Cache control
     AWS_S3_OBJECT_PARAMETERS = {
@@ -155,7 +155,7 @@ if PRODUCTION:
     STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/{STATICFILES_LOCATION}/"
     MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/{MEDIAFILES_LOCATION}/"
 
-# Local Development
+# Static/Media files in Local Development
 else:
     STATIC_URL = "/static/"
     STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
@@ -164,6 +164,7 @@ else:
 
     MEDIA_URL = "/media/"
     MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 

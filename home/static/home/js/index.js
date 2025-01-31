@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
     })
   }
 
-  // Add click event listeners to each down arrow
+  // Add click event listeners to down arrow
   scrollDownArrow.addEventListener('click', e => {
     e.preventDefault()
 
