@@ -20,6 +20,7 @@
   height: 100%;
   background-size: cover;
   background-position: center;
+  background-repeat: no-repeat;
   /* Fallback color */
   background-color: #f4edd2;
   /* Initially hidden */
@@ -125,16 +126,6 @@
   padding-bottom: 30px;
 }
 
-.text-content {
-  max-width: 800px;
-  /* Center the text content */
-  margin: 0 auto;
-  /* Horizontally center the content */
-  padding: 0 20px;
-  /* Add padding for small screens */
-  text-align: left;
-}
-
 .text-box.visible {
   opacity: 1;
   /* Bring into view */
@@ -145,6 +136,7 @@
 @media (max-width: 640px) {
   #hero-image1 {
     background-image: url("../images/hero_image1/climber_hanging_alikou_640.webp");
+    background-position: 65% 50%;
   }
 
   #hero-image2 {
