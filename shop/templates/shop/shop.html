@@ -20,7 +20,7 @@
           <!-- Product Description -->
           {{ product.description|safe }}
           <!-- Product Price -->
-          <h3>€{{ product.price }}</h3>
+          <h2>€{{ product.price }}</h2>
           <!-- Product Stock -->
           {% if product.stock > 0 %}
             <p>
@@ -44,7 +44,7 @@
 
         <!-- Sneak Peek Gallery -->
         <div class="col-md-4">
-          <h4>Gallery</h4>
+          <h2>Gallery</h2>
           <div class="d-flex flex-wrap">
             {% for image in product.gallery_images.all %}
               <img src="{{ image.image.url }}" alt="Gallery Image" class="img-thumbnail m-1" style="width: 100px; height: 100px; cursor: pointer;" onclick="openModal({{ forloop.counter0 }})" />
@@ -67,7 +67,7 @@
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">Gallery</h5>
+          <h3 class="modal-title">Gallery</h3>
           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
         <div class="modal-body text-center">
