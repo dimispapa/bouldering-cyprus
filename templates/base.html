@@ -1,5 +1,9 @@
 {% load static %}
 
+{% url 'home' as home_url %}
+{% url 'shop' as shop_url %}
+{% url 'rental' as rental_url %}
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -58,13 +62,13 @@
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
               <li class="nav-item">
-                <a class="nav-link mx-3" href="{% url 'home' %}">Home</a>
+                <a class="nav-link mx-3 {% if request.path == home_url %}active" aria-current="page{% endif %}" href="{% url 'home' %}"><i class="fa-solid fa-house"></i> Home</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link mx-3" href="{% url 'cy_guidebook' %}">Buy the Guidebook</a>
+                <a class="nav-link mx-3 {% if request.path == shop_url %}active" aria-current="page{% endif %}" href="{% url 'shop' %}"><i class="fa-solid fa-book"></i> Buy the Guidebook</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link mx-3" href="#">Rent a Crashpad</a>
+                <a class="nav-link mx-3 {% if request.path == rental_url %}active" aria-current="page{% endif %}" href="#"><i class="fa-solid fa-layer-group"></i> Rent a Crashpad</a>
               </li>
             </ul>
           </div>
