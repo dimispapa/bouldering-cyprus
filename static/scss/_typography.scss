@@ -1,0 +1,111 @@
+@use "variables" as *;
+@use "mixins" as *;
+
+/* Google Fonts */
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap");
+
+/* Body Fonts */
+body,
+.roboto-mono {
+    font-family: $font-roboto-mono;
+    font-weight: 400;
+    font-style: normal;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.roboto-condensed {
+    font-family: $font-roboto-condensed;
+    font-weight: 400;
+    font-style: normal;
+}
+
+/* Content Sections */
+.content-section {
+    h1,
+    h2 {
+        color: $orange;
+    }
+}
+
+.text-content {
+    color: $black;
+    font-size: $xl-font;
+    @include for-size(desktop, down) {
+        font-size: $l-font;
+    }
+    @include for-size(tablet, down) {
+        font-size: $m-font;
+    }
+    @include for-size(phone, down) {
+        font-size: $s-font;
+    }
+    @include for-size(phone-sm, down) {
+        font-size: $xs-font;
+    }
+}
+
+/* Headings */
+h1 {
+    font-size: $xxl-font;
+    margin-bottom: 20px;
+}
+
+h2 {
+    font-size: $xl-font;
+    margin-bottom: 20px;
+}
+
+h3 {
+    font-size: $l-font;
+    margin-bottom: 20px;
+}
+
+@include for-size(tablet-lg, down) {
+    h1 {
+        font-size: $xl-font;
+    }
+    h2 {
+        font-size: $l-font;
+    }
+    h3 {
+        font-size: $m-font;
+    }
+}
+@include for-size(tablet, down) {
+    h1 {
+        font-size: $l-font;
+    }
+    h2 {
+        font-size: $m-font;
+    }
+    h3 {
+        font-size: $s-font;
+    }
+}
+@include for-size(phone, down) {
+    h1 {
+        font-size: $m-font;
+    }
+    h2 {
+        font-size: $s-font;
+    }
+    h3 {
+        font-size: $xs-font;
+    }
+}
+@include for-size(phone-sm, down) {
+    h1 {
+        font-size: $s-font;
+    }
+    h2 {
+        font-size: $xs-font;
+    }
+    h3 {
+        font-size: $xs-font;
+    }
+}

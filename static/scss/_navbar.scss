@@ -1,0 +1,83 @@
+@use "variables" as *;
+@use "mixins" as *;
+
+/* Navbar */
+.navbar {
+    background-color: transparent;
+    text-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+    transition:
+        background-color 0.3s ease,
+        box-shadow 0.3s ease;
+
+    // Solid navbar when switching to burger menu @ < 991px
+    @include for-size(991px, down) {
+        background-color: $white-semi-transparent !important;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    a.navbar-brand {
+        // Font sizes
+        font-size: $xxl-font;
+        @include for-size(tablet-lg, down) {
+            font-size: $xl-font;
+        }
+        @include for-size(tablet, down) {
+            font-size: $l-font;
+        }
+        @include for-size(phone, down) {
+            font-size: $m-font;
+        }
+        @include for-size(phone-sm, down) {
+            font-size: $s-font;
+        }
+        // Colours
+        color: $white;
+        // Black text when solid navbar
+        @include for-size(991px, down) {
+            color: $black;
+        }
+        transition: color 0.3s ease;
+        &:hover {
+            color: $black;
+            // Orange hover text when solid navbar
+            @include for-size(991px, down) {
+                color: $orange;
+            }
+            font-weight: 600;
+        }
+    }
+
+    a.nav-link {
+        // Font sizes
+        font-size: $m-font;
+        @include for-size(desktop-lg, down) {
+            font-size: $s-font;
+        }
+        @include for-size(phone, down) {
+            font-size: $xs-font;
+        }
+        // Colours
+        color: $white;
+        transition: color 0.3s ease;
+        &:hover {
+            color: $black;
+            font-weight: 600;
+        }
+        // Text alignment
+        text-align: right;
+    }
+}
+
+/* Solid Navbar when scrolled */
+.navbar-scrolled {
+    background-color: $white-semi-transparent !important;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+
+    a.nav-link,
+    a.navbar-brand {
+        color: $orange;
+        &:hover {
+            color: $black;
+        }
+    }
+}
