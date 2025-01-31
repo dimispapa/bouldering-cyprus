@@ -1,17 +1,25 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const navbar = document.querySelector('.navbar')
+  const navbar = document.querySelector('.navbar');
 
-  const toggleNavbarState = () => {
-    if (window.scrollY > 50) {
-      navbar.classList.add('navbar-scrolled') // Add scrolled state
-      navbar.classList.remove('navbar-transparent') // Remove transparent state
+  // Function to toggle navbar transparency only for desktop
+  const toggleNavbarTransparency = () => {
+    if (window.innerWidth > 768) {
+      if (window.scrollY > 50) {
+        navbar.classList.add('navbar-scrolled'); // Apply solid background
+      } else {
+        navbar.classList.remove('navbar-scrolled'); // Keep it transparent
+      }
     } else {
-      navbar.classList.add('navbar-transparent') // Add transparent state
-      navbar.classList.remove('navbar-scrolled') // Remove scrolled state
+      navbar.classList.add('navbar-scrolled'); // Always solid on mobile
     }
-  }
+  };
 
-  // Run on page load and on scroll
-  toggleNavbarState()
-  window.addEventListener('scroll', toggleNavbarState)
-})
+  // Run function on scroll
+  window.addEventListener('scroll', toggleNavbarTransparency);
+
+  // Run function on page load to set initial state
+  toggleNavbarTransparency();
+
+  // Run function on window resize to adapt behavior
+  window.addEventListener('resize', toggleNavbarTransparency);
+});
