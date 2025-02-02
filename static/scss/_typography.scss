@@ -34,10 +34,7 @@ h6,
 
 .text-content {
     color: $black;
-    font-size: $xl-font;
-    @include for-size(desktop, down) {
-        font-size: $l-font;
-    }
+    font-size: $l-font;
     @include for-size(tablet, down) {
         font-size: $m-font;
     }
