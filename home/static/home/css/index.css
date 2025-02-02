@@ -230,7 +230,8 @@
   }
 }
 
-.side-navigation {
+/* Side Navigation */
+#side-nav-container {
   position: fixed;
   right: 20px;
   top: 50%;
@@ -238,18 +239,65 @@
   z-index: 999;
 }
 
-.side-navigation ul {
+/* Side Navigation Toggle */
+#side-nav-toggle {
+  display: none;
+  /* Hide on desktop */
+  font-size: 2rem;
+  color: #caa098;
+  cursor: pointer;
+  animation: bounce 2s infinite;
+  transition: color 0.3s ease;
+}
+
+#side-nav-toggle:hover {
+  color: #ed6c2c;
+}
+
+#side-nav-toggle.hidden {
+  display: none;
+}
+
+/* Side Navigation List */
+#side-navigation {
   list-style: none;
   padding: 0;
   margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
   animation: bounce 2s infinite;
+  transition: max-height 0.4s ease, opacity 0.3s ease;
 }
 
-.side-navigation ul:hover {
+#side-navigation:hover {
   animation-play-state: paused;
 }
 
-.side-navigation li {
+/* Initially Collapsed on Mobile */
+@media (max-width: 768px) {
+  #side-navigation {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+  }
+
+  #side-navigation.expanded {
+    /* Adjust height based on the number of items */
+    max-height: 300px;
+    /* Increase width when expanded */
+    width: 300px;
+    opacity: 1;
+  }
+
+  #side-nav-toggle {
+    display: block;
+    /* Show menu icon on mobile */
+  }
+}
+
+/* Side Navigation Items */
+#side-navigation li {
   width: 10px;
   height: 10px;
   background-color: #caa098;
@@ -257,13 +305,17 @@
   margin: 10px 0;
   cursor: pointer;
   position: relative;
+  transition: background-color 0.3s ease;
 }
 
-.side-navigation li:hover {
+/* Active and Hover Effects */
+#side-navigation li:hover,
+#side-navigation li.active {
   background-color: #ed6c2c;
 }
 
-.side-navigation li:hover::after {
+/* Initially, the tooltips are hidden */
+#side-navigation li::after {
   content: attr(title);
   position: absolute;
   right: 15px;
@@ -273,4 +325,38 @@
   padding: 5px 10px;
   border-radius: 5px;
   font-size: 12px;
+  opacity: 0;
+  /* Hide by default */
+  transition: opacity 0.3s ease;
+}
+
+/* Show tooltips when hovered (for desktops) */
+#side-navigation li:hover::after {
+  opacity: 1;
+}
+
+/* Initially Hide Text Titles */
+#side-navigation li span {
+  display: none;
+  position: absolute;
+  background-color: #333;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+/* Show Titles When Expanded */
+@media (max-width: 768px) {
+  #side-navigation.expanded li {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between dot and text */
+  }
+
+  #side-navigation.expanded li span {
+    display: inline-block; /* Make text visible */
+    position: static; /* Remove absolute positioning */
+  }
 }

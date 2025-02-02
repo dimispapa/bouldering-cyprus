@@ -5,6 +5,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const scrollToTopArrow = document.getElementById('scroll-to-top-arrow') // Up arrow
   const navbarHeight =
     document.querySelector('.navbar')?.offsetHeight + 100 || 0 // Navbar height
+  const sideNavToggle = document.getElementById('side-nav-toggle') // Side nav toggle button
+  const sideNavigation = document.querySelector('#side-navigation') // The list of navigation dots
+  const sideNavItems = document.querySelectorAll('#side-navigation li') // The navigation dots
 
   // Function to update hero image visibility
   const updateHeroImage = index => {
@@ -82,11 +85,38 @@ document.addEventListener('DOMContentLoaded', () => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   })
 
+  // Toggle side navigation expansion on click
+  sideNavToggle.addEventListener('click', () => {
+    // Expand the side navigation
+    sideNavigation.classList.toggle('expanded')
+    // Hide the side nav toggle button
+    sideNavToggle.classList.toggle('hidden')
+  })
+
+  // Collapse navigation when clicking outside (only on mobile)
+  document.addEventListener('click', event => {
+    if (
+      !sideNavigation.contains(event.target) &&
+      !sideNavToggle.contains(event.target)
+    ) {
+      sideNavigation.classList.remove('expanded')
+      sideNavToggle.classList.remove('hidden')
+    }
+  })
+
   // Side Navigation Click Event Listeners
-  document.querySelectorAll('.side-navigation li').forEach(dot => {
+  sideNavItems.forEach(dot => {
     dot.addEventListener('click', function () {
       let textBox = document.querySelector(dot.getAttribute('data-target'))
-      smoothScrollTo(textBox)
+      // Scroll to the text box
+      if (textBox) {
+        textBox.scrollIntoView({ behavior: 'smooth' })
+      }
+
+      // Collapse menu after clicking (on mobile)
+      if (window.innerWidth <= 768) {
+        sideNavigation.classList.remove('expanded')
+      }
     })
   })
 
