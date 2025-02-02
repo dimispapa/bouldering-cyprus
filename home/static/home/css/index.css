@@ -46,8 +46,8 @@
 
 /* Scroll-Down Arrow */
 #scroll-down-arrow {
-  position: absolute;
-  bottom: 5%;
+  position: fixed;
+  bottom: 10%;
   left: 50%;
   transform: translateX(-50%);
   text-align: center;
@@ -55,10 +55,17 @@
   font-size: 3rem;
   color: #caa098;
   animation: bounce 2s infinite;
-  z-index: 1000;
   /* Ensure it's above other elements */
+  z-index: 1000;
   cursor: pointer;
-  transition: color 0.3s ease;
+  transition: color 0.3s ease, opacity 0.5s ease;
+}
+
+#scroll-down-arrow.hidden {
+  /* Hide smoothly */
+  opacity: 0;
+  /* Prevent interactions when hidden */
+  pointer-events: none;
 }
 
 #scroll-down-arrow:hover {
@@ -69,7 +76,7 @@
 #scroll-to-top-arrow {
   position: relative;
   left: 50%;
-  bottom: 5%;
+  bottom: 10%;
   /* Place above the footer */
   text-align: center;
   cursor: pointer;

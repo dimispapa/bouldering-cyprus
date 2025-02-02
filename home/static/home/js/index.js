@@ -3,7 +3,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const heroImages = document.querySelectorAll('.hero-image') // Hero images
   const scrollDownArrow = document.getElementById('scroll-down-arrow') // Down arrow
   const scrollToTopArrow = document.getElementById('scroll-to-top-arrow') // Up arrow
-  const navbarHeight = document.querySelector('.navbar')?.offsetHeight + 100 || 0 // Navbar height
+  const navbarHeight =
+    document.querySelector('.navbar')?.offsetHeight + 100 || 0 // Navbar height
 
   // Function to update hero image visibility
   const updateHeroImage = index => {
@@ -18,60 +19,58 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Smooth scrolling function taking into account the navbar height
   const smoothScrollTo = targetElement => {
-
+    // Calculate the target position
     const targetPosition =
       targetElement.getBoundingClientRect().top + window.scrollY - navbarHeight
 
+    // Scroll to the target position
     window.scrollTo({
       top: targetPosition,
       behavior: 'smooth'
     })
   }
 
-  // Add click event listeners to down arrow
+  // Scroll-down functionality to move to the next text box
   scrollDownArrow.addEventListener('click', e => {
     e.preventDefault()
 
-    // Scroll to the corresponding text box
-    let targetElement = document.getElementById(scrollDownArrow.getAttribute('data-target'))
-    smoothScrollTo(targetElement)
+    // get the current target
+    let currentTargetId = scrollDownArrow.getAttribute('data-target')
+    let currentTarget = document.getElementById(currentTargetId)
+    let currentIndex = [...textBoxes].indexOf(currentTarget)
+
+    // If there is a next text box, scroll to it
+    if (currentIndex < textBoxes.length) {
+      smoothScrollTo(currentTarget)
+    }
   })
 
-  // IntersectionObserver for text boxes
+  // IntersectionObserver to track text boxes and update scroll arrow
   const textBoxObserver = new IntersectionObserver(
     entries => {
       entries.forEach(entry => {
-        const index = Array.from(textBoxes).indexOf(entry.target)
+        // Get the index of the text box
+        const index = [...textBoxes].indexOf(entry.target)
 
+        // If the text box is intersecting, add the visible class
         if (entry.isIntersecting) {
-          // Show the current text box
           entry.target.classList.add('visible')
 
-          // Reset data attribute to appropriate text box
-          scrollDownArrow.setAttribute('data-target', textBoxes[index + 1].id)
-
-          // Hide the scroll down arrow
-          if (index === textBoxes.length) {
-            scrollDownArrow.classList.add('hidden')
-          }
-          else {
-            // Unhide the scroll down arrow
+          // Update scroll-down arrow target to the next text box
+          if (index < textBoxes.length - 1) {
+            scrollDownArrow.setAttribute('data-target', textBoxes[index + 1].id)
             scrollDownArrow.classList.remove('hidden')
+          } else {
+            // Hide the scroll-down arrow on the last text box
+            scrollDownArrow.classList.add('hidden')
           }
 
           // Update hero image based on text box index
           updateHeroImage(index)
         }
-        else {
-          // Reset data attribute to first text box
-          scrollDownArrow.setAttribute('data-target', textBoxes[0].id)
-        }
-
       })
     },
-    {
-      threshold: 0.5 // Trigger when 50% of the text box is visible
-    }
+    { threshold: 0.5 } // Trigger when 50% of the text box is visible
   )
 
   // Observe each text box
@@ -80,21 +79,16 @@ document.addEventListener('DOMContentLoaded', () => {
   // Scroll-to-Top Arrow Logic
   scrollToTopArrow.addEventListener('click', e => {
     e.preventDefault()
-
-    // Scroll to the top of the page
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    })
+    window.scrollTo({ top: 0, behavior: 'smooth' })
   })
 
-  // Add click event listeners to each side navigation dot
-  document.querySelectorAll('.side-navigation li').forEach(function(dot) {
-    dot.addEventListener('click', function() {
-      let textBox = document.querySelector(dot.getAttribute('data-target'));
-      smoothScrollTo(textBox);
-    });
-  });
+  // Side Navigation Click Event Listeners
+  document.querySelectorAll('.side-navigation li').forEach(dot => {
+    dot.addEventListener('click', function () {
+      let textBox = document.querySelector(dot.getAttribute('data-target'))
+      smoothScrollTo(textBox)
+    })
+  })
 
   // Initialize visibility
   updateHeroImage(0) // Ensure the first hero image is visible
