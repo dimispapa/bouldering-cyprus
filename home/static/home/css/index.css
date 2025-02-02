@@ -47,7 +47,7 @@
 /* Scroll-Down Arrow */
 #scroll-down-arrow {
   position: fixed;
-  bottom: 10%;
+  bottom: 5%;
   left: 50%;
   transform: translateX(-50%);
   text-align: center;
@@ -76,7 +76,7 @@
 #scroll-to-top-arrow {
   position: relative;
   left: 50%;
-  bottom: 10%;
+  bottom: 5%;
   /* Place above the footer */
   text-align: center;
   cursor: pointer;
@@ -353,6 +353,10 @@
     display: flex;
     align-items: center;
     gap: 10px; /* Space between dot and text */
+  }
+
+  #scroll-down-arrow, #scroll-to-top-arrow {
+    bottom: 10%;
   }
 
   #side-navigation.expanded li span {
