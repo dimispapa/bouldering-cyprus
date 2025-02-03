@@ -81,4 +81,8 @@ h2,
 h3,
 h4 {
   color: #ed6c2c;
+}
+
+.input-group {
+  max-width: 300px;
 }/*# sourceMappingURL=shop.css.map */

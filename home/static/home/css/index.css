@@ -149,6 +149,7 @@
   cursor: pointer;
   font-size: 3rem;
   color: #caa098;
+  text-shadow: 2px 2px 1px #000;
   animation: bounce 2s infinite;
   z-index: 1000;
   transition: color 0.3s ease, opacity 0.5s ease;
@@ -171,6 +172,7 @@
   font-size: 3rem;
   animation: bounce 2s infinite;
   color: #caa098;
+  text-shadow: 2px 2px 1px #000;
   transition: color 0.3s ease;
 }
 #scroll-to-top-arrow:hover {

@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django_summernote",
+    "crispy_forms",
     "home",
     "shop",
     "storages",
@@ -77,6 +78,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "bouldering_cy.wsgi.application"
 
+CRISPY_TEMPLATE_PACK = 'bootstrap5'
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases

@@ -10,6 +10,7 @@
     cursor: pointer;
     font-size: 3rem;
     color: $off-pink;
+    text-shadow: 2px 2px 1px $black;
     animation: $bounce-infinite;
     z-index: $z-index-scroll-arrow;
     transition: color $transition-fast, opacity $transition-medium;
@@ -34,6 +35,7 @@
     font-size: 3rem;
     animation: $bounce-infinite;
     color: $off-pink;
+    text-shadow: 2px 2px 1px $black;
     transition: color $transition-fast;
     
     &:hover {
