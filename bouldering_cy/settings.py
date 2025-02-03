@@ -143,12 +143,13 @@ if PRODUCTION:
     AWS_QUERYSTRING_AUTH = False  # Makes URLs cleaner and cacheable
     AWS_S3_FILE_OVERWRITE = True
 
-    # Static and media files
-    STATICFILES_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+    # Ensure files are properly structured in S3
+    STATICFILES_STORAGE = "custom_storages.StaticStorage"
+    DEFAULT_FILE_STORAGE = "custom_storages.MediaStorage"
     STATICFILES_LOCATION = "static"
-    DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
     MEDIAFILES_LOCATION = "media"
 
+    # Ensure Django collects the root `static/` directory
     STATICFILES_DIRS = [
         os.path.join(BASE_DIR, "static"),
     ]
