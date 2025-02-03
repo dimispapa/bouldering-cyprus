@@ -143,6 +143,7 @@ if PRODUCTION:
     AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
     AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
     AWS_QUERYSTRING_AUTH = False  # Makes URLs cleaner and cacheable
+    AWS_S3_FILE_OVERWRITE = True
 
     # Static and media files
     STATICFILES_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
