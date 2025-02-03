@@ -6,8 +6,8 @@
     background-color: transparent;
     text-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
     transition:
-        background-color 0.3s ease,
-        box-shadow 0.3s ease;
+        background-color $transition-fast,
+        box-shadow $transition-fast;
 
     // Solid navbar when switching to burger menu @ < 991px
     @include for-size(991px, down) {
@@ -36,7 +36,7 @@
         @include for-size(991px, down) {
             color: $black;
         }
-        transition: color 0.3s ease;
+        transition: color $transition-fast;
         &:hover {
             color: $black;
             // Orange hover text when solid navbar
@@ -58,7 +58,7 @@
         }
         // Colours
         color: $white;
-        transition: color 0.3s ease;
+        transition: color $transition-fast;
         &:hover {
             color: $black;
             font-weight: 600;
