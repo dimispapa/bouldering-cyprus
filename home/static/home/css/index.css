@@ -52,6 +52,7 @@
 @media (max-width: 640px) {
   #hero-image1 {
     background-image: url(../images/hero_image1/climber_hanging_alikou_640.webp);
+    background-position: 65% 50%;
   }
 }
 

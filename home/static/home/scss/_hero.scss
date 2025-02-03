@@ -44,6 +44,7 @@
 
     @include for-size(640px, down) {
         background-image: url(../images/hero_image1/climber_hanging_alikou_640.webp);
+        background-position: 65% 50%;
     }
 }
 
