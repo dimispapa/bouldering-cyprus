@@ -93,7 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const targetElement = document.querySelector(targetSelector)
       if (targetElement) {
         // Calculate the offset position so the text box appears slightly offscreen at the top
-        const offset = 120 // Adjust this value as needed
+        const offset = 100 // Adjust this value as needed
         const elementPosition = targetElement.getBoundingClientRect().top
         const offsetPosition = elementPosition + window.scrollY - offset
         window.scrollTo({
