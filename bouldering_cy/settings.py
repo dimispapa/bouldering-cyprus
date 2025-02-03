@@ -141,13 +141,24 @@ if PRODUCTION:
     AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
     AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
     AWS_QUERYSTRING_AUTH = False  # Makes URLs cleaner and cacheable
-    AWS_S3_FILE_OVERWRITE = True
-
-    # Ensure files are properly structured in S3
-    STATICFILES_STORAGE = "custom_storages.StaticStorage"
-    DEFAULT_FILE_STORAGE = "custom_storages.MediaStorage"
     STATICFILES_LOCATION = "static"
     MEDIAFILES_LOCATION = "media"
+
+    # Ensure files are properly structured in S3
+    # STATICFILES_STORAGE = "custom_storages.StaticStorage"
+    # DEFAULT_FILE_STORAGE = "custom_storages.MediaStorage"
+    STORAGES = {
+        "default": {"BACKEND": "custom_storages.MediaStorage"},
+        "staticfiles": {"BACKEND": "custom_storages.StaticStorage"},
+        "OPTIONS": {
+            "bucket_name": AWS_STORAGE_BUCKET_NAME,
+            "region_name": AWS_S3_REGION_NAME,
+            "aws_access_key_id": AWS_ACCESS_KEY_ID,
+            "aws_secret_access_key": AWS_SECRET_ACCESS_KEY,
+            "custom_domain": AWS_S3_CUSTOM_DOMAIN,
+            "querystring_auth": AWS_QUERYSTRING_AUTH,
+        },
+    }
 
     # Ensure Django collects the root `static/` directory
     STATICFILES_DIRS = [
@@ -155,8 +166,8 @@ if PRODUCTION:
     ]
 
     # Override static and media URLs in production
-    STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/{STATICFILES_LOCATION}/"
-    MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/{MEDIAFILES_LOCATION}/"
+    STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/static/"
+    MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"
 
 # Static/Media files in Local Development
 else:
