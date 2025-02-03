@@ -14,7 +14,7 @@
         background-color: $white !important;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     }
-    
+
     a.navbar-brand {
         // Font sizes
         font-size: $xxl-font;
@@ -32,17 +32,14 @@
         }
         // Colours
         color: $white;
-        // Black text when solid navbar
+        // Orange text when solid navbar
         @include for-size(991px, down) {
-            color: $black;
+            color: $orange;
         }
         transition: color $transition-fast;
+        // Hover effects
         &:hover {
             color: $black;
-            // Orange hover text when solid navbar
-            @include for-size(991px, down) {
-                color: $orange;
-            }
             font-weight: 600;
         }
     }
@@ -58,7 +55,12 @@
         }
         // Colours
         color: $white;
+        // Orange text when solid navbar
+        @include for-size(991px, down) {
+            color: $orange;
+        }
         transition: color $transition-fast;
+        // Hover effects
         &:hover {
             color: $black;
             font-weight: 600;
