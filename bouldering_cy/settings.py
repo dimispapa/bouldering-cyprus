@@ -150,6 +150,7 @@ if PRODUCTION:
     STORAGES = {
         "default": {"BACKEND": "custom_storages.MediaStorage"},
         "staticfiles": {"BACKEND": "custom_storages.StaticStorage"},
+        "mediafiles": {"BACKEND": "custom_storages.MediaStorage"},
         "OPTIONS": {
             "bucket_name": AWS_STORAGE_BUCKET_NAME,
             "region_name": AWS_S3_REGION_NAME,
