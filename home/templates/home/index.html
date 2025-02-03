@@ -75,21 +75,37 @@
     </div>
   </div>
 
-  <!-- Side Navigation -->
-  <div id="side-nav-container">
-    <!-- Side Navigation Toggle -->
-    <div id="side-nav-toggle">
-      <i class="fa-solid fa-list"></i>
+  <!-- Side Navigation Toggle (Right Aligned) -->
+  <button id="side-nav-toggle" class="position-fixed" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar" aria-controls="offcanvasSidebar"><i class="fa-solid fa-list"></i></button>
+
+  <!-- Offcanvas Sidebar -->
+  <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasSidebar" aria-labelledby="offcanvasSidebarLabel">
+    <div class="offcanvas-header">
+      <h4 class="offcanvas-title" id="offcanvasSidebarLabel">Page Contents</h4>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
-    <!-- Side Navigation List -->
-    <ul id="side-navigation">
-      <li data-target="#text-box-1" title="Welcome to Bouldering Cyprus"><span>Welcome to Bouldering Cyprus</span></li>
-      <li data-target="#text-box-2" title="What is Bouldering?"><span>What is Bouldering?</span></li>
-      <li data-target="#text-box-3" title="Why Bouldering Cyprus?"><span>Why Bouldering Cyprus?</span></li>
-      <li data-target="#text-box-4" title="Climb in Perfect Winter Conditions"><span>Climb in Perfect Winter Conditions</span></li>
-      <li data-target="#text-box-5" title="Crashpad Rentals Available"><span>Crashpad Rentals Available</span></li>
-      <li data-target="footer" title="Follow Us"><span>Follow Us</span></li>
-    </ul>
+    <div class="offcanvas-body">
+      <ul class="nav flex-column" id="side-navigation">
+        <li class="nav-item" data-target="#text-box-1" title="Welcome to Bouldering Cyprus">
+          <a href="javascript:void(0)" class="nav-link"><span>Welcome to Bouldering Cyprus</span></a>
+        </li>
+        <li class="nav-item" data-target="#text-box-2" title="What is Bouldering?">
+          <a href="javascript:void(0)" class="nav-link"><span>What is Bouldering?</span></a>
+        </li>
+        <li class="nav-item" data-target="#text-box-3" title="Why Bouldering Cyprus?">
+          <a href="javascript:void(0)" class="nav-link"><span>Why Bouldering Cyprus?</span></a>
+        </li>
+        <li class="nav-item" data-target="#text-box-4" title="Climb in Perfect Winter Conditions">
+          <a href="javascript:void(0)" class="nav-link">Climb in Perfect Winter Conditions</a>
+        </li>
+        <li class="nav-item" data-target="#text-box-5" title="Crashpad Rentals Available">
+          <a href="javascript:void(0)" class="nav-link"><span>Crashpad Rentals Available</span></a>
+        </li>
+        <li class="nav-item" data-target="footer" title="Follow Us">
+          <a href="javascript:void(0)" class="nav-link"><span>Follow Us</span></a>
+        </li>
+      </ul>
+    </div>
   </div>
 
   <!-- Scroll-to-Top Arrow -->

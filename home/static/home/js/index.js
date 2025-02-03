@@ -85,37 +85,27 @@ document.addEventListener('DOMContentLoaded', () => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   })
 
-  // Toggle side navigation expansion on click
-  sideNavToggle.addEventListener('click', () => {
-    // Expand the side navigation
-    sideNavigation.classList.toggle('expanded')
-    // Hide the side nav toggle button
-    sideNavToggle.classList.toggle('hidden')
-  })
-
-  // Collapse navigation when clicking outside (only on mobile)
-  document.addEventListener('click', event => {
-    if (
-      !sideNavigation.contains(event.target) &&
-      !sideNavToggle.contains(event.target)
-    ) {
-      sideNavigation.classList.remove('expanded')
-      sideNavToggle.classList.remove('hidden')
-    }
-  })
-
-  // Side Navigation Click Event Listeners
-  sideNavItems.forEach(dot => {
-    dot.addEventListener('click', function () {
-      let textBox = document.querySelector(dot.getAttribute('data-target'))
-      // Scroll to the text box
-      if (textBox) {
-        textBox.scrollIntoView({ behavior: 'smooth' })
+  // Attach click events to each side navigation item
+  document.querySelectorAll('#side-navigation .nav-item').forEach(item => {
+    item.addEventListener('click', function () {
+      // Retrieve the target element from the data-target attribute
+      const targetSelector = this.getAttribute('data-target')
+      const targetElement = document.querySelector(targetSelector)
+      if (targetElement) {
+        // Calculate the offset position so the text box appears slightly offscreen at the top
+        const offset = 120 // Adjust this value as needed
+        const elementPosition = targetElement.getBoundingClientRect().top
+        const offsetPosition = elementPosition + window.scrollY - offset
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        })
       }
-
-      // Collapse menu after clicking (on mobile)
-      if (window.innerWidth <= 768) {
-        sideNavigation.classList.remove('expanded')
+      // Close the offcanvas sidebar after clicking a navigation item
+      const offcanvasEl = document.getElementById('offcanvasSidebar')
+      const offcanvasInstance = bootstrap.Offcanvas.getInstance(offcanvasEl)
+      if (offcanvasInstance) {
+        offcanvasInstance.hide()
       }
     })
   })
