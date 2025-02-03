@@ -1,7 +1,18 @@
+/* Colors */
+/* Fonts */
+/* Font Sizes */
+/* Z-Index */
+/* Animation */
+/* Element First Media Queries
+========================================================= */
+/* Button Mixin
+========================================================= */
 /* Hero Images */
-#hero-image, #hero-image2 {
+#hero-image,
+#hero-image2 {
   width: 100%;
-  height: 50vh; /* Covers half the viewport height */
+  height: 50vh;
+  /* Covers half the viewport height */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -11,48 +22,63 @@
   background-position: 75% 75%;
 }
 
-/* Responsive Background Images */
+/* Responsive Hero Images */
+#hero-image {
+  background-image: url(../images/hero_image8/dimis_climbing_zografos_1920.webp);
+}
+@media (max-width: 1441px) {
+  #hero-image {
+    background-image: url(../images/hero_image8/dimis_climbing_zografos_1440.webp);
+  }
+}
+@media (max-width: 1024px) {
+  #hero-image {
+    background-image: url(../images/hero_image8/dimis_climbing_zografos_1024.webp);
+  }
+}
 @media (max-width: 640px) {
   #hero-image {
-    background-image: url("../images/hero_image8/dimis_climbing_zografos_640.webp");
-  }
-  #hero-image2 {
-    background-image: url("../images/hero_image6/kato_droushia_bouldering_afar_640.webp");
+    background-image: url(../images/hero_image8/dimis_climbing_zografos_640.webp);
   }
 }
 
-@media (min-width: 641px) {
-  #hero-image {
-    background-image: url("../images/hero_image8/dimis_climbing_zografos_1024.webp");
-  }
-  #hero-image2 { 
-    background-image: url("../images/hero_image6/kato_droushia_bouldering_afar_1024.webp");
+#hero-image2 {
+  background-image: url(../images/hero_image6/kato_droushia_bouldering_afar_1920.webp);
+}
+@media (max-width: 1441px) {
+  #hero-image2 {
+    background-image: url(../images/hero_image6/kato_droushia_bouldering_afar_1440.webp);
   }
 }
-
-@media (min-width: 1025px) {
-  #hero-image {
-    background-image: url("../images/hero_image8/dimis_climbing_zografos_1440.webp");
-  }
+@media (max-width: 1024px) {
   #hero-image2 {
-    background-image: url("../images/hero_image6/kato_droushia_bouldering_afar_1440.webp");
+    background-image: url(../images/hero_image6/kato_droushia_bouldering_afar_1024.webp);
   }
 }
-
-@media (min-width: 1441px) {
-  #hero-image {
-    background-image: url("../images/hero_image8/dimis_climbing_zografos_1920.webp");
-  }
+@media (max-width: 640px) {
   #hero-image2 {
-    background-image: url("../images/hero_image6/kato_droushia_bouldering_afar_1920.webp");
+    background-image: url(../images/hero_image6/kato_droushia_bouldering_afar_640.webp);
   }
 }
 
 /* Text Font */
 p {
-  font-size: 1.2rem;
+  font-size: 1.4rem;
+}
+@media (max-width: 1024px) {
+  p {
+    font-size: 1.2rem;
+  }
+}
+@media (max-width: 767px) {
+  p {
+    font-size: 1rem;
+  }
 }
 
-h1, h2, h3, h4 {
+h1,
+h2,
+h3,
+h4 {
   color: #ed6c2c;
-}
+}/*# sourceMappingURL=shop.css.map */

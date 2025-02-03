@@ -1,0 +1,49 @@
+@use "../../../../static/scss/mixins" as *;
+
+/* Hero Images */
+#hero-image,
+#hero-image2 {
+    width: 100%;
+    height: 50vh;
+    /* Covers half the viewport height */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+#hero-image2 {
+    background-position: 75% 75%;
+}
+
+/* Responsive Hero Images */
+#hero-image {
+    background-image: url(../images/hero_image8/dimis_climbing_zografos_1920.webp);
+
+    @include for-size(1441px, down) {
+        background-image: url(../images/hero_image8/dimis_climbing_zografos_1440.webp);
+    }
+
+    @include for-size(tablet-lg, down) {
+        background-image: url(../images/hero_image8/dimis_climbing_zografos_1024.webp);
+    }
+
+    @include for-size(640px, down) {
+        background-image: url(../images/hero_image8/dimis_climbing_zografos_640.webp);
+    }
+}
+
+#hero-image2 {
+    background-image: url(../images/hero_image6/kato_droushia_bouldering_afar_1920.webp);
+
+    @include for-size(1441px, down) {
+        background-image: url(../images/hero_image6/kato_droushia_bouldering_afar_1440.webp);
+    }
+
+    @include for-size(tablet-lg, down) {
+        background-image: url(../images/hero_image6/kato_droushia_bouldering_afar_1024.webp);
+    }
+
+    @include for-size(640px, down) {
+        background-image: url(../images/hero_image6/kato_droushia_bouldering_afar_640.webp);
+    }
+}
