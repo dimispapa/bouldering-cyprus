@@ -83,16 +83,15 @@ WSGI_APPLICATION = "bouldering_cy.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-if PRODUCTION:
-    DATABASES = {"default": dj_database_url.parse(os.environ.get("DATABASE_URL", ""))}
+DATABASES = {"default": dj_database_url.parse(os.environ.get("DATABASE_URL", ""))}
 
-else:
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": BASE_DIR / "db.sqlite3",
-        }
-    }
+
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": BASE_DIR / "db.sqlite3",
+#     }
+# }
 
 
 # Password validation

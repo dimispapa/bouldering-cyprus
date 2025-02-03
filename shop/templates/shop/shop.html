@@ -37,19 +37,33 @@
               {% csrf_token %}
               <label for="quantity">Quantity:</label>
               <input type="number" id="quantity" name="quantity" value="1" min="1" />
-              <button type="submit" class="button-small">Add to Cart</button>
+              <!-- Add to Cart Button -->
+              <button type="submit" class="button-small mt-2 mt-md-0">
+                <!-- Basket icon -->
+                <i class="fas fa-shopping-cart d-inline"></i>
+                <!-- Hide plus icon on large screens -->
+                <i class="fa-solid fa-plus d-inline d-lg-none"></i>
+                <!-- Show text on large screens and above -->
+                <span class="d-none d-lg-inline">Add to Cart</span>
+              </button>
             </form>
           </div>
         </div>
 
         <!-- Sneak Peek Gallery -->
-        <div class="col-md-4">
+        <div class="col-md-4 mt-3 mt-md-0">
           <h2>Gallery</h2>
           <div class="d-flex flex-wrap">
+            <!-- Main Product Image as Large Thumbnail -->
+            {% if product.image %}
+              <img src="{{ product.image.url }}" alt="{{ product.name }}" class="img-thumbnail gallery-thumbnail" style="width: 200px; height: 200px; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#galleryModal" data-bs-image="{{ product.image.url }}" />
+            {% endif %}
+
+            <!-- Other Gallery Images -->
             {% for image in product.gallery_images.all %}
-              <img src="{{ image.image.url }}" alt="Gallery Image" class="img-thumbnail m-1" style="width: 100px; height: 100px; cursor: pointer;" onclick="openModal({{ forloop.counter0 }})" />
+              <img src="{{ image.image.url }}" alt="Gallery Image" class="img-thumbnail gallery-thumbnail" style="width: 100px; height: 100px; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#galleryModal" data-bs-image="{{ image.image.url }}" />
             {% empty %}
-              <p>No gallery images available.</p>
+              <p>No additional gallery images available.</p>
             {% endfor %}
           </div>
         </div>
@@ -74,11 +88,16 @@
           <img id="modalImage" src="" class="img-fluid" />
         </div>
         <div class="modal-footer">
-          <button onclick="prevImage()" class="btn btn-secondary">Previous</button>
-          <button onclick="nextImage()" class="btn btn-secondary">Next</button>
+          <button id="prevBtn" class="btn btn-secondary">Previous</button>
+          <button id="nextBtn" class="btn btn-secondary">Next</button>
           <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
         </div>
       </div>
     </div>
   </div>
+{% endblock %}
+
+{% block postload_js %}
+  {{ block.super }}
+  <script src="{% static 'shop/js/shop.js' %}"></script>
 {% endblock %}
