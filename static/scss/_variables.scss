@@ -1,9 +1,14 @@
 /* Colors */
 $orange: #ed6c2c;
+$orange-semi-transparent: rgba(237, 108, 44, 0.9);
 $beige: #f4edd2;
+$beige-semi-transparent: rgba(244, 237, 210, 0.9);
 $black: #000;
+$black-semi-transparent: rgba(0, 0, 0, 0.9);
 $white: #ffffff;
 $white-semi-transparent: rgba(255, 255, 255, 0.9);
+$off-pink: #caa098;
+$off-pink-semi-transparent: rgba(202, 160, 152, 0.9);
 
 /* Fonts */
 $font-roboto-mono: "Roboto Mono", serif;
@@ -16,3 +21,14 @@ $l-font: 1.6rem;
 $m-font: 1.4rem;
 $s-font: 1.2rem;
 $xs-font: 1rem;
+
+/* Z-Index */
+$z-index-hero: -1;
+$z-index-content: 1;
+$z-index-scroll-arrow: 1000;
+
+/* Animation */
+$transition-fast: 0.3s ease;
+$transition-medium: 0.5s ease;
+$transition-slow: 1s ease;
+$bounce-infinite: bounce 2s infinite;

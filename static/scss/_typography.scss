@@ -62,6 +62,11 @@ h3 {
     margin-bottom: 20px;
 }
 
+h4 {
+    font-size: $m-font;
+    margin-bottom: 20px;
+}
+
 @include for-size(tablet-lg, down) {
     h1 {
         font-size: $xl-font;
@@ -80,7 +85,7 @@ h3 {
     h2 {
         font-size: $m-font;
     }
-    h3 {
+    h3, h4 {
         font-size: $s-font;
     }
 }
@@ -91,7 +96,7 @@ h3 {
     h2 {
         font-size: $s-font;
     }
-    h3 {
+    h3, h4 {
         font-size: $xs-font;
     }
 }
@@ -100,9 +105,6 @@ h3 {
         font-size: $s-font;
     }
     h2 {
-        font-size: $xs-font;
-    }
-    h3 {
         font-size: $xs-font;
     }
 }

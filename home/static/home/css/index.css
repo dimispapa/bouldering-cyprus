@@ -1,14 +1,20 @@
+/* Colors */
+/* Fonts */
+/* Font Sizes */
+/* Z-Index */
+/* Animation */
+/* Element First Media Queries
+========================================================= */
+/* Button Mixin
+========================================================= */
 /* Hero Section */
 .hero-section {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  /* Full viewport height */
   height: 100vh;
-  /* Ensure the hero stays behind the content */
   z-index: -1;
-  /* Prevent overflow of child elements */
   overflow: hidden;
 }
 
@@ -21,26 +27,114 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  /* Fallback color */
   background-color: #f4edd2;
-  /* Initially hidden */
   opacity: 0;
-  /* Smooth fade-in effect */
   transition: opacity 1s ease;
-
+}
+.hero-image.visible {
+  opacity: 1;
 }
 
-.hero-image.visible {
-  /* Fully visible when scrolled into view */
-  opacity: 1;
+/* Responsive Background Hero Images */
+#hero-image1 {
+  background-image: url(../images/hero_image1/climber_hanging_alikou_1920.webp);
+}
+@media (max-width: 1441px) {
+  #hero-image1 {
+    background-image: url(../images/hero_image1/climber_hanging_alikou_1440.webp);
+  }
+}
+@media (max-width: 1024px) {
+  #hero-image1 {
+    background-image: url(../images/hero_image1/climber_hanging_alikou_1024.webp);
+  }
+}
+@media (max-width: 640px) {
+  #hero-image1 {
+    background-image: url(../images/hero_image1/climber_hanging_alikou_640.webp);
+  }
+}
+
+#hero-image2 {
+  background-image: url(../images/hero_image2/female_climbers_kato_akamas_1920.webp);
+}
+@media (max-width: 1441px) {
+  #hero-image2 {
+    background-image: url(../images/hero_image2/female_climbers_kato_akamas_1440.webp);
+  }
+}
+@media (max-width: 1024px) {
+  #hero-image2 {
+    background-image: url(../images/hero_image2/female_climbers_kato_akamas_1024.webp);
+  }
+}
+@media (max-width: 640px) {
+  #hero-image2 {
+    background-image: url(../images/hero_image2/female_climbers_kato_akamas_640.webp);
+  }
+}
+
+#hero-image3 {
+  background-image: url(../images/hero_image3/climbers_walking_with_pads_kato_droushia_1920.webp);
+}
+@media (max-width: 1441px) {
+  #hero-image3 {
+    background-image: url(../images/hero_image3/climbers_walking_with_pads_kato_droushia_1440.webp);
+  }
+}
+@media (max-width: 1024px) {
+  #hero-image3 {
+    background-image: url(../images/hero_image3/climbers_walking_with_pads_kato_droushia_1024.webp);
+  }
+}
+@media (max-width: 640px) {
+  #hero-image3 {
+    background-image: url(../images/hero_image3/climbers_walking_with_pads_kato_droushia_640.webp);
+  }
+}
+
+#hero-image4 {
+  background-image: url(../images/hero_image4/climbing_secret_garden_1920.webp);
+}
+@media (max-width: 1441px) {
+  #hero-image4 {
+    background-image: url(../images/hero_image4/climbing_secret_garden_1440.webp);
+  }
+}
+@media (max-width: 1024px) {
+  #hero-image4 {
+    background-image: url(../images/hero_image4/climbing_secret_garden_1024.webp);
+  }
+}
+@media (max-width: 640px) {
+  #hero-image4 {
+    background-image: url(../images/hero_image4/climbing_secret_garden_640.webp);
+  }
+}
+
+#hero-image5 {
+  background-image: url(../images/hero_image5/bouldering_group_sunset_1920.webp);
+}
+@media (max-width: 1441px) {
+  #hero-image5 {
+    background-image: url(../images/hero_image5/bouldering_group_sunset_1440.webp);
+  }
+}
+@media (max-width: 1024px) {
+  #hero-image5 {
+    background-image: url(../images/hero_image5/bouldering_group_sunset_1024.webp);
+  }
+}
+@media (max-width: 640px) {
+  #hero-image5 {
+    background-image: url(../images/hero_image5/bouldering_group_sunset_640.webp);
+  }
 }
 
 /* Content Section */
 .content-section {
   position: relative;
-  /* Place above the hero image */
   z-index: 1;
-  /* Start content below the initial hero image */
   margin-top: 100vh;
 }
 
@@ -55,19 +149,13 @@
   font-size: 3rem;
   color: #caa098;
   animation: bounce 2s infinite;
-  /* Ensure it's above other elements */
   z-index: 1000;
-  cursor: pointer;
   transition: color 0.3s ease, opacity 0.5s ease;
 }
-
 #scroll-down-arrow.hidden {
-  /* Hide smoothly */
   opacity: 0;
-  /* Prevent interactions when hidden */
   pointer-events: none;
 }
-
 #scroll-down-arrow:hover {
   color: #ed6c2c;
 }
@@ -77,22 +165,15 @@
   position: relative;
   left: 50%;
   bottom: 5%;
-  /* Place above the footer */
   text-align: center;
   cursor: pointer;
   font-size: 3rem;
   animation: bounce 2s infinite;
-}
-
-#scroll-to-top-arrow {
   color: #caa098;
-  /* Default arrow color */
   transition: color 0.3s ease;
 }
-
 #scroll-to-top-arrow:hover {
   color: #ed6c2c;
-  /* Change arrow color on hover */
 }
 
 /* Bounce Animation */
@@ -100,267 +181,74 @@
   0%, 20%, 50%, 80%, 100% {
     transform: translateX(-50%) translateY(0);
   }
-
   40% {
     transform: translateX(-50%) translateY(-10px);
   }
-
   60% {
     transform: translateX(-50%) translateY(-5px);
   }
 }
-
 /* Text Boxes */
 .text-box {
   width: 100%;
-  /* Add spacing between text boxes */
   margin: 500px auto;
   padding: 50px;
   font-size: 1.2rem;
   line-height: 1.8;
-  /* Semi-transparent background */
-  background-color: white;
+  background-color: #ffffff;
   border-radius: 10px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-  /* Initially hidden */
   opacity: 0;
-  /* Start slightly off-screen */
   transform: translateY(50px);
-  /* Smooth fade-in and slide-up */
   transition: opacity 1s ease, transform 1s ease;
+}
+.text-box.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 #text-box1 {
   padding-bottom: 30px;
 }
 
-.text-box.visible {
-  opacity: 1;
-  /* Bring into view */
-  transform: translateY(0);
-}
-
-/* Responsive Background Images */
-@media (max-width: 640px) {
-  #hero-image1 {
-    background-image: url("../images/hero_image1/climber_hanging_alikou_640.webp");
-    background-position: 65% 50%;
-  }
-
-  #hero-image2 {
-    background-image: url("../images/hero_image2/female_climbers_kato_akamas_640.webp");
-  }
-
-  #hero-image3 {
-    background-image: url("../images/hero_image3/climbers_walking_with_pads_kato_droushia_640.webp");
-  }
-
-  #hero-image4 {
-    background-image: url("../images/hero_image4/climbing_secret_garden_640.webp");
-  }
-
-  #hero-image5 {
-    background-image: url("../images/hero_image5/bouldering_group_sunset_640.webp");
-  }
-}
-
-@media (min-width: 641px) {
-  #hero-image1 {
-    background-image: url("../images/hero_image1/climber_hanging_alikou_1024.webp");
-  }
-
-  #hero-image2 {
-    background-image: url("../images/hero_image2/female_climbers_kato_akamas_1024.webp");
-  }
-
-  #hero-image3 {
-    background-image: url("../images/hero_image3/climbers_walking_with_pads_kato_droushia_1024.webp");
-  }
-
-  #hero-image4 {
-    background-image: url("../images/hero_image4/climbing_secret_garden_1024.webp");
-  }
-
-  #hero-image5 {
-    background-image: url("../images/hero_image5/bouldering_group_sunset_1024.webp");
-  }
-}
-
-@media (min-width: 1025px) {
-  #hero-image1 {
-    background-image: url("../images/hero_image1/climber_hanging_alikou_1440.webp");
-  }
-
-  #hero-image2 {
-    background-image: url("../images/hero_image2/female_climbers_kato_akamas_1440.webp");
-  }
-
-  #hero-image3 {
-    background-image: url("../images/hero_image3/climbers_walking_with_pads_kato_droushia_1440.webp");
-  }
-
-  #hero-image4 {
-    background-image: url("../images/hero_image4/climbing_secret_garden_1440.webp");
-  }
-
-  #hero-image5 {
-    background-image: url("../images/hero_image5/bouldering_group_sunset_1440.webp");
-  }
-}
-
-@media (min-width: 1441px) {
-  #hero-image1 {
-    background-image: url("../images/hero_image1/climber_hanging_alikou_1920.webp");
-  }
-
-  #hero-image2 {
-    background-image: url("../images/hero_image2/female_climbers_kato_akamas_1920.webp");
-  }
-
-  #hero-image3 {
-    background-image: url("../images/hero_image3/climbers_walking_with_pads_kato_droushia_1920.webp");
-  }
-
-  #hero-image4 {
-    background-image: url("../images/hero_image4/climbing_secret_garden_1920.webp");
-  }
-
-  #hero-image5 {
-    background-image: url("../images/hero_image5/bouldering_group_sunset_1920.webp");
-  }
-}
-
-/* Side Navigation */
-#side-nav-container {
-  position: fixed;
-  right: 20px;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 999;
-}
-
-/* Side Navigation Toggle */
+/* Sidebar */
 #side-nav-toggle {
-  display: none;
-  /* Hide on desktop */
-  font-size: 2rem;
-  color: #caa098;
-  cursor: pointer;
+  top: 50%;
+  right: 0;
+  z-index: 1050;
   animation: bounce 2s infinite;
-  transition: color 0.3s ease;
+  background-color: rgba(202, 160, 152, 0.9);
+  box-shadow: 5px 5px 10px 1px rgba(0, 0, 0, 0.9);
+  color: #000;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+  box-sizing: border-box;
+  text-align: center;
+  max-width: -moz-fit-content;
+  max-width: fit-content;
+  padding: 5px 10px;
+}
+#side-nav-toggle:hover {
+  background-color: #ed6c2c;
+  color: #ffffff;
 }
 
-#side-nav-toggle:hover {
+#offcanvasSidebar {
+  background-color: rgba(244, 237, 210, 0.9);
+}
+
+.offcanvas-title {
   color: #ed6c2c;
 }
 
-#side-nav-toggle.hidden {
-  display: none;
+#offcanvasSidebar a.nav-link {
+  color: #000;
 }
-
-/* Side Navigation List */
-#side-navigation {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-  animation: bounce 2s infinite;
-  transition: max-height 0.4s ease, opacity 0.3s ease;
-}
-
-#side-navigation:hover {
-  animation-play-state: paused;
-}
-
-/* Initially Collapsed on Mobile */
-@media (max-width: 768px) {
-  #side-navigation {
-    max-height: 0;
-    opacity: 0;
-    overflow: hidden;
-  }
-
-  #side-navigation.expanded {
-    /* Adjust height based on the number of items */
-    max-height: 300px;
-    /* Increase width when expanded */
-    width: 300px;
-    opacity: 1;
-  }
-
-  #side-nav-toggle {
-    display: block;
-    /* Show menu icon on mobile */
-  }
-}
-
-/* Side Navigation Items */
-#side-navigation li {
-  width: 10px;
-  height: 10px;
-  background-color: #caa098;
-  border-radius: 50%;
-  margin: 10px 0;
-  cursor: pointer;
-  position: relative;
-  transition: background-color 0.3s ease;
-}
-
-/* Active and Hover Effects */
-#side-navigation li:hover,
-#side-navigation li.active {
-  background-color: #ed6c2c;
-}
-
-/* Initially, the tooltips are hidden */
-#side-navigation li::after {
-  content: attr(title);
-  position: absolute;
-  right: 15px;
-  white-space: nowrap;
-  background-color: #333;
-  color: #fff;
-  padding: 5px 10px;
-  border-radius: 5px;
-  font-size: 12px;
-  opacity: 0;
-  /* Hide by default */
-  transition: opacity 0.3s ease;
-}
-
-/* Show tooltips when hovered (for desktops) */
-#side-navigation li:hover::after {
-  opacity: 1;
-}
-
-/* Initially Hide Text Titles */
-#side-navigation li span {
-  display: none;
-  position: absolute;
-  background-color: #333;
-  color: #fff;
-  padding: 5px 10px;
-  border-radius: 5px;
-  font-size: 12px;
-  white-space: nowrap;
-}
-
-/* Show Titles When Expanded */
-@media (max-width: 768px) {
-  #side-navigation.expanded li {
-    display: flex;
-    align-items: center;
-    gap: 10px; /* Space between dot and text */
-  }
-
-  #scroll-down-arrow, #scroll-to-top-arrow {
-    bottom: 10%;
-  }
-
-  #side-navigation.expanded li span {
-    display: inline-block; /* Make text visible */
-    position: static; /* Remove absolute positioning */
-  }
-}
+#offcanvasSidebar a.nav-link:hover {
+  color: #ed6c2c;
+}/*# sourceMappingURL=index.css.map */

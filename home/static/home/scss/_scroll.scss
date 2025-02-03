@@ -1,0 +1,55 @@
+@use "../../../../static/scss/variables" as *;
+
+/* Scroll-Down Arrow */
+#scroll-down-arrow {
+    position: fixed;
+    bottom: 5%;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    cursor: pointer;
+    font-size: 3rem;
+    color: $off-pink;
+    animation: $bounce-infinite;
+    z-index: $z-index-scroll-arrow;
+    transition: color $transition-fast, opacity $transition-medium;
+    
+    &.hidden {
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    &:hover {
+        color: $orange;
+    }
+}
+
+/* Scroll-to-Top Arrow */
+#scroll-to-top-arrow {
+    position: relative;
+    left: 50%;
+    bottom: 5%;
+    text-align: center;
+    cursor: pointer;
+    font-size: 3rem;
+    animation: $bounce-infinite;
+    color: $off-pink;
+    transition: color $transition-fast;
+    
+    &:hover {
+        color: $orange;
+    }
+}
+
+/* Bounce Animation */
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateX(-50%) translateY(0);
+    }
+    40% {
+        transform: translateX(-50%) translateY(-10px);
+    }
+    60% {
+        transform: translateX(-50%) translateY(-5px);
+    }
+}

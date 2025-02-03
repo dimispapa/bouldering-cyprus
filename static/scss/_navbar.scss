@@ -11,7 +11,7 @@
 
     // Solid navbar when switching to burger menu @ < 991px
     @include for-size(991px, down) {
-        background-color: $white-semi-transparent !important;
+        background-color: $white !important;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     }
     
@@ -70,7 +70,7 @@
 
 /* Solid Navbar when scrolled */
 .navbar-scrolled {
-    background-color: $white-semi-transparent !important;
+    background-color: $white !important;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 
     a.nav-link,

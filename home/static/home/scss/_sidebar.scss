@@ -1,0 +1,35 @@
+@use "../../../../static/scss/variables" as *;
+@use "../../../../static/scss/mixins" as *;
+
+/* Sidebar */
+#side-nav-toggle {
+    top: 50%;
+    right: 0;
+    z-index: 1050;
+    animation: $bounce-infinite;
+    // Style mixin
+    @include button-style($off-pink-semi-transparent, $black-semi-transparent);
+    // Padding
+    padding: 5px 10px;
+
+    &:hover {
+        background-color: $orange;
+        color: $white;
+    }
+}
+
+#offcanvasSidebar {
+    background-color: $beige-semi-transparent;
+}
+
+.offcanvas-title {
+    color: $orange;
+}
+
+#offcanvasSidebar a.nav-link {
+    color: $black;
+
+    &:hover {
+        color: $orange;
+    }
+}

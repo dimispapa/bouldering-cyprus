@@ -1,0 +1,25 @@
+@use "../../../../static/scss/variables" as *;
+
+/* Text Boxes */
+.text-box {
+    width: 100%;
+    margin: 500px auto;
+    padding: 50px;
+    font-size: 1.2rem;
+    line-height: 1.8;
+    background-color: $white;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity $transition-slow, transform $transition-slow;
+    
+    &.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+#text-box1 {
+    padding-bottom: 30px;
+}
