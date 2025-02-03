@@ -193,8 +193,7 @@
 .text-box {
   width: 100%;
   margin: 500px auto;
-  padding: 50px;
-  font-size: 1.2rem;
+  padding: 30px;
   line-height: 1.8;
   background-color: #ffffff;
   border-radius: 10px;
@@ -234,9 +233,11 @@
   max-width: fit-content;
   padding: 5px 10px;
 }
-#side-nav-toggle:hover {
-  background-color: #ed6c2c;
-  color: #ffffff;
+@media (min-width: 1024px) {
+  #side-nav-toggle:hover {
+    background-color: #ed6c2c;
+    color: #ffffff;
+  }
 }
 
 #offcanvasSidebar {
@@ -250,6 +251,8 @@
 #offcanvasSidebar a.nav-link {
   color: #000;
 }
-#offcanvasSidebar a.nav-link:hover {
-  color: #ed6c2c;
+@media (min-width: 1024px) {
+  #offcanvasSidebar a.nav-link:hover {
+    color: #ed6c2c;
+  }
 }/*# sourceMappingURL=index.css.map */

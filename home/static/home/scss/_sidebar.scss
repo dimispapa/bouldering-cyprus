@@ -12,9 +12,12 @@
     // Padding
     padding: 5px 10px;
 
-    &:hover {
-        background-color: $orange;
-        color: $white;
+    // Hover effect
+    @include for-size(tablet-lg, up) {
+        &:hover {
+            background-color: $orange;
+            color: $white;
+        }
     }
 }
 
@@ -29,7 +32,10 @@
 #offcanvasSidebar a.nav-link {
     color: $black;
 
-    &:hover {
-        color: $orange;
+    // Hover effect
+    @include for-size(tablet-lg, up) {
+        &:hover {
+            color: $orange;
+        }
     }
 }

@@ -37,19 +37,14 @@ h6,
 
 .text-content {
   color: #000;
-  font-size: 1.6rem;
+  font-size: 1.4rem;
 }
 @media (max-width: 768px) {
-  .text-content {
-    font-size: 1.4rem;
-  }
-}
-@media (max-width: 767px) {
   .text-content {
     font-size: 1.2rem;
   }
 }
-@media (max-width: 420px) {
+@media (max-width: 767px) {
   .text-content {
     font-size: 1rem;
   }
@@ -237,6 +232,12 @@ h4 {
     font-size: 1rem;
   }
 }
+@media (min-width: 1024px) {
+  .button-large:hover {
+    background-color: #ed6c2c;
+    color: #ffffff;
+  }
+}
 
 .button-small {
   background-color: #f4edd2;
@@ -255,11 +256,11 @@ h4 {
   max-width: fit-content;
   padding: 5px 10px;
 }
-
-.button-large:hover,
-.button-small:hover {
-  background-color: #ed6c2c;
-  color: #ffffff;
+@media (min-width: 1024px) {
+  .button-small:hover {
+    background-color: #ed6c2c;
+    color: #ffffff;
+  }
 }
 
 footer {

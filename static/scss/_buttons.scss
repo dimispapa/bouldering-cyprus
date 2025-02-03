@@ -18,16 +18,24 @@
     @include for-size(phone-sm, down) {
         font-size: $xs-font;
     }
+    // Hover effect
+    @include for-size(tablet-lg, up) {
+        &:hover {
+            background-color: $orange;
+            color: $white;
+        }
+    }
 }
 
 .button-small {
     @include button-style($beige, $orange);
     // Padding
     padding: 5px 10px;
-}
-
-.button-large:hover,
-.button-small:hover {
-    background-color: $orange;
-    color: $white;
+    // Hover effect
+    @include for-size(tablet-lg, up) {
+        &:hover {
+            background-color: $orange;
+            color: $white;
+        }
+    }
 }
