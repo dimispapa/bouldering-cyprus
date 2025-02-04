@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django_summernote",
     "crispy_forms",
+    "carton",
     "home",
     "shop",
     "storages",
