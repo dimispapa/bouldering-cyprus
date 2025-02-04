@@ -2,4 +2,8 @@
 
 .button-remove {
     color: $off-pink;
+
+    &:hover {
+        color: $orange;
+    }
 }

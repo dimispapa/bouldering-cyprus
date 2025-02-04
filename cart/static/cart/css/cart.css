@@ -7,6 +7,11 @@ h1, h2, h3 {
   color: #ed6c2c;
 }
 
+.alert-empty {
+  background-color: rgba(203, 219, 226, 0.9);
+  border-color: #cbdbe2;
+}
+
 /* Element First Media Queries
 ========================================================= */
 /* Button Mixin
@@ -63,4 +68,7 @@ h1, h2, h3 {
 
 .button-remove {
   color: #caa098;
+}
+.button-remove:hover {
+  color: #ed6c2c;
 }/*# sourceMappingURL=cart.css.map */

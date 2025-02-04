@@ -14,28 +14,46 @@
   <div id="hero-image"></div>
 
   <!-- Cart Content -->
-  <div id="cart-content" class="container-fluid p-5">
-    <div class="row">
-      <div class="col-12">
-        <h1>Your Cart</h1>
-        {% if cart %}
-          <ul>
+  <div id="cart-content" class="container p-5">
+    <h1 class="mb-4">Your Cart</h1>
+    {% if cart %}
+      <div class="table-responsive">
+        <table class="table table-striped table-hover">
+          <thead class="thead-dark" id="cart-table-header">
+            <tr>
+              <th scope="col">Item</th>
+              <th scope="col">Quantity</th>
+              <th scope="col">Unit Price</th>
+              <th scope="col">Total</th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
             {% for item in cart %}
-              <li>
-                {{ item.product.name }} – Quantity: {{ item.quantity }} – Price: € {{ item.price }} – Total: € {{ item.total_price }}
-                <a href="{% url 'cart_remove' item.product.id %}"><i class="fa-solid fa-trash button-remove"></i></a>
-              </li>
+              <tr>
+                <td>{{ item.product.name }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>€ {{ item.price }}</td>
+                <td>€ {{ item.total_price }}</td>
+                <td>
+                  <a href="{% url 'cart_remove' item.product.id %}" class="button-remove" title="Remove"><i class="fa-solid fa-trash"></i></a>
+                </td>
+              </tr>
             {% endfor %}
-          </ul>
-          <p>Order Total: € {{ cart.get_total_price }}</p>
-        {% else %}
-          <p>Your cart is empty.</p>
-          <p>
-            Add a <a href="{% url 'shop' %}">guidebook</a> to your cart for purchase or add a <a href="#">crashpad</a> for rent.
-          </p>
-        {% endif %}
+          </tbody>
+        </table>
       </div>
-    </div>
+      <div class="text-end mt-3">
+        <h4>Order Total: € {{ cart.get_total_price }}</h4>
+      </div>
+    {% else %}
+      <div class="alert alert-empty" role="alert">
+        <p>Your cart is empty.</p>
+        <p>
+          Add a <a href="{% url 'shop' %}">guidebook</a> to your cart for purchase or add a <a href="#">crashpad</a> for rent.
+        </p>
+      </div>
+    {% endif %}
   </div>
 
   <!-- Hero Image -->
