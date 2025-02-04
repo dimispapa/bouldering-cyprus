@@ -7,8 +7,13 @@ def cart_add(request, product_id):
     """Add a product to the cart."""
     product = get_object_or_404(Product, id=product_id)
     cart = Cart(request)
-    # Use quantity=1 for now, but you can add a quantity form to the template
-    cart.add(product=product, quantity=1, update_quantity=False)
+
+    if request.method == "POST":
+        try:
+            quantity = int(request.POST.get("quantity"))
+        except ValueError:
+            quantity = 1
+        cart.add(product=product, quantity=quantity)
     return redirect("cart_detail")
 
 
