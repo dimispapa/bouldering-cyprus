@@ -150,7 +150,7 @@
   font-size: 3rem;
   color: #caa098;
   text-shadow: 2px 2px 1px #000;
-  animation: bounce 2s infinite;
+  animation: bounce 4s infinite;
   z-index: 1000;
   transition: color 0.3s ease, opacity 0.5s ease;
 }
@@ -170,7 +170,7 @@
   text-align: center;
   cursor: pointer;
   font-size: 3rem;
-  animation: bounce 2s infinite;
+  animation: bounce 4s infinite;
   color: #caa098;
   text-shadow: 2px 2px 1px #000;
   transition: color 0.3s ease;
@@ -218,7 +218,7 @@
   top: 50%;
   right: 0;
   z-index: 1050;
-  animation: bounce 2s infinite;
+  animation: bounce 4s infinite;
   background-color: rgba(202, 160, 152, 0.9);
   box-shadow: 5px 5px 10px 1px rgba(0, 0, 0, 0.9);
   color: #000;
