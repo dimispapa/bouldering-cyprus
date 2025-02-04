@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django_summernote",
     "crispy_forms",
-    "carton",
     "home",
     "shop",
     "storages",
@@ -80,7 +79,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "bouldering_cy.wsgi.application"
 
-CRISPY_TEMPLATE_PACK = 'bootstrap5'
+CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
@@ -148,6 +147,11 @@ if PRODUCTION:
     STATICFILES_LOCATION = "static"
     MEDIAFILES_LOCATION = "media"
 
+    # CloudFront Distribution
+    AWS_CLOUDFRONT_DOMAIN = os.environ.get(
+        "AWS_CLOUDFRONT_DOMAIN", "d1234567890.cloudfront.net"
+    )
+
     # Ensure files are properly structured in S3
     # STATICFILES_STORAGE = "custom_storages.StaticStorage"
     # DEFAULT_FILE_STORAGE = "custom_storages.MediaStorage"
@@ -170,9 +174,9 @@ if PRODUCTION:
         os.path.join(BASE_DIR, "static"),
     ]
 
-    # Override static and media URLs in production
-    STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/static/"
-    MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"
+    # Set static and media URLs in production to CloudFront
+    STATIC_URL = f"https://{AWS_CLOUDFRONT_DOMAIN}/{STATICFILES_LOCATION}/"
+    MEDIA_URL = f"https://{AWS_CLOUDFRONT_DOMAIN}/{MEDIAFILES_LOCATION}/"
 
 # Static/Media files in Local Development
 else:
