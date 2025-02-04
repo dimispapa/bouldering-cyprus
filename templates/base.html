@@ -3,6 +3,7 @@
 {% url 'home' as home_url %}
 {% url 'shop' as shop_url %}
 {% url 'rental' as rental_url %}
+{% url 'cart_detail' as cart_url %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -86,6 +87,15 @@
                   {% endif %}"
                   href="#">
                   <i class="fa-solid fa-layer-group"></i> Rent a Crashpad
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link mx-3 {% if request.path == cart_url %}
+                    active
+                    page
+                  {% endif %}"
+                  href="{% url 'cart_detail' %}">
+                  <i class="fa-solid fa-cart-shopping"></i> Cart
                 </a>
               </li>
             </ul>

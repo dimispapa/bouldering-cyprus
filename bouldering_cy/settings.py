@@ -41,9 +41,10 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django_summernote",
     "crispy_forms",
+    "storages",
     "home",
     "shop",
-    "storages",
+    "cart",
 ]
 
 MIDDLEWARE = [
@@ -71,6 +72,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "cart.contexts.cart_item_count",
             ],
         },
     },
@@ -84,15 +86,6 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {"default": dj_database_url.parse(os.environ.get("DATABASE_URL", ""))}
-
-
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.sqlite3",
-#         "NAME": BASE_DIR / "db.sqlite3",
-#     }
-# }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -182,3 +175,6 @@ else:
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# Cart session key
+CART_SESSION_ID = 'cart'
