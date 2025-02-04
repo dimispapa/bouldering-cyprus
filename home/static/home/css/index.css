@@ -51,7 +51,6 @@
 }
 @media (max-width: 640px) {
   #hero-image1 {
-    background-image: url(../images/hero_image1/climber_hanging_alikou_640.webp);
     background-position: 65% 50%;
   }
 }
@@ -69,11 +68,6 @@
     background-image: url(../images/hero_image2/female_climbers_kato_akamas_1024.webp);
   }
 }
-@media (max-width: 640px) {
-  #hero-image2 {
-    background-image: url(../images/hero_image2/female_climbers_kato_akamas_640.webp);
-  }
-}
 
 #hero-image3 {
   background-image: url(../images/hero_image3/climbers_walking_with_pads_kato_droushia_1920.webp);
@@ -86,11 +80,6 @@
 @media (max-width: 1024px) {
   #hero-image3 {
     background-image: url(../images/hero_image3/climbers_walking_with_pads_kato_droushia_1024.webp);
-  }
-}
-@media (max-width: 640px) {
-  #hero-image3 {
-    background-image: url(../images/hero_image3/climbers_walking_with_pads_kato_droushia_640.webp);
   }
 }
 
@@ -107,11 +96,6 @@
     background-image: url(../images/hero_image4/climbing_secret_garden_1024.webp);
   }
 }
-@media (max-width: 640px) {
-  #hero-image4 {
-    background-image: url(../images/hero_image4/climbing_secret_garden_640.webp);
-  }
-}
 
 #hero-image5 {
   background-image: url(../images/hero_image5/bouldering_group_sunset_1920.webp);
@@ -124,11 +108,6 @@
 @media (max-width: 1024px) {
   #hero-image5 {
     background-image: url(../images/hero_image5/bouldering_group_sunset_1024.webp);
-  }
-}
-@media (max-width: 640px) {
-  #hero-image5 {
-    background-image: url(../images/hero_image5/bouldering_group_sunset_640.webp);
   }
 }
 
