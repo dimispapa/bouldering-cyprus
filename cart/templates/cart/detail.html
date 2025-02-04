@@ -23,7 +23,7 @@
             {% for item in cart %}
               <li>
                 {{ item.product.name }} – Quantity: {{ item.quantity }} – Price: € {{ item.price }} – Total: € {{ item.total_price }}
-                <a href="{% url 'cart_remove' item.product.id %}">Remove</a>
+                <a href="{% url 'cart_remove' item.product.id %}"><i class="fa-solid fa-trash button-remove"></i></a>
               </li>
             {% endfor %}
           </ul>

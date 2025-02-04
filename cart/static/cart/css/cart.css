@@ -3,6 +3,10 @@
 /* Font Sizes */
 /* Z-Index */
 /* Animation */
+h1, h2, h3 {
+  color: #ed6c2c;
+}
+
 /* Element First Media Queries
 ========================================================= */
 /* Button Mixin
@@ -54,5 +58,29 @@
 @media (max-width: 640px) {
   #hero-image2 {
     background-image: url(../images/hero_image2/gerakopetra_hill_boulderer_walking_640.webp);
+  }
+}
+
+.button-remove {
+  background-color: #ffffff;
+  box-shadow: 5px 5px 10px 1px #caa098;
+  color: #000;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+  box-sizing: border-box;
+  text-align: center;
+  max-width: -moz-fit-content;
+  max-width: fit-content;
+  padding: 5px 10px;
+}
+@media (min-width: 1024px) {
+  .button-remove:hover {
+    background-color: #ffffff;
+    color: #caa098;
   }
 }/*# sourceMappingURL=cart.css.map */

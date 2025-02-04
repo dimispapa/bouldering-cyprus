@@ -1,0 +1,15 @@
+@use "../../../../static/scss/variables" as *;
+@use "../../../../static/scss/mixins" as *;
+
+.button-remove {
+    @include button-style($white, $off-pink);
+    // Padding
+    padding: 5px 10px;
+    // Hover effect
+    @include for-size(tablet-lg, up) {
+        &:hover {
+            background-color: $white;
+            color: $off-pink;
+        }
+    }
+}
