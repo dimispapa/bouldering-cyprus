@@ -25,7 +25,7 @@
     {% endblock %}
 
     <title>
-      Bouldering Cyprus {% block extra_title %}
+      Bouldering Cyprus{% block extra_title %}
         - The Ultimate Guide to Bouldering in Cyprus
       {% endblock %}
     </title>
@@ -66,36 +66,34 @@
                 <a class="nav-link mx-3 {% if request.path == home_url %}
                     active
                     page
-                  {% endif %}"
-                  href="{% url 'home' %}">
-                  <i class="fa-solid fa-house"></i> Home
-                </a>
+                  {% endif %}" href="{% url 'home' %}"><i class="fa-solid fa-house"></i> Home</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link mx-3 {% if request.path == shop_url %}
                     active
                     page
-                  {% endif %}"
-                  href="{% url 'shop' %}">
-                  <i class="fa-solid fa-book"></i> Buy the Guidebook
-                </a>
+                  {% endif %}" href="{% url 'shop' %}"><i class="fa-solid fa-book"></i> Buy the Guidebook</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link mx-3 {% if request.path == rental_url %}
                     active
                     page
-                  {% endif %}"
-                  href="#">
-                  <i class="fa-solid fa-layer-group"></i> Rent a Crashpad
-                </a>
+                  {% endif %}" href="#"><i class="fa-solid fa-layer-group"></i> Rent a Crashpad</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link mx-3 {% if request.path == cart_url %}
                     active
                     page
-                  {% endif %}"
-                  href="{% url 'cart_detail' %}">
-                  <i class="fa-solid fa-cart-shopping"></i> Cart
+                  {% endif %}" href="{% url 'cart_detail' %}">
+                  <div class="position-relative">
+                    <i class="fa-solid fa-cart-shopping"></i> <span>Cart</span>
+                    {% if cart_item_count > 0 %}
+                      <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill">
+                        {{ cart_item_count }}
+                        <span class="visually-hidden">Cart item count</span>
+                      </span>
+                    {% endif %}
+                  </div>
                 </a>
               </li>
             </ul>

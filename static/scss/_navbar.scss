@@ -83,3 +83,11 @@
         }
     }
 }
+
+.navbar .badge {
+    background-color: $orange;
+    color: $white;
+    font-size: $xs-font;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.5rem;
+}
