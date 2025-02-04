@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Function to toggle navbar transparency only for desktop
   const toggleNavbarTransparency = () => {
     if (window.innerWidth > 768) {
-      if (window.scrollY > 50) {
+      if (window.scrollY > 20) {
         navbar.classList.add('navbar-scrolled'); // Apply solid background
       } else {
         navbar.classList.remove('navbar-scrolled'); // Keep it transparent
