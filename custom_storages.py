@@ -1,8 +1,10 @@
 from django.conf import settings
-from storages.backends.s3boto3 import S3Boto3Storage
+from storages.backends.s3boto3 import S3Boto3Storage, S3ManifestStaticStorage
 
 
-class StaticStorage(S3Boto3Storage):
+class StaticStorage(S3ManifestStaticStorage):
+    """Store static files on S3.
+    Uses ManifestStaticFilesStorage to enable cache busting"""
     location = settings.STATICFILES_LOCATION
     default_acl = "public-read"
     file_overwrite = True  # Ensures old files are replaced
@@ -10,6 +12,7 @@ class StaticStorage(S3Boto3Storage):
 
 
 class MediaStorage(S3Boto3Storage):
+    """Store media files on S3."""
     location = settings.MEDIAFILES_LOCATION
     default_acl = "public-read"
     file_overwrite = False  # Prevents overwriting existing media files
