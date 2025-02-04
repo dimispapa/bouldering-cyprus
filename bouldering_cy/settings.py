@@ -147,9 +147,7 @@ if PRODUCTION:
     MEDIAFILES_LOCATION = "media"
 
     # CloudFront Distribution
-    AWS_CLOUDFRONT_DOMAIN = os.environ.get(
-        "AWS_CLOUDFRONT_DOMAIN", "d1234567890.cloudfront.net"
-    )
+    AWS_CLOUDFRONT_DOMAIN = os.environ.get("AWS_CLOUDFRONT_DOMAIN")
 
     # Ensure files are properly structured in S3
     # STATICFILES_STORAGE = "custom_storages.StaticStorage"
@@ -157,15 +155,6 @@ if PRODUCTION:
     STORAGES = {
         "default": {"BACKEND": "custom_storages.MediaStorage"},
         "staticfiles": {"BACKEND": "custom_storages.StaticStorage"},
-        "mediafiles": {"BACKEND": "custom_storages.MediaStorage"},
-        "OPTIONS": {
-            "bucket_name": AWS_STORAGE_BUCKET_NAME,
-            "region_name": AWS_S3_REGION_NAME,
-            "aws_access_key_id": AWS_ACCESS_KEY_ID,
-            "aws_secret_access_key": AWS_SECRET_ACCESS_KEY,
-            "custom_domain": AWS_S3_CUSTOM_DOMAIN,
-            "querystring_auth": AWS_QUERYSTRING_AUTH,
-        },
     }
 
     # Ensure Django collects the root `static/` directory
