@@ -85,4 +85,14 @@ h4 {
 
 .input-group {
   max-width: 300px;
+}
+@media (min-width: 768px) {
+  .input-group {
+    max-width: 400px;
+  }
+}
+@media (min-width: 1025px) {
+  .input-group {
+    max-width: 500px;
+  }
 }/*# sourceMappingURL=shop.css.map */
