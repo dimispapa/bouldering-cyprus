@@ -136,12 +136,12 @@ h4 {
   color: #ffffff;
   transition: color 0.3s ease;
 }
-@media (max-width: 1024px) {
+@media (max-width: 1600px) {
   .navbar a.navbar-brand {
     font-size: 1.8rem;
   }
 }
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .navbar a.navbar-brand {
     font-size: 1.6rem;
   }

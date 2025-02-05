@@ -18,10 +18,10 @@
     a.navbar-brand {
         // Font sizes
         font-size: $xxl-font;
-        @include for-size(tablet-lg, down) {
+        @include for-size(desktop-lg, down) {
             font-size: $xl-font;
         }
-        @include for-size(tablet, down) {
+        @include for-size(tablet-lg, down) {
             font-size: $l-font;
         }
         @include for-size(phone, down) {
