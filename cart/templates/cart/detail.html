@@ -14,16 +14,16 @@
   <div id="hero-image"></div>
 
   <!-- Cart Content -->
-  <div id="cart-content" class="container p-5">
+  <div id="cart-content" class="container p-3 p-md-5">
     <h1 class="mb-4">Your Cart</h1>
     {% if cart %}
-      <div class="table-responsive">
+      <div class="table-responsive text-content">
         <table class="table table-striped table-hover">
           <thead class="thead-dark" id="cart-table-header">
             <tr>
               <th scope="col">Item</th>
-              <th scope="col">Quantity</th>
-              <th scope="col">Unit Price</th>
+              <th scope="col">Qty</th>
+              <th scope="col">Price</th>
               <th scope="col">Total</th>
               <th scope="col"></th>
             </tr>
@@ -33,8 +33,8 @@
               <tr>
                 <td>{{ item.product.name }}</td>
                 <td>{{ item.quantity }}</td>
-                <td>€ {{ item.price }}</td>
-                <td>€ {{ item.total_price }}</td>
+                <td class="text-nowrap">€ {{ item.price }}</td>
+                <td class="text-nowrap">€ {{ item.total_price }}</td>
                 <td>
                   <a href="{% url 'cart_remove' item.product.id %}" class="button-remove" title="Remove"><i class="fa-solid fa-trash"></i></a>
                 </td>
