@@ -223,10 +223,17 @@
 
 #offcanvasSidebar {
   background-color: rgba(244, 237, 210, 0.9);
+  max-width: 50vw;
 }
 
 .offcanvas-title {
   color: #ed6c2c;
+}
+
+@media (min-width: 768px) {
+  #offcanvasSidebar li {
+    margin-bottom: 20px;
+  }
 }
 
 #offcanvasSidebar a.nav-link {

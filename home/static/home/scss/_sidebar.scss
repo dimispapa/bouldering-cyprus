@@ -23,10 +23,17 @@
 
 #offcanvasSidebar {
     background-color: $beige-semi-transparent;
+    max-width: 50vw;
 }
 
 .offcanvas-title {
     color: $orange;
+}
+
+#offcanvasSidebar li {
+    @include for-size(tablet, up) {
+        margin-bottom: 20px;
+    }
 }
 
 #offcanvasSidebar a.nav-link {
