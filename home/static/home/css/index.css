@@ -133,12 +133,37 @@
   z-index: 1000;
   transition: color 0.3s ease, opacity 0.5s ease;
 }
+@media (max-width: 767px) {
+  #scroll-down-arrow {
+    font-size: 2rem;
+  }
+}
+@media (max-width: 420px) {
+  #scroll-down-arrow {
+    font-size: 1.5rem;
+  }
+}
 #scroll-down-arrow.hidden {
   opacity: 0;
   pointer-events: none;
 }
-#scroll-down-arrow:hover {
-  color: #ed6c2c;
+@media (min-width: 1024px) {
+  #scroll-down-arrow:hover {
+    color: #ed6c2c;
+  }
+}
+#scroll-down-arrow p {
+  font-size: 1.2rem;
+}
+@media (max-width: 767px) {
+  #scroll-down-arrow p {
+    font-size: 1rem;
+  }
+}
+@media (max-width: 420px) {
+  #scroll-down-arrow p {
+    font-size: 0.8rem;
+  }
 }
 
 /* Scroll-to-Top Arrow */
@@ -154,8 +179,33 @@
   text-shadow: 2px 2px 1px #000;
   transition: color 0.3s ease;
 }
-#scroll-to-top-arrow:hover {
-  color: #ed6c2c;
+@media (max-width: 767px) {
+  #scroll-to-top-arrow {
+    font-size: 2rem;
+  }
+}
+@media (max-width: 420px) {
+  #scroll-to-top-arrow {
+    font-size: 1.5rem;
+  }
+}
+@media (min-width: 1024px) {
+  #scroll-to-top-arrow:hover {
+    color: #ed6c2c;
+  }
+}
+#scroll-to-top-arrow p {
+  font-size: 1.2rem;
+}
+@media (max-width: 767px) {
+  #scroll-to-top-arrow p {
+    font-size: 1rem;
+  }
+}
+@media (max-width: 420px) {
+  #scroll-to-top-arrow p {
+    font-size: 0.8rem;
+  }
 }
 
 /* Bounce Animation */

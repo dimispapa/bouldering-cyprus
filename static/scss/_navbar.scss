@@ -68,6 +68,14 @@
         // Text alignment
         text-align: right;
     }
+
+    .badge {
+        background-color: $black;
+        color: $white;
+        font-size: $xxs-font;
+        padding: 0.12rem 0.25rem;
+        border-radius: 0.5rem;
+    }
 }
 
 /* Solid Navbar when scrolled */
@@ -82,12 +90,8 @@
             color: $black;
         }
     }
-}
 
-.navbar .badge {
-    background-color: $orange;
-    color: $white;
-    font-size: $xxs-font;
-    padding: 0.12rem 0.25rem;
-    border-radius: 0.5rem;
+    .badge {
+        background-color: $orange;
+    }
 }

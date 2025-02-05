@@ -1,4 +1,5 @@
 @use "../../../../static/scss/variables" as *;
+@use "../../../../static/scss/mixins" as *;
 
 /* Scroll-Down Arrow */
 #scroll-down-arrow {
@@ -8,20 +9,42 @@
     transform: translateX(-50%);
     text-align: center;
     cursor: pointer;
+    // Font size
     font-size: 3rem;
+    @include for-size(phone, down) {
+        font-size: 2rem;
+    }
+    @include for-size(phone-sm, down) {
+        font-size: 1.5rem;
+    }
+    // Color
     color: $off-pink;
     text-shadow: 2px 2px 1px $black;
     animation: $bounce-infinite;
     z-index: $z-index-scroll-arrow;
-    transition: color $transition-fast, opacity $transition-medium;
-    
+    transition:
+        color $transition-fast,
+        opacity $transition-medium;
+
     &.hidden {
         opacity: 0;
         pointer-events: none;
     }
-
-    &:hover {
-        color: $orange;
+    // Hover
+    @include for-size(tablet-lg, up) {
+        &:hover {
+            color: $orange;
+        }
+    }
+    // Text
+    p {
+        font-size: $s-font;
+        @include for-size(phone, down) {
+            font-size: $xs-font;
+        }
+        @include for-size(phone-sm, down) {
+            font-size: $xxs-font;
+        }
     }
 }
 
@@ -32,20 +55,45 @@
     bottom: 5%;
     text-align: center;
     cursor: pointer;
+    // Font size
     font-size: 3rem;
+    @include for-size(phone, down) {
+        font-size: 2rem;
+    }
+    @include for-size(phone-sm, down) {
+        font-size: 1.5rem;
+    }
+    // Animation
     animation: $bounce-infinite;
+    // Color
     color: $off-pink;
     text-shadow: 2px 2px 1px $black;
     transition: color $transition-fast;
-    
-    &:hover {
-        color: $orange;
+    // Hover
+    @include for-size(tablet-lg, up) {
+        &:hover {
+            color: $orange;
+        }
+    }
+    // Text
+    p {
+        font-size: $s-font;
+        @include for-size(phone, down) {
+            font-size: $xs-font;
+        }
+        @include for-size(phone-sm, down) {
+            font-size: $xxs-font;
+        }
     }
 }
 
 /* Bounce Animation */
 @keyframes bounce {
-    0%, 20%, 50%, 80%, 100% {
+    0%,
+    20%,
+    50%,
+    80%,
+    100% {
         transform: translateX(-50%) translateY(0);
     }
     40% {
