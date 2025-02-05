@@ -39,7 +39,7 @@ h6,
   color: #000;
   font-size: 1.4rem;
 }
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .text-content {
     font-size: 1.2rem;
   }
@@ -47,6 +47,11 @@ h6,
 @media (max-width: 767px) {
   .text-content {
     font-size: 1rem;
+  }
+}
+@media (max-width: 420px) {
+  .text-content {
+    font-size: 0.8rem;
   }
 }
 
@@ -89,7 +94,8 @@ h4 {
   h2 {
     font-size: 1.4rem;
   }
-  h3, h4 {
+  h3,
+  h4 {
     font-size: 1.2rem;
   }
 }
@@ -100,7 +106,8 @@ h4 {
   h2 {
     font-size: 1.2rem;
   }
-  h3, h4 {
+  h3,
+  h4 {
     font-size: 1rem;
   }
 }
@@ -225,7 +232,7 @@ h4 {
   margin-top: 30px;
   font-size: 1.6rem;
 }
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .button-large {
     font-size: 1.4rem;
   }
@@ -263,11 +270,27 @@ h4 {
   max-width: -moz-fit-content;
   max-width: fit-content;
   padding: 5px 10px;
+  font-size: 1.4rem;
 }
 @media (min-width: 1024px) {
   .button-small:hover {
     background-color: #ed6c2c;
     color: #ffffff;
+  }
+}
+@media (max-width: 1024px) {
+  .button-small {
+    font-size: 1.2rem;
+  }
+}
+@media (max-width: 767px) {
+  .button-small {
+    font-size: 1rem;
+  }
+}
+@media (max-width: 420px) {
+  .button-small {
+    font-size: 0.8rem;
   }
 }
 
