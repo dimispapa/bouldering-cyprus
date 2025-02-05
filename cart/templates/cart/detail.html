@@ -59,7 +59,10 @@
           <!-- Order Total -->
           <h4 class="mb-2">Order Total: € {{ cart.get_total_price }}</h4>
           <!-- Checkout Button -->
-          <button type="submit" name="action" value="checkout" class="button-checkout"><i class="fa-solid fa-lock"></i> Secure Checkout <i class="fa-solid fa-credit-card"></i></button>
+          <button type="submit" name="action" value="checkout" class="button-checkout">
+            <i class="fa-solid fa-credit-card"></i> Checkout
+            <small class="checkout-subscript"><i class="fa-solid fa-lock"></i> Secure</small>
+          </button>
         </div>
       </form>
     {% else %}

@@ -25,6 +25,13 @@ h1, h2, h3 {
   }
 }
 
+.checkout-subscript {
+  font-size: 0.6em;
+  font-style: italic;
+  vertical-align: baseline;
+  margin-left: 2px;
+}
+
 /* Hero Images */
 #hero-image,
 #hero-image2 {
