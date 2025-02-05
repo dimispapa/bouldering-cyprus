@@ -1,6 +1,6 @@
 from decimal import Decimal
 from django.conf import settings
-from shop.models import Product  # Replace with your actual product model
+from shop.models import Product
 
 
 class Cart:
@@ -52,10 +52,11 @@ class Cart:
         product_ids = self.cart.keys()
         products = Product.objects.filter(id__in=product_ids)
         for product in products:
-            item = self.cart[str(product.id)]
-            item["product"] = product
-            item["price"] = Decimal(item["price"])
-            item["total_price"] = item["price"] * item["quantity"]
+            # Make a copy of the session dictionary for this item
+            item = self.cart[str(product.id)].copy()
+            item['product'] = product
+            item['price'] = Decimal(item['price'])
+            item['total_price'] = item['price'] * item['quantity']
             yield item
 
     def __len__(self):

@@ -17,35 +17,48 @@
   <div id="cart-content" class="container p-3 p-md-5">
     <h1 class="mb-4">Your Cart</h1>
     {% if cart %}
-      <div class="table-responsive text-content">
-        <table class="table table-striped table-hover">
-          <thead class="thead-dark" id="cart-table-header">
-            <tr>
-              <th scope="col">Item</th>
-              <th scope="col">Qty</th>
-              <th scope="col">Price</th>
-              <th scope="col">Total</th>
-              <th scope="col"></th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for item in cart %}
+      <!-- Cart Form -->
+      <form method="post" action="{% url 'cart_update' %}">
+        {% csrf_token %}
+        <!-- Cart Table -->
+        <div class="table-responsive text-content">
+          <table class="table table-striped table-hover">
+            <thead class="thead-dark" id="cart-table-header">
               <tr>
-                <td>{{ item.product.name }}</td>
-                <td>{{ item.quantity }}</td>
-                <td class="text-nowrap">€ {{ item.price }}</td>
-                <td class="text-nowrap">€ {{ item.total_price }}</td>
-                <td>
-                  <a href="{% url 'cart_remove' item.product.id %}" class="button-remove" title="Remove"><i class="fa-solid fa-trash"></i></a>
-                </td>
+                <th scope="col">Item</th>
+                <th scope="col">Qty</th>
+                <th scope="col">Price</th>
+                <th scope="col">Total</th>
+                <th scope="col"></th>
               </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
-      <div class="text-end mt-3">
-        <h4>Order Total: € {{ cart.get_total_price }}</h4>
-      </div>
+            </thead>
+            <tbody>
+              {% for item in cart %}
+                <tr>
+                  <td>{{ item.product.name }}</td>
+                  <td>
+                    <!-- Quantity Input -->
+                    <input type="number" name="quantity_{{ item.product.id }}" class="form-control text-content" value="{{ item.quantity }}" min="0" />
+                  </td>
+                  <td class="text-nowrap">€ {{ item.price }}</td>
+                  <td class="text-nowrap">€ {{ item.total_price }}</td>
+                  <td>
+                    <a href="{% url 'cart_remove' item.product.id %}" class="button-remove" title="Remove"><i class="fa-solid fa-trash"></i></a>
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <div class="d-flex flex-column align-items-end mt-1">
+          <!-- Update Cart Button -->
+          <button type="submit" name="action" value="update" class="button-update mb-4"><i class="fa-solid fa-pen-to-square"></i> Update Cart</button>
+          <!-- Order Total -->
+          <h4 class="mb-2">Order Total: € {{ cart.get_total_price }}</h4>
+          <!-- Checkout Button -->
+          <button type="submit" name="action" value="checkout" class="button-checkout"><i class="fa-solid fa-credit-card"></i> Checkout</button>
+        </div>
+      </form>
     {% else %}
       <div class="alert alert-empty" role="alert">
         <p>Your cart is empty.</p>
