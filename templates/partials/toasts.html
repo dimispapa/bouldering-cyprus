@@ -1,0 +1,23 @@
+<div aria-live="polite" aria-atomic="true" class="position-relative">
+  <div class="toast-container position-fixed bottom-0 end-0 p-3">
+    {% if messages %}
+      {% for message in messages %}
+        <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+          <div class="toast-header">
+            <!-- Use message.tags (like success, info, warning, error) for the header -->
+            <strong class="me-auto">
+              {% if message.extra_tags %}
+                {{ message.extra_tags }}
+              {% else %}
+                {{ message.tags|capfirst }}
+              {% endif %}
+            </strong>
+            <small class="text-muted">Just now</small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+          </div>
+          <div class="toast-body">{{ message }}</div>
+        </div>
+      {% endfor %}
+    {% endif %}
+  </div>
+</div>

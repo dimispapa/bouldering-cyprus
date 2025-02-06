@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib import messages
 from shop.models import Product
 from .cart import Cart
 
@@ -14,6 +15,11 @@ def cart_add(request, product_id):
         except ValueError:
             quantity = 1
         cart.add(product=product, quantity=quantity)
+        messages.success(
+            request,
+            f"{product.name} was added to your cart.",
+            extra_tags="Cart updated",
+        )
     return redirect("cart_detail")
 
 
@@ -22,6 +28,11 @@ def cart_remove(request, product_id):
     product = get_object_or_404(Product, id=product_id)
     cart = Cart(request)
     cart.remove(product)
+    messages.success(
+        request,
+        f"{product.name} was removed from your cart.",
+        extra_tags="Cart updated",
+    )
     return redirect("cart_detail")
 
 
@@ -52,6 +63,9 @@ def cart_update(request):
                     )
                 else:
                     cart.remove(item["product"])
+                messages.success(
+                    request, "Your cart has been updated.", extra_tags="Cart updated"
+                )
         # Determine which action was requested
         action = request.POST.get("action")
         if action == "checkout":

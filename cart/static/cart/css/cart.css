@@ -26,10 +26,9 @@ h1, h2, h3 {
 }
 
 .checkout-subscript {
-  font-size: 0.6em;
+  font-size: 0.5em;
   font-style: italic;
   vertical-align: baseline;
-  margin-left: 2px;
 }
 
 /* Hero Images */
