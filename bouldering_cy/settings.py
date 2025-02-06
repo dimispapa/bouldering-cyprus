@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "django_summernote",
     "crispy_forms",
     "storages",
+    "djstripe",
     "home",
     "shop",
     "cart",
@@ -183,3 +184,8 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Cart session key
 CART_SESSION_ID = 'cart'
+
+# Stripe settings
+STRIPE_TEST_PUBLIC_KEY = os.environ.get("STRIPE_TEST_PUBLIC_KEY")
+STRIPE_LIVE_MODE = False
+DJSTRIPE_FOREIGN_KEY_TO_FIELD = "id"

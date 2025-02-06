@@ -26,4 +26,5 @@ urlpatterns = [
     path("shop/", include("shop.urls")),
     path("summernote/", include("django_summernote.urls")),
     path("cart/", include("cart.urls")),
+    path("stripe/", include("djstripe.urls", namespace="djstripe")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
