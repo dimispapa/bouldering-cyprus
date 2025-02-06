@@ -1,0 +1,33 @@
+@use "../../../../static/scss/variables" as *;
+@use "../../../../static/scss/mixins" as *;
+
+/* Full page background image */
+body {
+    background-image: url(../images/hero_image1/sandstone_rock_features_closeup_1920.webp);
+    @include for-size(1441px, down) {
+        background-image: url(../images/hero_image1/sandstone_rock_features_closeup_1440.webp);
+    }
+    @include for-size(tablet-lg, down) {
+        background-image: url(../images/hero_image1/sandstone_rock_features_closeup_1024.webp);
+    }
+
+    @include for-size(640px, down) {
+        background-image: url(../images/hero_image1/sandstone_rock_features_closeup_640.webp);
+    }
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    }
+
+/* Centered container with a slightly transparent background */
+#checkout-container {
+    background-color: $beige-semi-transparent;  /* White with transparency */
+    padding: 30px;
+    border-radius: 8px;
+    max-width: 600px;
+    margin: 50px auto;  /* Centers container with margin at top/bottom */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
