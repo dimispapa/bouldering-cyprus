@@ -4,6 +4,7 @@ boto3==1.36.9
 botocore==1.36.9
 certifi==2025.1.31
 charset-normalizer==3.4.1
+crispy-bootstrap5==2024.10
 dj-database-url==0.5.0
 Django==4.2.18
 django-crispy-forms==2.3
@@ -21,7 +22,8 @@ requests==2.32.3
 s3transfer==0.11.2
 six==1.17.0
 sqlparse==0.5.3
-stripe==11.5.0
+stripe==11.3.0b2
 typing_extensions==4.12.2
 urllib3==2.3.0
+uuid==1.30
 webencodings==0.5.1
