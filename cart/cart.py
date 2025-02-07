@@ -7,10 +7,7 @@ class Cart:
     def __init__(self, request):
         """Initialize the cart."""
         self.session = request.session
-        cart = self.session.get(settings.CART_SESSION_ID)
-        if not cart:
-            # Save an empty cart in the session
-            cart = self.session[settings.CART_SESSION_ID] = {}
+        cart = self.session.get(settings.CART_SESSION_ID, {})
         self.cart = cart
 
     def add(self, product, quantity=1, update_quantity=False):
@@ -54,10 +51,6 @@ class Cart:
         for product in products:
             # Make a copy of the session dictionary for this item
             item = self.cart[str(product.id)].copy()
-            item = self.cart[str(product.id)].copy()
-            item['id'] = product.id         # add the id key
-            item['name'] = product.name     # add the name key
-            item['product'] = product       # still include the full product if needed
             item['price'] = Decimal(item['price'])
             item['total_price'] = item['price'] * item['quantity']
             yield item
@@ -66,7 +59,7 @@ class Cart:
         """Return the total number of items in the bag."""
         return sum(item["quantity"] for item in self.cart.values())
 
-    def get_total_price(self):
+    def cart_total(self):
         """Compute the total cost of all items in the bag."""
         return sum(
             Decimal(item["price"]) * item["quantity"]
