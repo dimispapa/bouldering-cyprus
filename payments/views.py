@@ -2,9 +2,8 @@ import stripe
 from django.urls import reverse
 from django.shortcuts import render, redirect
 from django.conf import settings
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse
 from django.contrib import messages
-from django.views.decorators.csrf import csrf_exempt
 from cart.cart import Cart
 
 stripe.api_key = settings.STRIPE_TEST_SECRET_KEY
@@ -29,9 +28,10 @@ def checkout(request):
     """Handle the checkout process."""
     # Check if the cart is empty
     cart = Cart(request)
-    if not cart.__len__():
+    if not len(cart):
         messages.error(request, "Your cart is empty.")
         return redirect(reverse("cart_detail"))
+
     # Create a PaymentIntent
     intent = create_payment_intent(request, cart)
     # Render the checkout page

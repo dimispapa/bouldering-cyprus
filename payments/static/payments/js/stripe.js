@@ -14,8 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Create a Payment Element
   const paymentElementOptions = {
-    layout: 'tabs',
-    defaultCollapsed: false
+    layout: 'tabs'
   }
   const paymentElement = elements.create('payment', paymentElementOptions)
   paymentElement.mount('#payment-element')
