@@ -20,14 +20,15 @@ body {
     min-height: 100vh;
     margin: 0;
     padding: 0;
-    }
+}
 
 /* Centered container with a slightly transparent background */
 #checkout-container {
-    background-color: $beige-semi-transparent;  /* White with transparency */
+    background-color: $white-semi-transparent; /* White with transparency */
     padding: 30px;
     border-radius: 8px;
-    max-width: 600px;
-    margin: 50px auto;  /* Centers container with margin at top/bottom */
+    min-height: 75vh;
+    max-width: 75vw;
+    margin: 100px auto; /* Centers container with margin at top/bottom */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
+}

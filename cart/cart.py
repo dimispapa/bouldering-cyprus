@@ -54,7 +54,10 @@ class Cart:
         for product in products:
             # Make a copy of the session dictionary for this item
             item = self.cart[str(product.id)].copy()
-            item['product'] = product
+            item = self.cart[str(product.id)].copy()
+            item['id'] = product.id         # add the id key
+            item['name'] = product.name     # add the name key
+            item['product'] = product       # still include the full product if needed
             item['price'] = Decimal(item['price'])
             item['total_price'] = item['price'] * item['quantity']
             yield item
@@ -74,3 +77,7 @@ class Cart:
         """Remove the bag from the session."""
         del self.session[settings.CART_SESSION_ID]
         self.session.modified = True
+
+    def get_items(self):
+        """Return a list of dictionaries representing the cart items."""
+        return list(self)

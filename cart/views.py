@@ -46,32 +46,41 @@ def cart_update(request):
     """Process the cart to either update quantities or checkout."""
     cart = Cart(request)
     if request.method == "POST":
-        # Loop over all items in the cart and update quantities
-        for item in cart:
-            # Construct the key name dynamically
-            input_name = f'quantity_{item["product"].id}'
-            new_qty = request.POST.get(input_name)
-            if new_qty:
-                try:
-                    new_qty = int(new_qty)
-                except ValueError:
-                    new_qty = item["quantity"]
-                # Update the quantity; remove if new_qty == 0
-                if new_qty > 0:
-                    cart.add(
-                        product=item["product"], quantity=new_qty, update_quantity=True
-                    )
-                else:
-                    cart.remove(item["product"])
-                messages.success(
-                    request, "Your cart has been updated.", extra_tags="Cart updated"
-                )
         # Determine which action was requested
         action = request.POST.get("action")
-        if action == "checkout":
+
+        if action == "update":
+            # Loop over all items in the cart and update quantities
+            for item in cart:
+                # Construct the key name dynamically
+                input_name = f'quantity_{item["product"].id}'
+                new_qty = request.POST.get(input_name)
+                if new_qty:
+                    try:
+                        new_qty = int(new_qty)
+                    except ValueError:
+                        new_qty = item["quantity"]
+                    # Update the quantity; remove if new_qty == 0
+                    if new_qty > 0:
+                        cart.add(
+                            product=item["product"],
+                            quantity=new_qty,
+                            update_quantity=True,
+                        )
+                    else:
+                        cart.remove(item["product"])
+                    messages.success(
+                        request,
+                        "Your cart has been updated.",
+                        extra_tags="Cart updated",
+                    )
+
+        elif action == "checkout":
             # Redirect to checkout
             return redirect("checkout")
+
         # Otherwise, stay on the cart page
         return redirect("cart_detail")
+
     # For GET requests, simply display the cart
     return render(request, "cart/detail.html", {"cart": cart})

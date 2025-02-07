@@ -35,10 +35,11 @@ body {
 
 /* Centered container with a slightly transparent background */
 #checkout-container {
-  background-color: rgba(244, 237, 210, 0.9); /* White with transparency */
+  background-color: rgba(255, 255, 255, 0.9); /* White with transparency */
   padding: 30px;
   border-radius: 8px;
-  max-width: 600px;
-  margin: 50px auto; /* Centers container with margin at top/bottom */
+  min-height: 75vh;
+  max-width: 75vw;
+  margin: 100px auto; /* Centers container with margin at top/bottom */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }/*# sourceMappingURL=payments.css.map */
