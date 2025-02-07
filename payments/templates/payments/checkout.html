@@ -18,14 +18,14 @@
   <div id="checkout-container" class="container p-3 p-md-5">
     <div id="progressbar-container">
       <!-- Include Progress Bar Partial -->
-      {% include 'partials/progress_bar.html' with current_step='checkout' %}
+      {% include 'partials/progress_bar.html' with progressbar_modifier='progressbar--step-2' %}
     </div>
 
     <h1 class="mb-4">Customer Details</h1>
     <form id="payment-form" method="POST" action="#">
       {% csrf_token %}
       {{ order_form|crispy }}
-    
+
       <h1 class="mb-4">Payment Details</h1>
       <!-- Stripe Express Checkout Container -->
       <div class="form-group">

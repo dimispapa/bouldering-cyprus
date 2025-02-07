@@ -352,15 +352,6 @@ footer a:hover {
   border-radius: 50%;
   background-color: #fff;
 }
-.progressbar li.active {
-  color: #b5cbb2;
-  font-weight: bold;
-}
-.progressbar li.active:before {
-  border-color: #b5cbb2;
-  background-color: #b5cbb2;
-  color: #ffffff;
-}
 .progressbar li:after {
   content: "";
   position: absolute;
@@ -374,6 +365,36 @@ footer a:hover {
 .progressbar li:first-child:after {
   content: none;
 }
-.progressbar li.active + li:after {
+.progressbar.progressbar--step-1 li:nth-child(1) {
+  color: #b5cbb2;
+  font-weight: bold;
+}
+.progressbar.progressbar--step-1 li:nth-child(1):before {
+  border-color: #b5cbb2;
+  background-color: #b5cbb2;
+  color: #ffffff;
+}
+.progressbar.progressbar--step-1 li:nth-child(1)::after {
   background: #b5cbb2;
+}
+.progressbar.progressbar--step-2 li:nth-child(-n+2) {
+  color: #b5cbb2;
+  font-weight: bold;
+}
+.progressbar.progressbar--step-2 li:nth-child(-n+2):before {
+  border-color: #b5cbb2;
+  background-color: #b5cbb2;
+  color: #ffffff;
+}
+.progressbar.progressbar--step-2 li:nth-child(2)::after {
+  background: #b5cbb2;
+}
+.progressbar.progressbar--step-3 li:nth-child(-n+3) {
+  color: #b5cbb2;
+  font-weight: bold;
+}
+.progressbar.progressbar--step-3 li:nth-child(-n+3):before {
+  border-color: #b5cbb2;
+  background-color: #b5cbb2;
+  color: #ffffff;
 }/*# sourceMappingURL=base.css.map */

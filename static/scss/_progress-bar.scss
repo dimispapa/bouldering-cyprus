@@ -29,17 +29,6 @@
             background-color: #fff;
         }
 
-        &.active {
-            color: $light-green;
-            font-weight: bold;
-
-            &:before {
-                border-color: $light-green;
-                background-color: $light-green;
-                color: $white;
-            }
-        }
-
         &:after {
             content: "";
             position: absolute;
@@ -58,8 +47,45 @@
         }
     }
 
-    // This rule highlights the connecting line when the preceding li is active.
-    li.active + li:after {
-        background: $light-green;
+    // Mixin for active styling
+    @mixin active-style {
+        color: $light-green;
+        font-weight: bold;
+
+        &:before {
+            border-color: $light-green;
+            background-color: $light-green;
+            color: $white;
+        }
+    }
+
+    // Modifier for when we are on step 1 (only the first step is active)
+    &.progressbar--step-1 {
+        li:nth-child(1) {
+            @include active-style;
+        }
+        li:nth-child(1)::after {
+            background: $light-green;
+        }
+    }
+
+    // Modifier for when we are on step 2 (steps 1 and 2 are active)
+    &.progressbar--step-2 {
+        li:nth-child(-n + 2) {
+            // This selects the first two items
+            @include active-style;
+        }
+        li:nth-child(2)::after {
+            background: $light-green;
+        }
+    }
+
+    // Modifier for when we are on step 3 (all steps are active)
+    &.progressbar--step-3 {
+        li:nth-child(-n + 3) {
+            // This selects the first three items (all of them)
+            @include active-style;
+        }
+        // Optionally, style the line after the third item if needed
     }
 }

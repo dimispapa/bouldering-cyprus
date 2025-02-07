@@ -11,10 +11,10 @@
 
 {% block content %}
   <!-- Hero Image -->
-  <div id="hero-image"></div>
+  <div id="hero-image" class="mb-5"></div>
 
   <!-- Include Progress Bar Partial -->
-  {% include 'partials/progress_bar.html' with current_step='cart' %}
+  {% include 'partials/progress_bar.html' with progressbar_modifier='progressbar--step-1' %}
 
   <!-- Include Toast for messages -->
   {% include 'partials/toasts.html' %}
@@ -84,5 +84,5 @@
 
 {% block postload_js %}
   {{ block.super }}
-  <script src="{% static "../static/js/toasts.js" %}"></script>
+  <script src="{% static '../static/js/toasts.js' %}"></script>
 {% endblock %}
