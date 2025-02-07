@@ -4,20 +4,23 @@ from django.shortcuts import render, redirect
 from django.conf import settings
 from django.http import JsonResponse
 from django.contrib import messages
+from orders.forms import OrderForm
 from cart.cart import Cart
 
 stripe.api_key = settings.STRIPE_TEST_SECRET_KEY
 
 
-def create_payment_intent(request, cart):
+def create_payment_intent(cart):
     try:
         # Calculate the total amount
-        stripe_total = round(cart.get_total_price() * 100)
+        stripe_total = round(cart.cart_total() * 100)
+        print(stripe_total)
         # Create a PaymentIntent with the order amount and currency
         intent = stripe.PaymentIntent.create(
             amount=stripe_total,
             currency=settings.STRIPE_CURRENCY,
         )
+        print(intent)
         return intent
     except Exception as e:
         print(e)
@@ -33,11 +36,13 @@ def checkout(request):
         return redirect(reverse("cart_detail"))
 
     # Create a PaymentIntent
-    intent = create_payment_intent(request, cart)
+    intent = create_payment_intent(cart)
+
     # Render the checkout page
     context = {
         "cart": cart,
         "stripe_public_key": settings.STRIPE_TEST_PUBLIC_KEY,
         "stripe_client_secret": intent.client_secret,
+        "order_form": OrderForm(),
     }
     return render(request, "payments/checkout.html", context)

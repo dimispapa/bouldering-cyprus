@@ -51,6 +51,7 @@ class Cart:
         for product in products:
             # Make a copy of the session dictionary for this item
             item = self.cart[str(product.id)].copy()
+            item['product'] = product
             item['price'] = Decimal(item['price'])
             item['total_price'] = item['price'] * item['quantity']
             yield item
