@@ -61,3 +61,36 @@ $breakpoints: (
   text-align: center;
   max-width: fit-content;
 }
+
+/* Full page background image */
+@mixin body-checkout-style {
+  // Urls applied are relative to the final compiled css file not this scss file
+  background-image: url(../../../../static/images/checkout-bg-image/sandstone_rock_features_closeup_1920.webp);
+  @include for-size(1441px, down) {
+      background-image: url(../../../../static/images/checkout-bg-image/sandstone_rock_features_closeup_1440.webp);
+  }
+  @include for-size(tablet-lg, down) {
+      background-image: url(../../../../static/images/checkout-bg-image/sandstone_rock_features_closeup_1024.webp);
+  }
+
+  @include for-size(640px, down) {
+      background-image: url(../../../../static/images/checkout-bg-image/sandstone_rock_features_closeup_640.webp);
+  }
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+/* Centered container with a slightly transparent background */
+@mixin checkout-container-style {
+  background-color: $white-semi-transparent; /* White with transparency */
+  padding: 30px;
+  border-radius: 8px;
+  min-height: 75vh;
+  max-width: 75vw;
+  margin: 100px auto; /* Centers container with margin at top/bottom */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}

@@ -8,8 +8,10 @@
 /* Button Mixin
 ========================================================= */
 /* Full page background image */
+/* Centered container with a slightly transparent background */
+/* Full page background image */
 body {
-  background-image: url(../images/hero_image1/sandstone_rock_features_closeup_1920.webp);
+  background-image: url(../../../../static/images/checkout-bg-image/sandstone_rock_features_closeup_1920.webp);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -19,17 +21,17 @@ body {
 }
 @media (max-width: 1441px) {
   body {
-    background-image: url(../images/hero_image1/sandstone_rock_features_closeup_1440.webp);
+    background-image: url(../../../../static/images/checkout-bg-image/sandstone_rock_features_closeup_1440.webp);
   }
 }
 @media (max-width: 1024px) {
   body {
-    background-image: url(../images/hero_image1/sandstone_rock_features_closeup_1024.webp);
+    background-image: url(../../../../static/images/checkout-bg-image/sandstone_rock_features_closeup_1024.webp);
   }
 }
 @media (max-width: 640px) {
   body {
-    background-image: url(../images/hero_image1/sandstone_rock_features_closeup_640.webp);
+    background-image: url(../../../../static/images/checkout-bg-image/sandstone_rock_features_closeup_640.webp);
   }
 }
 
