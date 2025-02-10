@@ -8,7 +8,7 @@ from crispy_forms.layout import (
     Submit,
     HTML,
     Field,
-    ButtonHolder,
+    Div,
     Fieldset,
     Template,
     Hidden,
@@ -79,7 +79,7 @@ class OrderForm(forms.ModelForm):
                 # Card Element Section
                 HTML("""
                     <div class="form-group mb-4">
-                        <label for="payment-element">Credit or debit card</label>
+                        <label for="payment-element">Other payment methods</label>
                         <div id="payment-element" class="stripe-element border border-dark rounded p-3">
                             <!-- Payment Element will be inserted here -->
                         </div>
@@ -94,7 +94,12 @@ class OrderForm(forms.ModelForm):
                     id="stripe-client-secret",
                 ),
             ),
-            ButtonHolder(
-                Submit("submit", "Place order", css_class="button-payment mt-3")
-            ),
+            Div(
+                HTML("""
+                    <button type="submit" name="submit" class="button-payment mt-3">
+                        <i class="fa-solid fa-lock"></i> Place Order
+                    </button>
+                """),
+                css_class='text-end'
+            )
         )
