@@ -100,7 +100,7 @@ class OrderForm(forms.ModelForm):
                 HTML(
                     """
                     <button type="submit" name="submit" class="button-payment mt-3">
-                        <i class="fa-solid fa-lock"></i> Place Order
+                        <i class="fa-solid fa-lock"></i> Place order
                     </button>
                 """
                 ),

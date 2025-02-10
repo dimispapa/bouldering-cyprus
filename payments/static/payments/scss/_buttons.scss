@@ -4,7 +4,7 @@
 .button-update {
     @include button-style($beige, $orange);
     // Padding
-    padding: 3px 3px;
+    padding: 2px 3px;
     // Hover effect
     @include for-size(tablet-lg, up) {
         &:hover {
@@ -13,11 +13,8 @@
         }
     }
     // Font sizes
-    font-size: $s-font;
+    font-size: $xs-font;
     @include for-size(tablet-lg, down) {
-        font-size: $xs-font;
-    }
-    @include for-size(phone, down) {
         font-size: $xxs-font;
     }
 }
