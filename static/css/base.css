@@ -370,11 +370,17 @@ footer a:hover {
 .progressbar.progressbar--step-1 li:nth-child(1) {
   color: #b5cbb2;
   font-weight: bold;
+  color: #7aa275;
 }
 .progressbar.progressbar--step-1 li:nth-child(1):before {
   border-color: #b5cbb2;
   background-color: #b5cbb2;
   color: #ffffff;
+}
+.progressbar.progressbar--step-1 li:nth-child(1):before {
+  background-color: #7aa275;
+  border-color: #7aa275;
+  transform: scale(1.1);
 }
 .progressbar.progressbar--step-1 li:nth-child(1)::after {
   background: #b5cbb2;
@@ -388,6 +394,21 @@ footer a:hover {
   background-color: #b5cbb2;
   color: #ffffff;
 }
+.progressbar.progressbar--step-2 li:nth-child(2) {
+  color: #b5cbb2;
+  font-weight: bold;
+  color: #7aa275;
+}
+.progressbar.progressbar--step-2 li:nth-child(2):before {
+  border-color: #b5cbb2;
+  background-color: #b5cbb2;
+  color: #ffffff;
+}
+.progressbar.progressbar--step-2 li:nth-child(2):before {
+  background-color: #7aa275;
+  border-color: #7aa275;
+  transform: scale(1.1);
+}
 .progressbar.progressbar--step-2 li:nth-child(2)::after {
   background: #b5cbb2;
 }
@@ -399,4 +420,19 @@ footer a:hover {
   border-color: #b5cbb2;
   background-color: #b5cbb2;
   color: #ffffff;
+}
+.progressbar.progressbar--step-3 li:nth-child(3) {
+  color: #b5cbb2;
+  font-weight: bold;
+  color: #7aa275;
+}
+.progressbar.progressbar--step-3 li:nth-child(3):before {
+  border-color: #b5cbb2;
+  background-color: #b5cbb2;
+  color: #ffffff;
+}
+.progressbar.progressbar--step-3 li:nth-child(3):before {
+  background-color: #7aa275;
+  border-color: #7aa275;
+  transform: scale(1.1);
 }/*# sourceMappingURL=base.css.map */

@@ -59,33 +59,48 @@
         }
     }
 
-    // Modifier for when we are on step 1 (only the first step is active)
+    // Mixin for current step styling
+    @mixin current-step {
+        @include active-style;
+        color: darken($light-green, 20%);
+        
+        &:before {
+            background-color: darken($light-green, 20%);
+            border-color: darken($light-green, 20%);
+            transform: scale(1.1);
+        }
+    }
+
+    // Modifier for when we are on step 1
     &.progressbar--step-1 {
         li:nth-child(1) {
-            @include active-style;
+            @include current-step;
         }
         li:nth-child(1)::after {
             background: $light-green;
         }
     }
 
-    // Modifier for when we are on step 2 (steps 1 and 2 are active)
+    // Modifier for when we are on step 2
     &.progressbar--step-2 {
         li:nth-child(-n + 2) {
-            // This selects the first two items
             @include active-style;
+        }
+        li:nth-child(2) {
+            @include current-step;
         }
         li:nth-child(2)::after {
             background: $light-green;
         }
     }
 
-    // Modifier for when we are on step 3 (all steps are active)
+    // Modifier for when we are on step 3
     &.progressbar--step-3 {
         li:nth-child(-n + 3) {
-            // This selects the first three items (all of them)
             @include active-style;
         }
-        // Optionally, style the line after the third item if needed
+        li:nth-child(3) {
+            @include current-step;
+        }
     }
 }
