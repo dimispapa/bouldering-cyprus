@@ -1,5 +1,18 @@
 from django import forms
 from .models import Order
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import (
+    Layout,
+    Row,
+    Column,
+    Submit,
+    HTML,
+    Field,
+    ButtonHolder,
+    Fieldset,
+    Template,
+    Hidden,
+)
 
 
 class OrderForm(forms.ModelForm):
@@ -16,14 +29,72 @@ class OrderForm(forms.ModelForm):
             "postal_code",
             "country",
         ]
-        widgets = {
-            "first_name": forms.TextInput(attrs={"class": "form-control"}),
-            "last_name": forms.TextInput(attrs={"class": "form-control"}),
-            "email": forms.EmailInput(attrs={"class": "form-control"}),
-            "phone": forms.TextInput(attrs={"class": "form-control"}),
-            "address_line1": forms.TextInput(attrs={"class": "form-control"}),
-            "address_line2": forms.TextInput(attrs={"class": "form-control"}),
-            "city": forms.TextInput(attrs={"class": "form-control"}),
-            "postal_code": forms.TextInput(attrs={"class": "form-control"}),
-            "country": forms.TextInput(attrs={"class": "form-control"}),
-        }
+
+    def __init__(self, *args, **kwargs):
+        stripe_public_key = kwargs.pop("stripe_public_key", "")
+        stripe_client_secret = kwargs.pop("stripe_client_secret", "")
+
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_method = "post"
+        self.helper.form_id = "payment-form"
+        self.helper.form_action = "#"  # or your specific action URL
+
+        self.helper.layout = Layout(
+            # Customer Details Section
+            Fieldset(
+                "Customer details",
+                Row(
+                    Column("first_name", css_class="form-group col-md-6"),
+                    Column("last_name", css_class="form-group col-md-6"),
+                    css_class="form-row",
+                ),
+                Row(
+                    Column("email", css_class="form-group col-md-6"),
+                    Column("phone", css_class="form-group col-md-6"),
+                    css_class="form-row",
+                ),
+                Field("address_line1"),
+                Field("address_line2"),
+                Row(
+                    Column("city", css_class="form-group col-md-6"),
+                    Column("postal_code", css_class="form-group col-md-3"),
+                    Column("country", css_class="form-group col-md-3"),
+                    css_class="form-row",
+                ),
+            ),
+            # Payment Details Section
+            Fieldset(
+                "Payment details",
+                # Express Checkout Section
+                HTML("""
+                    <div class="form-group mb-4">
+                        <label for="express-checkout-element">Express checkout</label>
+                        <div id="express-checkout-element" class="stripe-element border border-dark rounded p-3">
+                            <!-- Express Checkout Element will be inserted here -->
+                        </div>
+                        <div id="express-checkout-errors" role="alert" class="mt-2 text-danger"></div>
+                    </div>
+                """),
+                # Card Element Section
+                HTML("""
+                    <div class="form-group mb-4">
+                        <label for="payment-element">Credit or debit card</label>
+                        <div id="payment-element" class="stripe-element border border-dark rounded p-3">
+                            <!-- Payment Element will be inserted here -->
+                        </div>
+                        <div id="payment-errors" role="alert" class="mt-2 text-danger"></div>
+                    </div>
+                """),
+                # Hidden Stripe Fields
+                Hidden("stripe-public-key", stripe_public_key, id="stripe-public-key"),
+                Hidden(
+                    "stripe-client-secret",
+                    stripe_client_secret,
+                    id="stripe-client-secret",
+                ),
+            ),
+            ButtonHolder(
+                Submit("submit", "Place order", css_class="button-payment mt-3")
+            ),
+        )

@@ -7,7 +7,7 @@ from django.contrib import messages
 from orders.forms import OrderForm
 from cart.cart import Cart
 
-stripe.api_key = settings.STRIPE_TEST_SECRET_KEY
+stripe.api_key = settings.STRIPE_SECRET_KEY
 
 
 def create_payment_intent(cart):
@@ -20,7 +20,6 @@ def create_payment_intent(cart):
             amount=stripe_total,
             currency=settings.STRIPE_CURRENCY,
         )
-        print(intent)
         return intent
     except Exception as e:
         print(e)
@@ -38,11 +37,12 @@ def checkout(request):
     # Create a PaymentIntent
     intent = create_payment_intent(cart)
 
-    # Render the checkout page
+    # Render the checkout page with cart and order form objects
     context = {
         "cart": cart,
-        "stripe_public_key": settings.STRIPE_TEST_PUBLIC_KEY,
-        "stripe_client_secret": intent.client_secret,
-        "order_form": OrderForm(),
+        "order_form": OrderForm(
+            stripe_public_key=settings.STRIPE_PUBLIC_KEY,
+            stripe_client_secret=intent.client_secret,
+        ),
     }
     return render(request, "payments/checkout.html", context)
