@@ -5,12 +5,10 @@ from crispy_forms.layout import (
     Layout,
     Row,
     Column,
-    Submit,
     HTML,
     Field,
     Div,
     Fieldset,
-    Template,
     Hidden,
 )
 
@@ -67,7 +65,8 @@ class OrderForm(forms.ModelForm):
             Fieldset(
                 "Payment details",
                 # Express Checkout Section
-                HTML("""
+                HTML(
+                    """
                     <div class="form-group mb-4">
                         <label for="express-checkout-element">Express checkout</label>
                         <div id="express-checkout-element" class="stripe-element border border-dark rounded p-3">
@@ -75,9 +74,11 @@ class OrderForm(forms.ModelForm):
                         </div>
                         <div id="express-checkout-errors" role="alert" class="mt-2 text-danger"></div>
                     </div>
-                """),
+                """
+                ),
                 # Card Element Section
-                HTML("""
+                HTML(
+                    """
                     <div class="form-group mb-4">
                         <label for="payment-element">Other payment methods</label>
                         <div id="payment-element" class="stripe-element border border-dark rounded p-3">
@@ -85,7 +86,8 @@ class OrderForm(forms.ModelForm):
                         </div>
                         <div id="payment-errors" role="alert" class="mt-2 text-danger"></div>
                     </div>
-                """),
+                """
+                ),
                 # Hidden Stripe Fields
                 Hidden("stripe-public-key", stripe_public_key, id="stripe-public-key"),
                 Hidden(
@@ -95,11 +97,13 @@ class OrderForm(forms.ModelForm):
                 ),
             ),
             Div(
-                HTML("""
+                HTML(
+                    """
                     <button type="submit" name="submit" class="button-payment mt-3">
                         <i class="fa-solid fa-lock"></i> Place Order
                     </button>
-                """),
-                css_class='text-end'
-            )
+                """
+                ),
+                css_class="text-end",
+            ),
         )
