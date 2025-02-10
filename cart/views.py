@@ -39,7 +39,7 @@ def cart_remove(request, product_id):
 def cart_detail(request):
     """Display the cart's contents."""
     cart = Cart(request)
-    return render(request, "cart/detail.html", {"cart": cart})
+    return render(request, "cart/cart_detail.html", {"cart": cart})
 
 
 def cart_update(request):
