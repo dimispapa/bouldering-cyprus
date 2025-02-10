@@ -435,4 +435,9 @@ footer a:hover {
   background-color: #7aa275;
   border-color: #7aa275;
   transform: scale(1.1);
+}
+
+.img-cart-thumbnail {
+  max-width: 60px;
+  height: auto;
 }/*# sourceMappingURL=base.css.map */
