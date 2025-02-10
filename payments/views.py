@@ -46,3 +46,8 @@ def checkout(request):
         ),
     }
     return render(request, "payments/checkout.html", context)
+
+
+def checkout_success(request):
+    """Handle the checkout success process."""
+    return render(request, "payments/checkout_success.html")

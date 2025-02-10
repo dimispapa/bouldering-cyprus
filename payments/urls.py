@@ -8,4 +8,5 @@ urlpatterns = [
         views.create_payment_intent,
         name="create_payment_intent",
     ),
+    path("checkout-success/", views.checkout_success, name="checkout_success"),
 ]
