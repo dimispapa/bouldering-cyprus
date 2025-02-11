@@ -17,7 +17,7 @@ def cart_summary(request):
 
     cart_total = Decimal(str(cart.cart_total()))
     delivery_cost = (
-        Decimal(str(settings.DELIVERY_COST))
+        Decimal(str(settings.STANDARD_DELIVERY_COST))
         if cart_total < settings.FREE_DELIVERY_THRESHOLD
         else 0
     )
