@@ -9,3 +9,8 @@ body {
 #checkout-container {
     @include checkout-container-style;
 }
+
+/* Hidden class */
+.hidden {
+    display: none;
+}

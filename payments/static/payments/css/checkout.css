@@ -46,6 +46,11 @@ body {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* Hidden class */
+.hidden {
+  display: none;
+}
+
 .button-update {
   background-color: #f4edd2;
   box-shadow: 5px 5px 10px 1px #ed6c2c;
