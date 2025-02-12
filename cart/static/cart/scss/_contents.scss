@@ -5,11 +5,6 @@ h1, h2, h3 {
     color: $orange
 }
 
-.alert-empty {
-    background-color: $light-blue-semi-transparent;
-    border-color: $light-blue;
-}
-
 .form-control {
     width: 60px;
     @include for-size(tablet, down) {

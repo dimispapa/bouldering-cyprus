@@ -46,9 +46,9 @@
                       <td>{{ item.product.name }}</td>
                       <td>
                         {% if item.product.image %}
-                          <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="cart-item-image" style="max-width: 50px; height: auto;">
+                          <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="cart-item-image" style="max-width: 50px; height: auto;" />
                         {% else %}
-                          <img src="{% static 'images/noimage.png' %}" alt="No image available" class="cart-item-image" style="max-width: 50px; height: auto;">
+                          <img src="{% static 'images/noimage.png' %}" alt="No image available" class="cart-item-image" style="max-width: 50px; height: auto;" />
                         {% endif %}
                       </td>
                       <td>
@@ -57,7 +57,7 @@
                       <td class="text-nowrap">€ {{ item.price }}</td>
                       <td class="text-nowrap">€ {{ item.total_price }}</td>
                       <td>
-                        <a href="{% url 'cart_remove' item.product.id }}" class="button-remove" title="Remove"><i class="fa-solid fa-trash"></i></a>
+                        <a href="{% url 'cart_remove' item.product.id %}" class="button-remove" title="Remove"><i class="fa-solid fa-trash"></i></a>
                       </td>
                     </tr>
                   {% endfor %}
@@ -78,7 +78,7 @@
             </div>
           </form>
         {% else %}
-          <div class="alert alert-empty" role="alert">
+          <div class="alert" role="alert">
             <p>Your cart is empty.</p>
             <p>
               Add a <a href="{% url 'shop' %}">guidebook</a> to your cart for purchase or add a <a href="#">crashpad</a> for rent.
