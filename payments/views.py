@@ -101,11 +101,12 @@ def store_order_metadata(request):
                     })
             except stripe.error.StripeError as e:
                 logger.error(f"Stripe error in store_order_metadata: {str(e)}")
-                return JsonResponse({
-                    'status': 'error',
-                    'error': str(e)
-                },
-                                    status=400)
+                return JsonResponse(
+                    {
+                        'status': 'error',
+                        'error': "Error storing order metadata"
+                    },
+                    status=400)
 
         return JsonResponse({'status': 'success'})
     return JsonResponse({'status': 'error', 'errors': form.errors}, status=400)
