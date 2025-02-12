@@ -19,20 +19,26 @@ class Order(models.Model):
     country = CountryField(blank_label="Country *", null=False, blank=False)
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
-    stripe_piid = models.CharField(max_length=255, null=False, blank=False, default="")
+    stripe_piid = models.CharField(max_length=255,
+                                   null=False,
+                                   blank=False,
+                                   default="")
     original_cart = models.TextField(null=False, blank=False, default="")
-    delivery_cost = models.DecimalField(
-        max_digits=6, decimal_places=2, null=False, default=0
-    )
-    order_total = models.DecimalField(
-        max_digits=10, decimal_places=2, null=False, default=0
-    )
-    grand_total = models.DecimalField(
-        max_digits=10, decimal_places=2, null=False, default=0
-    )
+    delivery_cost = models.DecimalField(max_digits=6,
+                                        decimal_places=2,
+                                        null=False,
+                                        default=0)
+    order_total = models.DecimalField(max_digits=10,
+                                      decimal_places=2,
+                                      null=False,
+                                      default=0)
+    grand_total = models.DecimalField(max_digits=10,
+                                      decimal_places=2,
+                                      null=False,
+                                      default=0)
 
     class Meta:
-        ordering = ("-date_created",)
+        ordering = ("-date_created", )
 
     def _generate_order_number(self):
         """
@@ -42,7 +48,8 @@ class Order(models.Model):
 
     def update_total(self):
         """Update the order total and grand total"""
-        self.order_total = self.items.aggregate(models.Sum("item_total"))["item_total__sum"] or 0
+        self.order_total = self.items.aggregate(
+            models.Sum("item_total"))["item_total__sum"] or 0
         if self.order_total < settings.FREE_DELIVERY_THRESHOLD:
             self.delivery_cost = settings.STANDARD_DELIVERY_COST
         else:
@@ -56,16 +63,21 @@ class Order(models.Model):
 
 class OrderItem(models.Model):
     """Order item model linking order to product"""
-    order = models.ForeignKey(
-        Order, null=False, blank=False, on_delete=models.CASCADE, related_name="items"
-    )
-    product = models.ForeignKey(
-        Product, null=False, blank=False, on_delete=models.CASCADE
-    )
+    order = models.ForeignKey(Order,
+                              null=False,
+                              blank=False,
+                              on_delete=models.CASCADE,
+                              related_name="items")
+    product = models.ForeignKey(Product,
+                                null=False,
+                                blank=False,
+                                on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(null=False, blank=False, default=0)
-    item_total = models.DecimalField(
-        max_digits=10, decimal_places=2, null=False, blank=False, default=0
-    )
+    item_total = models.DecimalField(max_digits=10,
+                                     decimal_places=2,
+                                     null=False,
+                                     blank=False,
+                                     default=0)
 
     def save(self, *args, **kwargs):
         """Calculate the item total and save the order item"""
