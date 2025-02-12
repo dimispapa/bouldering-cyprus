@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 import os
 import dj_database_url
+import sentry_sdk
 
 if os.path.isfile("env.py"):
     import env
@@ -201,3 +202,20 @@ else:
 STANDARD_DELIVERY_COST = 10.00
 FREE_DELIVERY_THRESHOLD = 65.00
 STRIPE_CURRENCY = "eur"
+
+# Sentry settings
+sentry_sdk.init(
+    dsn="https://0581bd20fe579142f1b0058684ccad93@o4508116014989312.ingest.de.sentry.io/4508805680070736",
+    # Add data like request headers and IP for users,
+    # see https://docs.sentry.io/platforms/python/data-management/data-collected/ for more info
+    send_default_pii=True,
+    # Set traces_sample_rate to 1.0 to capture 100%
+    # of transactions for tracing.
+    traces_sample_rate=1.0,
+    _experiments={
+        # Set continuous_profiling_auto_start to True
+        # to automatically start the profiler on when
+        # possible.
+        "continuous_profiling_auto_start": True,
+    },
+)
