@@ -110,6 +110,19 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Email configuration
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.sendgrid.net'
+EMAIL_PORT = 465
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'apikey'
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_KEY")
+DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_EMAIL")
+SERVER_EMAIL = os.environ.get("DEFAULT_EMAIL")
+
+if not PRODUCTION:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+    EMAIL_PORT = 587
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
@@ -219,3 +232,69 @@ sentry_sdk.init(
         "continuous_profiling_auto_start": True,
     },
 )
+
+# LOGGING CONFIGURATION
+ADMINS = [
+    ("dimis_papa", os.environ.get("DEFAULT_EMAIL")),
+]
+
+# Ensure the 'logs' directory exists (only needed for development)
+LOG_DIR = os.path.join(BASE_DIR, 'logs')
+if not os.path.exists(LOG_DIR):
+    os.makedirs(LOG_DIR)
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "verbose": {
+            "format": "{levelname} {asctime} {module} {process:d} {thread:d} {message}",
+            "style": "{",
+        },
+        "simple": {
+            "format": "{asctime} {levelname} {message}",
+            "style": "{",
+        },
+        "notification": {
+            "format": "{levelname} {asctime}",
+            "style": "{"
+        }
+    },
+    "filters": {
+        "require_debug_true": {
+            "()": "django.utils.log.RequireDebugTrue",
+        },
+    },
+    "handlers": {
+        "console": {
+            "level": "DEBUG",
+            "filters": ["require_debug_true"],
+            "class": "logging.StreamHandler",
+            "formatter": "simple"
+        },
+        "file_log": {
+            "level": "WARNING",
+            "filters": ["require_debug_true"],
+            "class": "logging.FileHandler",
+            "filename": os.path.join(LOG_DIR, 'app.log'),
+            "formatter": "verbose"
+        },
+        "mail_admins": {
+            "level": "ERROR",
+            # customised AdminEmailHandler
+            "class": "bouldering_cy.logging_handlers.SimpleAdminEmailHandler",
+            "formatter": "notification"
+        }
+    },
+    "root": {
+        "handlers": ["console"],
+        "level": "DEBUG"
+    },
+    "loggers": {
+        "bouldering_cy": {
+            "handlers": ["console", "file_log", "mail_admins"],
+            "propagate": False,
+            "level": "DEBUG"
+        }
+    }
+}

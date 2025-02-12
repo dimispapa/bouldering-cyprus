@@ -12,13 +12,14 @@
       "**/core.python*": true,
       "**/CVS": true
    },
-   "files.autoSave": "on",
+   "files.autoSave": "onWindowChange",
    "workbench.colorTheme": "Default Dark Modern",
-   "terminal.integrated.gpuAcceleration": "canvas",
+   "terminal.integrated.gpuAcceleration": "auto",
    "extensions.autoUpdate": true,
    "extensions.autoCheckUpdates": true,
    "extensions.autoInstallRecommended": true,
    "security.workspace.trust.enabled": true,
    "python.analysis.extraPaths": ["${workspaceFolder}"],
-   "python.terminal.activateEnvironment": true
+   "python.terminal.activateEnvironment": true,
+   "yapf.args": ["--style", "{based_on_style: pep8, indent_width: 4}"]
 }
