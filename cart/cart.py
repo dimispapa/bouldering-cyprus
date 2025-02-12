@@ -1,6 +1,7 @@
 from decimal import Decimal
 from django.conf import settings
 from shop.models import Product
+import json
 
 
 class Cart:
@@ -75,3 +76,22 @@ class Cart:
     def get_items(self):
         """Return a list of dictionaries representing the cart items."""
         return list(self)
+
+    def serialize(self):
+        """Return a JSON-serializable representation of the cart."""
+        return {
+            'items': [
+                {
+                    'product_id': str(item['product'].id),
+                    'name': item['product'].name,
+                    'quantity': item['quantity'],
+                    'price': str(item['price']),
+                    'total_price': str(item['total_price'])
+                } for item in self.get_items()
+            ],
+            'total': str(self.cart_total()),
+        }
+
+    def to_json(self):
+        """Return a JSON string representation of the cart."""
+        return json.dumps(self.serialize())
