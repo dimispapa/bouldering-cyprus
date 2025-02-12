@@ -18,5 +18,7 @@
    "extensions.autoUpdate": true,
    "extensions.autoCheckUpdates": true,
    "extensions.autoInstallRecommended": true,
-   "security.workspace.trust.enabled": true
+   "security.workspace.trust.enabled": true,
+   "python.analysis.extraPaths": ["${workspaceFolder}"],
+   "python.terminal.activateEnvironment": true
 }
