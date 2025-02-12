@@ -9,4 +9,5 @@ urlpatterns = [
         name="create_payment_intent",
     ),
     path("checkout-success/", views.checkout_success, name="checkout_success"),
+    path("store-order-metadata/", views.store_order_metadata, name="store_order_metadata"),
 ]

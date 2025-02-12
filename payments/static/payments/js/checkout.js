@@ -3,6 +3,19 @@ document.addEventListener('DOMContentLoaded', () => {
   const stripePublicKey = document.getElementById('stripe-public-key').value
   const clientSecret = document.getElementById('stripe-client-secret').value
 
+  // Initialize Stripe and Elements
+  const { stripe, elements } = initStripe(stripePublicKey, clientSecret)
+
+  // Handle the submit button
+  document
+    .getElementById('payment-form')
+    .addEventListener('submit', async e => {
+      await handleSubmit(e, stripe, elements)
+    })
+})
+
+// Function to initialize Stripe and Elements
+function initStripe(stripePublicKey, clientSecret) {
   // Initialize Stripe with your public key
   const stripe = Stripe(stripePublicKey)
 
@@ -21,52 +34,55 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Create an Express Checkout Element
   const expressCheckoutOptions = {}
-  const expressCheckoutElement = elements.create('expressCheckout', expressCheckoutOptions)
+  const expressCheckoutElement = elements.create(
+    'expressCheckout',
+    expressCheckoutOptions
+  )
   expressCheckoutElement.mount('#express-checkout-element')
 
-  // Handle the submit button
-  document
-    .querySelector("#payment-form")
-    .addEventListener("submit", async (e) => {
-      // Get the client secret from the hidden input
-      const clientSecret = document.getElementById('stripe-client-secret').value;
-      await handleSubmit(e, clientSecret);
-    });
-});
+  return { stripe, elements}
+}
 
 // Function to handle the submit button and payment processing workflow
-async function handleSubmit(e, clientSecret) {
+async function handleSubmit(e, stripe, elements) {
   e.preventDefault();
   const baseUrl = window.location.origin;
+  const form = e.target;
   setLoading(true);
 
-  // Get the form data
-  const form = document.getElementById('payment-form');
-  const formData = new FormData(form);
-
   try {
-    // Store form data in session
-    const response = await fetch('/checkout/store-form/', {
+    // Get the form data
+    const formData = new FormData(form);
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+    // Store form data in PaymentIntent metadata and s
+    const response = await fetch(`${baseUrl}/payments/store-order-metadata/`, {
       method: 'POST',
-      body: formData
+      body: formData,
+      headers: {
+        'X-CSRFToken': csrfToken,
+      }
     });
 
     if (!response.ok) {
-      throw new Error('Failed to store form data');
+      throw new Error('Failed to store order data');
     }
 
-    // Proceed with payment
+    // Proceed with payment confirmation
     const { error } = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        return_url: `${baseUrl}/payments/checkout/success/?payment_intent_client_secret=${clientSecret}`,
+        return_url: `${baseUrl}/payments/checkout-success/`,
       },
     });
 
     if (error) {
       showError(error.message);
     }
+    // Note: No need for form submission here as Stripe will handle the redirect
+
   } catch (err) {
+    console.error('Error:', err);
     showError('An error occurred. Please try again.');
   } finally {
     setLoading(false);
@@ -74,45 +90,34 @@ async function handleSubmit(e, clientSecret) {
 }
 
 // Show an error message
-function showError(messageText) {
-  // Get the existing toast element
-  const toastElement = document.querySelector('.toast');
-  const paymentErrors = document.getElementById('payment-errors');
-  
-  // Update the toast body with the new message
-  const toastBody = toastElement.querySelector('.toast-body');
-  toastBody.textContent = messageText;
-  
+function showError (messageText) {
+  // Get the error message element
+  const paymentErrors = document.getElementById('payment-errors')
+
   // Update the payment errors with the new message
-  paymentErrors.classList.remove('hidden');
-  paymentErrors.textContent = messageText;
+  paymentErrors.classList.remove('hidden')
+  paymentErrors.textContent = messageText
 
   // Hide the payment errors after 4 seconds
   setTimeout(function () {
-    paymentErrors.classList.add("hidden");
-    paymentErrors.textContent = "";
-  }, 10000);
-  
-  // Get the existing Bootstrap toast instance
-  const toast = bootstrap.Toast.getInstance(toastElement);
-  if (toast) {
-    toast.show();
-  }
+    paymentErrors.classList.add('hidden')
+    paymentErrors.textContent = ''
+  }, 10000)
 }
 
 // Set the loading state
-function setLoading(isLoading) {
-  const submitButton = document.getElementById('submit');
-  const buttonText = document.getElementById('button-text');
-  const spinner = document.getElementById('spinner');
+function setLoading (isLoading) {
+  const submitButton = document.getElementById('submit')
+  const buttonText = document.getElementById('button-text')
+  const spinner = document.getElementById('spinner')
 
   if (isLoading) {
-    submitButton.disabled = true;
-    buttonText.textContent = 'Processing...';
-    spinner.classList.remove('hidden');
+    submitButton.disabled = true
+    buttonText.textContent = 'Processing...'
+    spinner.classList.remove('hidden')
   } else {
-    submitButton.disabled = false;
-    buttonText.textContent = 'Place order';
-    spinner.classList.add('hidden');
+    submitButton.disabled = false
+    buttonText.textContent = 'Place order'
+    spinner.classList.add('hidden')
   }
 }

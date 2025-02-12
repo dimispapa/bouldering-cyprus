@@ -37,7 +37,7 @@
           <div class="col-md-8">
             <h4>Order Details</h4>
             <p>Order Number: {{ order.order_number }}</p>
-            <p>Order Date: {{ order.date }}</p>
+            <p>Order Date: {{ order.date_created }}</p>
 
             <h5 class="mt-4">Items</h5>
             {% for item in order.items.all %}
@@ -53,9 +53,19 @@
                     <small class="text-muted d-block">Quantity: {{ item.quantity }}</small>
                   </div>
                 </div>
-                <span>€{{ item.total_price|floatformat:2 }}</span>
+                <span>€{{ item.item_total|floatformat:2 }}</span>
               </div>
             {% endfor %}
+
+            <h5 class="mt-4">Delivery Details</h5>
+            <p>{{ order.first_name }} {{ order.last_name }}</p>
+            <p>{{ order.address_line1 }}</p>
+            {% if order.address_line2 %}
+              <p>{{ order.address_line2 }}</p>
+            {% endif %}
+            <p>{{ order.town_or_city }}</p>
+            <p>{{ order.postal_code }}</p>
+            <p>{{ order.country.name }}</p>
           </div>
 
           <div class="col-md-4 border-start">
