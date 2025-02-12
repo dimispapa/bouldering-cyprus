@@ -1,0 +1,39 @@
+Hello {{ order.first_name }}
+
+This is a confirmation of your order. The details are below:
+
+Order Number: {{ order.order_number }}
+
+Order Date: {{ order.date_created }}
+
+Order Total: {{ order.order_total }}
+
+Delivery Cost: {{ order.delivery_cost }}
+
+Grand Total: {{ order.grand_total }}
+
+Your order has been successfully processed and will be delivered to the address below:
+
+{{ order.address_line1 }}
+
+{% if order.address_line2 %}
+{{ order.address_line2 }}
+{% endif %}
+
+{{ order.town_or_city }}
+
+{{ order.postal_code }}
+
+{{ order.country }}
+
+{{ order.phone }}
+
+{{ order.email }}
+
+Thank you for your order.
+
+If you have any questions, please contact us at {{ contact_email }}.
+
+Best regards,
+
+The Bouldering Cyprus Team
