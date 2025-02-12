@@ -98,13 +98,6 @@ def store_order_metadata(request):
 def checkout_success(request):
     """Handle successful checkout and create order."""
     print("\n=== Starting checkout_success ===")
-    print("\n=== URL Debug ===")
-    print("Path:", request.path)
-    print("Full URL:", request.build_absolute_uri())
-    print("GET params:", request.GET)
-    print("Is secure:", request.is_secure())
-    print("Host:", request.get_host())
-    print("Query parameters:", request.GET)
 
     payment_intent_id = request.GET.get('payment_intent')
     redirect_status = request.GET.get('redirect_status')
@@ -139,6 +132,7 @@ def checkout_success(request):
                 for item in items:
                     print(f"- {item.quantity}x {item.product.name} (€{item.item_total})")
 
+                # Clear the order form data from the session if not cleared
                 if 'order_form_data' in request.session:
                     del request.session['order_form_data']
 
@@ -148,22 +142,16 @@ def checkout_success(request):
                     f'A confirmation email will be sent to {order.email}.'
                 )
 
-                template = get_template('payments/checkout_success.html')
-                print("\n=== Template Loading ===")
-                print("Template found:", template)
-
                 context = {
                     'order': order,
                     'payment_intent': payment_intent,
                 }
 
                 print("\n=== Template Context ===")
-                print("Order in context:", bool(context.get('order')))
                 print("Items in order:", [
                     f"{item.product.name} (qty: {item.quantity})"
                     for item in context['order'].items.all()
                 ])
-                print("About to render template...")
 
                 response = render(request, 'payments/checkout_success.html', context)
                 print("\n=== Template Rendered ===")
