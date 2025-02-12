@@ -6,11 +6,20 @@ document.addEventListener('DOMContentLoaded', () => {
   const prevBtn = document.getElementById('prevBtn')
   const nextBtn = document.getElementById('nextBtn')
 
+  // Function to validate image URL
+  function isValidImageUrl(url) {
+    const pattern = /^(https?:\/\/.*\.(?:png|jpg|jpeg|gif|webp|svg))$/i;
+    return pattern.test(url);
+  }
+
   // Collect all gallery images dynamically
   document
     .querySelectorAll('.gallery-thumbnail')
     .forEach((thumbnail, index) => {
-      images.push(thumbnail.getAttribute('data-bs-image'))
+      const imageUrl = thumbnail.getAttribute('data-bs-image');
+      if (isValidImageUrl(imageUrl)) {
+        images.push(imageUrl);
+      }
 
       // Attach click event to set modal image dynamically
       thumbnail.addEventListener('click', function () {
