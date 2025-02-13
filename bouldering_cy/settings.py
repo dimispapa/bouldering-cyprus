@@ -29,7 +29,11 @@ SECRET_KEY = os.environ.get("SECRET_KEY", "")
 PRODUCTION = os.environ.get("PRODUCTION", "False").lower() == "true"
 DEBUG = not PRODUCTION
 
-ALLOWED_HOSTS = ["bouldering-cyprus-53e1273cde1e.herokuapp.com", "127.0.0.1"]
+ALLOWED_HOSTS = [
+    "bouldering-cyprus-53e1273cde1e.herokuapp.com",
+    "127.0.0.1",
+    os.environ.get("NGROK_TUNNEL"),
+]
 
 # Application definition
 
@@ -90,23 +94,29 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {"default": dj_database_url.parse(os.environ.get("DATABASE_URL", ""))}
+DATABASES = {
+    "default": dj_database_url.parse(os.environ.get("DATABASE_URL", ""))
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
+        "NAME":
+        "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
     {
-        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
+        "NAME":
+        "django.contrib.auth.password_validation.MinimumLengthValidator",
     },
     {
-        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
+        "NAME":
+        "django.contrib.auth.password_validation.CommonPasswordValidator",
     },
     {
-        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
+        "NAME":
+        "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
 
@@ -134,7 +144,6 @@ TIME_ZONE = "Europe/Nicosia"
 USE_I18N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
@@ -169,8 +178,12 @@ if PRODUCTION:
     # STATICFILES_STORAGE = "custom_storages.StaticStorage"
     # DEFAULT_FILE_STORAGE = "custom_storages.MediaStorage"
     STORAGES = {
-        "default": {"BACKEND": "custom_storages.MediaStorage"},
-        "staticfiles": {"BACKEND": "custom_storages.StaticStorage"},
+        "default": {
+            "BACKEND": "custom_storages.MediaStorage"
+        },
+        "staticfiles": {
+            "BACKEND": "custom_storages.StaticStorage"
+        },
     }
 
     # Ensure Django collects the root `static/` directory
@@ -211,14 +224,15 @@ else:
     STRIPE_PUBLIC_KEY = os.environ.get("STRIPE_TEST_PUBLIC_KEY")
     STRIPE_SECRET_KEY = os.environ.get("STRIPE_TEST_SECRET_KEY")
 
-
-STANDARD_DELIVERY_COST = 10.00
+STANDARD_DELIVERY_PERCENTAGE = 10
 FREE_DELIVERY_THRESHOLD = 65.00
 STRIPE_CURRENCY = "eur"
+STRIPE_WEBHOOK_SECRET = os.environ.get("STRIPE_WEBHOOK_SECRET")
 
 # Sentry settings
 sentry_sdk.init(
-    dsn="https://0581bd20fe579142f1b0058684ccad93@o4508116014989312.ingest.de.sentry.io/4508805680070736",
+    dsn=
+    "https://0581bd20fe579142f1b0058684ccad93@o4508116014989312.ingest.de.sentry.io/4508805680070736",
     # Add data like request headers and IP for users,
     # see https://docs.sentry.io/platforms/python/data-management/data-collected/ for more info
     send_default_pii=True,
@@ -248,7 +262,8 @@ LOGGING = {
     "disable_existing_loggers": False,
     "formatters": {
         "verbose": {
-            "format": "{levelname} {asctime} {module} {process:d} {thread:d} {message}",
+            "format":
+            "{levelname} {asctime} {module} {process:d} {thread:d} {message}",
             "style": "{",
         },
         "simple": {
@@ -267,34 +282,34 @@ LOGGING = {
     },
     "handlers": {
         "console": {
-            "level": "DEBUG",
+            "level": "INFO",
             "filters": ["require_debug_true"],
             "class": "logging.StreamHandler",
             "formatter": "simple"
         },
         "file_log": {
-            "level": "WARNING",
-            "filters": ["require_debug_true"],
+            "level": "INFO",
             "class": "logging.FileHandler",
             "filename": os.path.join(LOG_DIR, 'app.log'),
-            "formatter": "verbose"
+            "formatter": "verbose",
+            "filters": [],
         },
         "mail_admins": {
             "level": "ERROR",
-            # customised AdminEmailHandler
             "class": "bouldering_cy.logging_handlers.SimpleAdminEmailHandler",
             "formatter": "notification"
         }
     },
-    "root": {
-        "handlers": ["console"],
-        "level": "DEBUG"
-    },
     "loggers": {
+        "": {
+            "handlers": ["console", "file_log", "mail_admins"],
+            "level": "INFO",
+            "propagate": True,
+        },
         "bouldering_cy": {
             "handlers": ["console", "file_log", "mail_admins"],
+            "level": "INFO",
             "propagate": False,
-            "level": "DEBUG"
         }
     }
 }
