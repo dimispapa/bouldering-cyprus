@@ -99,7 +99,6 @@ def store_order_metadata(request):
 
             try:
                 payment_intent_id = client_secret.split('_secret_')[0]
-                logger.info(f"Payment Intent ID: {payment_intent_id}")
 
                 # Update PaymentIntent with metadata
                 stripe.PaymentIntent.modify(
