@@ -84,6 +84,7 @@ def store_order_metadata(request):
 
             # Get cart from the session object and use its methods
             cart = Cart(request)
+            cart_context = cart_summary(request)
 
             # Get client secret
             client_secret = request.POST.get('stripe-client-secret')
@@ -104,31 +105,14 @@ def store_order_metadata(request):
                 stripe.PaymentIntent.modify(
                     payment_intent_id,
                     metadata={
-                        # Cart data using existing serialization
+                        # Cart data using existing serialization method
                         'cart_data':
                         cart.to_json(),
-
-                        # Shipping details
-                        'shipping_name':
-                        " ".join([
-                            form_data.get('first_name'),
-                            form_data.get('last_name')
-                        ]),
-                        'shipping_phone':
-                        form_data.get('phone'),
-                        'customer_email':
-                        form_data.get('email'),
-                        'shipping_address1':
-                        form_data.get('address_line1'),
-                        'shipping_address2':
-                        form_data.get('address_line2', ''),
-                        'shipping_city':
-                        form_data.get('town_or_city'),
-                        'shipping_postal_code':
-                        form_data.get('postal_code'),
-                        'shipping_country':
-                        form_data.get('country'),
+                        'cart_total': cart_context['cart_total'],
+                        'delivery_cost': cart_context['delivery_cost'],
+                        'grand_total': cart_context['grand_total']
                     },
+                    # Shipping details
                     shipping={
                         'name':
                         " ".join([
@@ -145,7 +129,8 @@ def store_order_metadata(request):
                             'country': form_data.get('country'),
                         },
                     },
-                    receipt_email=form_data.get('email'),
+                    # Receipt email
+                    receipt_email=form_data.get('email')
                 )
 
                 logger.info("Successfully stored metadata in PaymentIntent")
@@ -185,11 +170,6 @@ def checkout_success(request):
     """Endpoint to handle successful checkout and create order."""
     logger.info("\n=== Starting checkout_success ===")
 
-    # Simulate a failure in the normal checkout process
-    if settings.TEST_WEBHOOK_SUCCESS:
-        logger.info("Simulating checkout failure for testing")
-        raise Exception("Simulated checkout failure")
-
     payment_intent_id = request.GET.get('payment_intent')
     redirect_status = request.GET.get('redirect_status')
 
@@ -201,6 +181,12 @@ def checkout_success(request):
         return redirect(reverse('checkout'))
 
     try:
+        # Simulate a failure in the normal checkout process
+        # if TEST_WEBHOOK_SUCCESS is True
+        if settings.TEST_WEBHOOK_SUCCESS:
+            logger.info("Simulating checkout failure for testing")
+            raise Exception("Simulated checkout failure")
+
         # Retrieve the payment intent
         payment_intent = stripe.PaymentIntent.retrieve(payment_intent_id)
         logger.info("\n=== Payment Intent ===")
@@ -291,9 +277,6 @@ def create_order_from_payment(request, payment_intent):
             return existing_order
         # Create an order from the form data
         order = order_form.save(commit=False)
-
-        # Generate unique order number
-        order.order_number = order._generate_order_number()
 
         # Set payment details
         order.stripe_piid = payment_intent.id
