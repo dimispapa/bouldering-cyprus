@@ -8,6 +8,7 @@ from django.http import JsonResponse
 from django.contrib import messages
 from django.views.decorators.http import require_POST, require_GET
 from orders.forms import OrderForm
+from orders.models import Order
 from cart.cart import Cart
 from cart.contexts import cart_summary
 from orders.models import OrderItem
@@ -69,47 +70,98 @@ def checkout(request):
 @require_POST
 def store_order_metadata(request):
     """Endpoint to store order data in PaymentIntent metadata and session."""
-    form = OrderForm(request.POST)
-    if form.is_valid():
-        form_data = form.cleaned_data
+    try:
+        logger.info("\n=== Store Order Metadata Debug ===")
+        logger.info(f"POST data: {request.POST}")
 
-        # Store form data in session
-        request.session['order_form_data'] = form_data
+        form = OrderForm(request.POST)
+        if form.is_valid():
+            form_data = form.cleaned_data
+            logger.info(f"Form data: {form_data}")
 
-        # Get client secret from form
-        client_secret = form_data.get('stripe_client_secret')
-        if client_secret:
+            # Store form data in session
+            request.session['order_form_data'] = form_data
+
+            # Get cart from the session object and use its methods
+            cart = Cart(request)
+            cart_context = cart_summary(request)
+
+            # Get client secret
+            client_secret = request.POST.get('stripe-client-secret')
+            if not client_secret:
+                logger.error("No client secret found in request POST data")
+                return JsonResponse(
+                    {
+                        'status': 'error',
+                        'error': 'No client secret provided'
+                    },
+                    status=400)
+
             try:
-                # Get PaymentIntent ID from client secret
                 payment_intent_id = client_secret.split('_secret_')[0]
-                # Get cart
-                cart = Cart(request)
 
                 # Update PaymentIntent with metadata
                 stripe.PaymentIntent.modify(
                     payment_intent_id,
                     metadata={
-                        # Use cart's serialization method
-                        'cart':
+                        # Cart data using existing serialization method
+                        'cart_data':
                         cart.to_json(),
-                        # Store complete form data as fallback
-                        'form_data':
-                        json.dumps({
-                            key: str(value)
-                            for key, value in form_data.items()
-                        }),
-                    })
+                        'cart_total': cart_context['cart_total'],
+                        'delivery_cost': cart_context['delivery_cost'],
+                        'grand_total': cart_context['grand_total']
+                    },
+                    # Shipping details
+                    shipping={
+                        'name':
+                        " ".join([
+                            form_data.get('first_name'),
+                            form_data.get('last_name')
+                        ]),
+                        'phone':
+                        form_data.get('phone'),
+                        'address': {
+                            'line1': form_data.get('address_line1'),
+                            'line2': form_data.get('address_line2', ''),
+                            'city': form_data.get('town_or_city'),
+                            'postal_code': form_data.get('postal_code'),
+                            'country': form_data.get('country'),
+                        },
+                    },
+                    # Receipt email
+                    receipt_email=form_data.get('email')
+                )
+
+                logger.info("Successfully stored metadata in PaymentIntent")
+                return JsonResponse({'status': 'success'})
+
             except stripe.error.StripeError as e:
-                logger.error(f"Stripe error in store_order_metadata: {str(e)}")
+                logger.error(f"Stripe error: {str(e)}")
                 return JsonResponse(
                     {
                         'status': 'error',
-                        'error': "Error storing order metadata"
+                        'error': 'Error updating PaymentIntent'
                     },
                     status=400)
 
-        return JsonResponse({'status': 'success'})
-    return JsonResponse({'status': 'error', 'errors': form.errors}, status=400)
+        else:
+            logger.error(f"Form validation failed: {form.errors}")
+            return JsonResponse(
+                {
+                    'status': 'error',
+                    'errors': form.errors,
+                    'message': 'Form validation failed'
+                },
+                status=400)
+
+    except Exception as e:
+        logger.exception(f"Unexpected error in store_order_metadata: {e}")
+        return JsonResponse(
+            {
+                'status': 'error',
+                'error': 'An unexpected error occurred'
+            },
+            status=500)
 
 
 @require_GET
@@ -128,6 +180,12 @@ def checkout_success(request):
         return redirect(reverse('checkout'))
 
     try:
+        # Simulate a failure in the normal checkout process
+        # if TEST_WEBHOOK_SUCCESS is True
+        if settings.TEST_WEBHOOK_SUCCESS:
+            logger.info("Simulating checkout failure for testing")
+            raise Exception("Simulated checkout failure")
+
         # Retrieve the payment intent
         payment_intent = stripe.PaymentIntent.retrieve(payment_intent_id)
         logger.info("\n=== Payment Intent ===")
@@ -165,16 +223,15 @@ def checkout_success(request):
                     'payment_intent': payment_intent,
                 }
 
-                logger.info("\n=== Template Context ===")
-                logger.info("Items in order:", [
-                    f"{item.product.name} (qty: {item.quantity})"
-                    for item in context['order'].items.all()
-                ])
-
+                logger.info(
+                    f"Items in order: {[f'{item.product.name} '
+                                        f'(qty: {item.quantity})'
+                                        for item in order.items.all()]}"
+                )
                 response = render(request, 'payments/checkout_success.html',
                                   context)
                 logger.info("\n=== Template Rendered ===")
-                logger.info("Response status code:", response.status_code)
+                logger.info(f"Response status code: {response.status_code}")
                 return response
 
             except Exception as e:
@@ -210,11 +267,15 @@ def create_order_from_payment(request, payment_intent):
         if not order_form.is_valid():
             raise ValueError("Invalid form data")
 
+        # Check if order already exists for this payment intent
+        existing_order = Order.objects.filter(
+            stripe_piid=payment_intent.id).first()
+        if existing_order:
+            logger.info(f"Order {existing_order.order_number} already exists "
+                        f"for payment {payment_intent.id}")
+            return existing_order
         # Create an order from the form data
         order = order_form.save(commit=False)
-
-        # Generate unique order number
-        order.order_number = order._generate_order_number()
 
         # Set payment details
         order.stripe_piid = payment_intent.id

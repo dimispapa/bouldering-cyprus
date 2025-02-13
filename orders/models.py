@@ -7,15 +7,20 @@ import uuid
 
 class Order(models.Model):
     """Order model holding successful order details"""
-    order_number = models.CharField(max_length=32, null=False, editable=False)
-    first_name = models.CharField(max_length=50)
-    last_name = models.CharField(max_length=50)
-    email = models.EmailField()
-    phone = models.CharField(max_length=20)
-    address_line1 = models.CharField(max_length=250)
-    address_line2 = models.CharField(max_length=250, blank=True)
-    town_or_city = models.CharField(max_length=100)
-    postal_code = models.CharField(max_length=20)
+    order_number = models.CharField(max_length=32,
+                                    null=False,
+                                    editable=False,
+                                    unique=True,
+                                    default=uuid.uuid4().hex.upper(),
+                                    auto_created=True)
+    first_name = models.CharField(max_length=50, null=False, blank=False)
+    last_name = models.CharField(max_length=50, null=False, blank=False)
+    email = models.EmailField(null=False, blank=False)
+    phone = models.CharField(max_length=20, null=False, blank=False)
+    address_line1 = models.CharField(max_length=250, null=False, blank=False)
+    address_line2 = models.CharField(max_length=250, null=True, blank=True)
+    town_or_city = models.CharField(max_length=100, null=False, blank=False)
+    postal_code = models.CharField(max_length=20, null=False, blank=False)
     country = CountryField(blank_label="Country *", null=False, blank=False)
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
@@ -38,20 +43,15 @@ class Order(models.Model):
                                       default=0)
 
     class Meta:
-        ordering = ("-date_created", )
-
-    def _generate_order_number(self):
-        """
-        Generate a random, unique order number using UUID
-        """
-        return uuid.uuid4().hex.upper()
+        ordering = ("-date_created",)
 
     def update_total(self):
-        """Update the order total and grand total"""
+        """Update the order total, delivery cost and grand total"""
         self.order_total = self.items.aggregate(
             models.Sum("item_total"))["item_total__sum"] or 0
         if self.order_total < settings.FREE_DELIVERY_THRESHOLD:
-            self.delivery_cost = settings.STANDARD_DELIVERY_COST
+            self.delivery_cost = (settings.STANDARD_DELIVERY_PERCENTAGE *
+                                  self.order_total / 100)
         else:
             self.delivery_cost = 0
         self.grand_total = self.order_total + self.delivery_cost

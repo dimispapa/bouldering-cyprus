@@ -5,22 +5,24 @@ from django.conf import settings
 
 def cart_summary(request):
     cart = Cart(request)
-    cart_items = [
-        {
-            "product": item["product"],
-            "quantity": item["quantity"],
-            "total_price": item["total_price"],
-            "image_url": item["product"].image.url if item["product"].image else None,
-        }
-        for item in cart
-    ]
+    cart_items = [{
+        "product":
+        item["product"],
+        "quantity":
+        item["quantity"],
+        "total_price":
+        item["total_price"],
+        "image_url":
+        item["product"].image.url if item["product"].image else None,
+    } for item in cart]
 
     cart_total = Decimal(str(cart.cart_total()))
-    delivery_cost = (
-        Decimal(str(settings.STANDARD_DELIVERY_COST))
-        if cart_total < settings.FREE_DELIVERY_THRESHOLD
-        else 0
-    )
+
+    if cart_total < settings.FREE_DELIVERY_THRESHOLD:
+        delivery_cost = Decimal(
+            str(settings.STANDARD_DELIVERY_PERCENTAGE * cart_total / 100))
+    else:
+        delivery_cost = Decimal('0')
     grand_total = cart_total + delivery_cost
 
     return {

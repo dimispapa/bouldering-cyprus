@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from . import webhooks
 
 urlpatterns = [
     path("checkout/", views.checkout, name="checkout"),
@@ -14,4 +15,5 @@ urlpatterns = [
         views.store_order_metadata,
         name="store_order_metadata",
     ),
+    path("stripe-webhook/", webhooks.stripe_webhook, name="stripe_webhook"),
 ]
