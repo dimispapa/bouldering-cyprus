@@ -213,6 +213,14 @@ def checkout_success(request):
                 if 'order_form_data' in request.session:
                     del request.session['order_form_data']
 
+                # Clear the cart
+                cart = Cart(request)
+                cart.clear()
+                if 'cart' in request.session:
+                    del request.session['cart']
+                    request.session.modified = True
+                logger.info("Cart cleared from session")
+
                 messages.success(
                     request, f'Order successfully processed! '
                     f'Your order number is {order.order_number}. '
@@ -248,13 +256,19 @@ def checkout_success(request):
         return redirect(reverse('checkout'))
     except Exception as e:
         logger.error(f"Unexpected error in checkout_success: {str(e)}")
-        raise e
+        messages.error(
+            request,
+            'Sorry, an error occurred while processing your payment.')
+        return redirect(reverse('checkout'))
 
 
 def create_order_from_payment(request, payment_intent):
     """Helper function to create an order from a payment intent
     and form data."""
     try:
+        logger.info("\n=== Starting create_order_from_payment ===")
+        logger.info(f"Payment Intent ID: {payment_intent.id}")
+
         # Get the order form data
         form_data = request.session.get('order_form_data')
         if not form_data:
@@ -298,10 +312,7 @@ def create_order_from_payment(request, payment_intent):
                 product=item['product'],
                 quantity=item['quantity'],
             )
-
-        # Clear the cart
-        cart.clear()
-
+        logger.info(f"Order created: {order.order_number}")
         return order
 
     except Exception as e:

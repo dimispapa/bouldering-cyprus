@@ -92,6 +92,8 @@ class StripeWH_Handler:
                 # Order already exists, return success
                 logger.info(
                     f"Order already exists: {existing_order.order_number}")
+                # Send confirmation email
+                self._send_confirmation_email(existing_order)
                 return JsonResponse({
                     'status': 'Success',
                     'redirect_required': False
@@ -232,7 +234,7 @@ class StripeWH_Handler:
             logger.error(f"Error handling failed payment: {e}")
             return JsonResponse({
                 'status': 'error',
-                'error': str(e)
+                'error': 'Error handling failed payment'
             },
                                 status=500)
 
