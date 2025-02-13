@@ -46,6 +46,7 @@ class StripeWH_Handler:
     def handle_payment_intent_succeeded(self, event):
         """Handle the payment_intent.succeeded webhook."""
         try:
+            logger.info("\n=== Payment Intent Succeeded ===")
             # Get the payment intent
             intent = event.data.object
 
@@ -91,6 +92,8 @@ class StripeWH_Handler:
                 # Order already exists, return success
                 logger.info(
                     f"Order already exists: {existing_order.order_number}")
+                # Send confirmation email
+                self._send_confirmation_email(existing_order)
                 return JsonResponse({
                     'status': 'Success',
                     'redirect_required': False
@@ -168,6 +171,72 @@ class StripeWH_Handler:
                     'error': "Error in webhook handler"
                 },
                 status=500)
+
+    def handle_payment_intent_failed(self, event):
+        """Handle the payment_intent.failed webhook."""
+        intent = event.data.object
+
+        logger.info("\n=== Failed Payment Intent Debug ===")
+        logger.info(f"Payment Intent ID: {intent.id}")
+        logger.info(f"Error: {intent.last_payment_error}")
+        logger.info(f"Status: {intent.status}")
+
+        try:
+            # Get cart data from metadata
+            cart_data = None
+            if intent.metadata and 'cart_data' in intent.metadata:
+                try:
+                    cart_data = json.loads(intent.metadata.cart_data)
+                    logger.info(f"Cart data retrieved: {cart_data}")
+                except json.JSONDecodeError as e:
+                    logger.error(f"Error parsing cart data: {e}")
+                    cart_data = None
+
+            # Get email from payment intent
+            customer_email = intent.receipt_email
+
+            if customer_email:
+                # Send email about failed payment
+                context = {
+                    'cart_data':
+                    cart_data,
+                    'cart_items':
+                    cart_data.get('items', []) if cart_data else [],
+                    'cart_total':
+                    cart_data.get('total', '0.00') if cart_data else '0.00',
+                    'payment_error':
+                    intent.last_payment_error.get('message', 'Unknown error')
+                    if intent.last_payment_error else 'Unknown error',
+                    'contact_email':
+                    settings.DEFAULT_FROM_EMAIL
+                }
+
+                subject = render_to_string(
+                    'orders/confirmation_emails/payment_failed_subject.txt',
+                    context)
+                body = render_to_string(
+                    'orders/confirmation_emails/payment_failed_body.txt',
+                    context)
+
+                send_mail(subject, body, settings.DEFAULT_FROM_EMAIL,
+                          [customer_email])
+
+                logger.info(f"Payment failed email sent to {customer_email}")
+            else:
+                logger.warning("No customer email found in payment intent")
+
+            return JsonResponse({
+                'status': 'success',
+                'message': 'Payment failure handled'
+            })
+
+        except Exception as e:
+            logger.error(f"Error handling failed payment: {e}")
+            return JsonResponse({
+                'status': 'error',
+                'error': 'Error handling failed payment'
+            },
+                                status=500)
 
     def handle_event(self, event):
         """

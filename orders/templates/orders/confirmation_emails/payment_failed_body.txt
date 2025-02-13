@@ -1,0 +1,25 @@
+Dear Customer,
+
+Unfortunately, your payment has failed.
+
+Error: {{ payment_error }}
+
+Cart Details:
+{% if cart_items %}
+{% for item in cart_items %}
+{{ item.name }} - Quantity: {{ item.quantity }} - €{{ item.total_price }}
+{% endfor %}
+
+Cart Total: €{{ cart_total }}
+{% else %}
+No items found in cart.
+{% endif %}
+
+You can try to complete your purchase again by visiting our website.
+
+If you continue to experience issues, please contact us at {{ contact_email }}.
+
+Thank you for shopping with us!
+
+Best regards,
+The Bouldering Cyprus Team

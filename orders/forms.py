@@ -14,6 +14,7 @@ from crispy_forms.layout import (
 
 
 class OrderForm(forms.ModelForm):
+
     class Meta:
         model = Order
         fields = [
@@ -94,30 +95,30 @@ class OrderForm(forms.ModelForm):
             Fieldset(
                 "Payment details",
                 # Express Checkout Section
-                HTML(
-                    """
+                HTML("""
                     <div class="form-group mb-4">
                         <label for="express-checkout-element">Express checkout</label>
                         <div id="express-checkout-element" class="stripe-element border border-dark rounded p-3">
                             <!-- Express Checkout Element will be inserted here -->
                         </div>
                     </div>
-                """
-                ),
+                """),
                 # Card Element Section
-                HTML(
-                    """
+                HTML("""
                     <div class="form-group mb-4">
                         <label for="payment-element">OR other payment methods</label>
                         <div id="payment-element" class="stripe-element border border-dark rounded p-3">
                             <!-- Payment Element will be inserted here -->
                         </div>
                     </div>
-                """
+                """),
+                HTML(
+                    """<div id="payment-errors" role="alert" class="mt-2 text-danger hidden"></div>"""
                 ),
-                HTML("""<div id="payment-errors" role="alert" class="mt-2 text-danger hidden"></div>"""),
                 # Hidden Stripe Fields
-                Hidden("stripe-public-key", stripe_public_key, id="stripe-public-key"),
+                Hidden("stripe-public-key",
+                       stripe_public_key,
+                       id="stripe-public-key"),
                 Hidden(
                     "stripe-client-secret",
                     stripe_client_secret,
@@ -126,16 +127,14 @@ class OrderForm(forms.ModelForm):
             ),
             # Place Order Button
             Div(
-                HTML(
-                    """
+                HTML("""
                     <button id="submit" type="submit" name="submit" class="button-payment mt-3">
                         <span id="spinner" class="spinner-border spinner-border-sm hidden" role="status" aria-hidden="true"></span>
                         <span id="button-text">
                             <i class="fa-solid fa-lock"></i> Place order
                         </span>
                     </button>
-                """
-                ),
+                """),
                 css_class="text-end",
             ),
         )
