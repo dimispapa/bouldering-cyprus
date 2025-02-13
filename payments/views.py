@@ -116,6 +116,8 @@ def store_order_metadata(request):
                         ]),
                         'shipping_phone':
                         form_data.get('phone'),
+                        'customer_email':
+                        form_data.get('email'),
                         'shipping_address1':
                         form_data.get('address_line1'),
                         'shipping_address2':
@@ -142,7 +144,9 @@ def store_order_metadata(request):
                             'postal_code': form_data.get('postal_code'),
                             'country': form_data.get('country'),
                         },
-                    })
+                    },
+                    receipt_email=form_data.get('email'),
+                )
 
                 logger.info("Successfully stored metadata in PaymentIntent")
                 return JsonResponse({'status': 'success'})
@@ -180,6 +184,11 @@ def store_order_metadata(request):
 def checkout_success(request):
     """Endpoint to handle successful checkout and create order."""
     logger.info("\n=== Starting checkout_success ===")
+
+    # Simulate a failure in the normal checkout process
+    if settings.TEST_WEBHOOK_SUCCESS:
+        logger.info("Simulating checkout failure for testing")
+        raise Exception("Simulated checkout failure")
 
     payment_intent_id = request.GET.get('payment_intent')
     redirect_status = request.GET.get('redirect_status')

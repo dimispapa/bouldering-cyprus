@@ -49,6 +49,7 @@ class StripeWH_Handler:
         logger.info(f"Intent: {intent}")
         # Get shipping details, with fallback to metadata
         shipping_details = intent.shipping
+        receipt_email = intent.receipt_email
         if not shipping_details or not shipping_details.address:
             metadata = intent.metadata
             if metadata:
@@ -67,13 +68,14 @@ class StripeWH_Handler:
         if not shipping_details:
             raise ValueError("No shipping details found in payment intent")
 
-        # Get cart data and totals from metadata
+        # Get cart data and totals plus email from metadata
         metadata = intent.metadata
         try:
             cart_data = json.loads(metadata.get('cart_data', '{}'))
             cart_total = float(metadata.get('cart_total', 0))
             delivery_cost = float(metadata.get('delivery_cost', 0))
             grand_total = float(metadata.get('grand_total', 0))
+            customer_email = metadata.get('customer_email')
         except (json.JSONDecodeError, ValueError) as e:
             logger.error(f"Error parsing cart data from metadata: {e}")
             raise ValueError("Invalid cart data in payment intent metadata")
@@ -95,7 +97,7 @@ class StripeWH_Handler:
                     billing_details.name.split()[-1] if billing_details.name
                     else shipping_details['name'].split()[-1],
                     'email':
-                    billing_details.email if billing_details.email else None,
+                    customer_email or receipt_email or billing_details.email,
                     'phone':
                     billing_details.phone
                     if billing_details.phone else shipping_details['phone'],
@@ -123,23 +125,29 @@ class StripeWH_Handler:
 
             # Create order items from cart data
             if isinstance(order, tuple):
-                order = order[0]  # get_or_create returns (object, created)
+                # get_or_create returns (object, created)
+                order_object = order[0]
+                order_created = order[1]
 
             # Create order items if they don't exist
             if cart_data and 'items' in cart_data:
                 for item in cart_data['items']:
                     OrderItem.objects.get_or_create(
-                        order=order,
+                        order=order_object,
                         product_id=item['product_id'],
                         defaults={
                             'quantity': item['quantity'],
-                            'price': float(item['price'])
+                            'item_total': float(item['total_price'])
                         })
 
-            logger.info(f"Successfully processed order {order.order_number}")
-            success = self._send_confirmation_email(order)
-            return JsonResponse({'status': 'Successfully processed order'
-                                 if success else 'Error processing order'})
+            logger.info(
+                f"Successfully processed order {order_object.order_number}")
+            success = self._send_confirmation_email(order_object)
+            return JsonResponse({
+                'status':
+                'Successfully processed order'
+                if success else 'Error processing order'
+            })
 
         except Exception as e:
             logger.error(f"Error creating order: {e}")
