@@ -42,10 +42,11 @@ def stripe_webhook(request):
         'payment_intent.succeeded': wh_handler.handle_payment_intent_succeeded,
     }
 
-    # Get the event type and handle it
+    # Get the event type and corresponding handler
     event_type = event['type']
     logger.info(f'Event received: {event_type}')
     event_handler = event_map.get(event_type, wh_handler.handle_event)
+    # Call the handler for the event
     response = event_handler(event)
     logger.info(f'Webhook processed: {response}')
 
