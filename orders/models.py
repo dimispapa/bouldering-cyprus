@@ -7,7 +7,12 @@ import uuid
 
 class Order(models.Model):
     """Order model holding successful order details"""
-    order_number = models.CharField(max_length=32, null=False, editable=False)
+    order_number = models.CharField(max_length=32,
+                                    null=False,
+                                    editable=False,
+                                    unique=True,
+                                    default=uuid.uuid4().hex.upper(),
+                                    auto_created=True)
     first_name = models.CharField(max_length=50, null=False, blank=False)
     last_name = models.CharField(max_length=50, null=False, blank=False)
     email = models.EmailField(null=False, blank=False)
@@ -38,13 +43,7 @@ class Order(models.Model):
                                       default=0)
 
     class Meta:
-        ordering = ("-date_created", )
-
-    def _generate_order_number(self):
-        """
-        Generate a random, unique order number using UUID
-        """
-        return uuid.uuid4().hex.upper()
+        ordering = ("-date_created",)
 
     def update_total(self):
         """Update the order total, delivery cost and grand total"""
