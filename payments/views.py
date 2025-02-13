@@ -1,5 +1,4 @@
 import stripe
-import json
 import logging
 from django.urls import reverse
 from django.shortcuts import render, redirect
@@ -181,9 +180,10 @@ def checkout_success(request):
 
     try:
         # Simulate a failure in the normal checkout process
-        # if TEST_WEBHOOK_SUCCESS is True
-        if settings.TEST_WEBHOOK_SUCCESS:
-            logger.info("Simulating checkout failure for testing")
+        # if TEST_WEBHOOK_ORDER_HANDLING is True
+        if settings.TEST_WEBHOOK_ORDER_HANDLING:
+            logger.info("Simulating checkout failure for testing webhook "
+                        "handling")
             raise Exception("Simulated checkout failure")
 
         # Retrieve the payment intent
