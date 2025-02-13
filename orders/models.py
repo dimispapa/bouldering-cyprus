@@ -10,12 +10,10 @@ class Order(models.Model):
     order_number = models.CharField(max_length=32,
                                     null=False,
                                     editable=False,
-                                    unique=True,
-                                    default=uuid.uuid4().hex.upper(),
-                                    auto_created=True)
+                                    unique=True)
     first_name = models.CharField(max_length=50, null=False, blank=False)
     last_name = models.CharField(max_length=50, null=False, blank=False)
-    email = models.EmailField(null=False, blank=False)
+    email = models.EmailField(max_length=250, null=False, blank=False)
     phone = models.CharField(max_length=20, null=False, blank=False)
     address_line1 = models.CharField(max_length=250, null=False, blank=False)
     address_line2 = models.CharField(max_length=250, null=True, blank=True)
@@ -43,7 +41,22 @@ class Order(models.Model):
                                       default=0)
 
     class Meta:
-        ordering = ("-date_created",)
+        ordering = ("-date_created", )
+
+    def _generate_order_number(self):
+        """
+        Generate a random, unique order number using UUID
+        """
+        return uuid.uuid4().hex.upper()
+
+    def save(self, *args, **kwargs):
+        """
+        Override the save method to set the order number
+        if it hasn't been set yet
+        """
+        if not self.order_number:
+            self.order_number = self._generate_order_number()
+        super().save(*args, **kwargs)
 
     def update_total(self):
         """Update the order total, delivery cost and grand total"""
