@@ -7,10 +7,10 @@ Error: {{ payment_error }}
 Cart Details:
 {% if cart_items %}
 {% for item in cart_items %}
-{{ item.name }} - Quantity: {{ item.quantity }} - €{{ item.total_price }}
+{{ item.name }} - Quantity: {{ item.quantity }} - €{{ item.total_price|floatformat:2 }}
 {% endfor %}
 
-Cart Total: €{{ cart_total }}
+Cart Total: €{{ cart_total|floatformat:2 }}
 {% else %}
 No items found in cart.
 {% endif %}
