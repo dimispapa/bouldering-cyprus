@@ -97,4 +97,15 @@ h4 {
   .input-group {
     max-width: 500px;
   }
+}
+
+.img-thumbnail {
+  width: 100px;
+  height: 100px;
+  cursor: pointer;
+}
+
+.main-image {
+  width: 200px;
+  height: 200px;
 }/*# sourceMappingURL=shop.css.map */
