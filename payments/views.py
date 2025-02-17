@@ -106,7 +106,7 @@ def store_order_metadata(request):
                 stripe.PaymentIntent.modify(
                     payment_intent_id,
                     # Update payment intent amount to include delivery cost
-                    amount=grand_total * 100,
+                    amount=int(grand_total * 100),
                     metadata={
                         # Cart data using existing serialization method
                         'cart_data':
