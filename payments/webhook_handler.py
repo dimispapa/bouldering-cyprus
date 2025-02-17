@@ -95,11 +95,13 @@ class StripeWH_Handler:
                                 product_id=item['product_id'],
                                 quantity=item['quantity'],
                                 item_total=float(item['total_price']))
-                    # Send confirmation email
-                    self._send_confirmation_email(order)
+
                 else:
                     logger.info(
                         f"Webhook found existing order: {order.order_number}")
+
+                # Send confirmation email in any case
+                self._send_confirmation_email(order)
 
                 return JsonResponse({'status': 'success'})
 

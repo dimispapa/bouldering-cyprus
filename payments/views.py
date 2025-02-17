@@ -11,6 +11,8 @@ from orders.models import Order
 from cart.cart import Cart
 from cart.contexts import cart_summary
 from orders.models import OrderItem
+import time
+from django.db import IntegrityError
 
 # Configure logging
 logger = logging.getLogger(__name__)
@@ -270,6 +272,9 @@ def checkout_success(request):
 def create_order_from_payment(request, payment_intent):
     """Helper function to create an order from a payment intent
     and form data."""
+    max_retries = settings.ORDER_CREATION_RETRIES
+    retry_delay = settings.ORDER_CREATION_RETRY_DELAY
+
     try:
         logger.info("\n=== Starting Order Creation ===")
         logger.info(f"Payment Intent ID: {payment_intent.id}")
@@ -292,40 +297,72 @@ def create_order_from_payment(request, payment_intent):
         cart = Cart(request)
         cart_context = cart_summary(request)
 
-        # Try to get or create the order
-        order, created = Order.objects.get_or_create(
-            stripe_piid=payment_intent.id,
-            defaults={
-                'first_name': cleaned_data.get('first_name'),
-                'last_name': cleaned_data.get('last_name'),
-                'email': cleaned_data.get('email'),
-                'phone': cleaned_data.get('phone'),
-                'country': cleaned_data.get('country'),
-                'postal_code': cleaned_data.get('postal_code'),
-                'town_or_city': cleaned_data.get('town_or_city'),
-                'address_line1': cleaned_data.get('address_line1'),
-                'address_line2': cleaned_data.get('address_line2', ''),
-                'original_cart': cart.to_json(),
-                'order_total': cart_context['cart_total'],
-                'delivery_cost': cart_context['delivery_cost'],
-                'grand_total': cart_context['grand_total'],
-            }
-        )
+        # First, check if order already exists
+        existing_order = Order.objects.filter(
+            stripe_piid=payment_intent.id).first()
+        if existing_order:
+            logger.info("View handler found existing order immediately: "
+                        f"{existing_order.order_number}")
+            return existing_order
 
-        if created:
-            logger.info(f"View created new order: {order.order_number}")
-            # Create order items
-            for item in cart:
-                OrderItem.objects.create(
-                    order=order,
-                    product=item['product'],
-                    quantity=item['quantity'],
-                    item_total=item['total_price']
+        # If no order exists, wait briefly to give webhook priority
+        time.sleep(retry_delay)
+
+        for attempt in range(max_retries):
+            try:
+                # Check again after delay
+                existing_order = Order.objects.filter(
+                    stripe_piid=payment_intent.id).first()
+                if existing_order:
+                    logger.info("View handler found existing order after "
+                                f"delay: {existing_order.order_number}")
+                    return existing_order
+
+                # If still no order, create one
+                order = Order.objects.create(
+                    stripe_piid=payment_intent.id,
+                    first_name=cleaned_data.get('first_name'),
+                    last_name=cleaned_data.get('last_name'),
+                    email=cleaned_data.get('email'),
+                    phone=cleaned_data.get('phone'),
+                    country=cleaned_data.get('country'),
+                    postal_code=cleaned_data.get('postal_code'),
+                    town_or_city=cleaned_data.get('town_or_city'),
+                    address_line1=cleaned_data.get('address_line1'),
+                    address_line2=cleaned_data.get('address_line2', ''),
+                    original_cart=cart.to_json(),
+                    order_total=cart_context['cart_total'],
+                    delivery_cost=cart_context['delivery_cost'],
+                    grand_total=cart_context['grand_total'],
                 )
-        else:
-            logger.info(f"View found existing order: {order.order_number}")
 
-        return order
+                logger.info("View handler created new order: "
+                            f"{order.order_number}")
+
+                # Create order items
+                for item in cart:
+                    OrderItem.objects.create(
+                        order=order,
+                        product=item['product'],
+                        quantity=item['quantity'],
+                        item_total=item['total_price']
+                    )
+
+                return order
+
+            except IntegrityError as e:
+                if attempt < max_retries - 1:
+                    logger.info(f"Retry attempt {attempt + 1}: Order creation "
+                                "failed, waiting...")
+                    time.sleep(retry_delay)
+                else:
+                    logger.error("Max retries reached, checking one last time "
+                                 "for existing order")
+                    final_check = Order.objects.filter(
+                        stripe_piid=payment_intent.id).first()
+                    if final_check:
+                        return final_check
+                    raise e
 
     except Exception as e:
         logger.error(f"Error creating order: {str(e)}")
