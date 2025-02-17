@@ -11,6 +11,8 @@ from orders.models import Order
 from cart.cart import Cart
 from cart.contexts import cart_summary
 from orders.models import OrderItem
+import time
+from django.db import IntegrityError
 
 # Configure logging
 logger = logging.getLogger(__name__)
@@ -70,7 +72,7 @@ def checkout(request):
 def store_order_metadata(request):
     """Endpoint to store order data in PaymentIntent metadata and session."""
     try:
-        logger.info("\n=== Store Order Metadata Debug ===")
+        logger.info("\n=== Storing Order Metadata ===")
         logger.info(f"POST data: {request.POST}")
 
         form = OrderForm(request.POST)
@@ -84,6 +86,9 @@ def store_order_metadata(request):
             # Get cart from the session object and use its methods
             cart = Cart(request)
             cart_context = cart_summary(request)
+            order_total = cart_context['cart_total']
+            delivery_cost = cart_context['delivery_cost']
+            grand_total = cart_context['grand_total']
 
             # Get client secret
             client_secret = request.POST.get('stripe-client-secret')
@@ -102,13 +107,15 @@ def store_order_metadata(request):
                 # Update PaymentIntent with metadata
                 stripe.PaymentIntent.modify(
                     payment_intent_id,
+                    # Update payment intent amount to include delivery cost
+                    amount=int(grand_total * 100),
                     metadata={
                         # Cart data using existing serialization method
                         'cart_data':
                         cart.to_json(),
-                        'cart_total': cart_context['cart_total'],
-                        'delivery_cost': cart_context['delivery_cost'],
-                        'grand_total': cart_context['grand_total']
+                        'cart_total': order_total,
+                        'delivery_cost': delivery_cost,
+                        'grand_total': grand_total
                     },
                     # Shipping details
                     shipping={
@@ -166,7 +173,7 @@ def store_order_metadata(request):
 @require_GET
 def checkout_success(request):
     """Endpoint to handle successful checkout and create order."""
-    logger.info("\n=== Starting checkout_success ===")
+    logger.info("\n=== Starting Checkout Success ===")
 
     payment_intent_id = request.GET.get('payment_intent')
     redirect_status = request.GET.get('redirect_status')
@@ -201,14 +208,6 @@ def checkout_success(request):
                 logger.info(f"Email: {order.email}")
                 logger.info(f"Total: {order.grand_total}")
 
-                # Debug order items
-                items = order.items.all()
-                logger.info("\n=== Order Items ===")
-                logger.info(f"Number of items: {items.count()}")
-                for item in items:
-                    logger.info(f"- {item.quantity}x {item.product.name} "
-                                f"(€{item.item_total})")
-
                 # Clear the order form data from the session if not cleared
                 if 'order_form_data' in request.session:
                     del request.session['order_form_data']
@@ -238,7 +237,7 @@ def checkout_success(request):
                 )
                 response = render(request, 'payments/checkout_success.html',
                                   context)
-                logger.info("\n=== Template Rendered ===")
+                logger.info("\n=== Checkout Success Template Rendered ===")
                 logger.info(f"Response status code: {response.status_code}")
                 return response
 
@@ -265,8 +264,11 @@ def checkout_success(request):
 def create_order_from_payment(request, payment_intent):
     """Helper function to create an order from a payment intent
     and form data."""
+    max_retries = settings.ORDER_CREATION_RETRIES
+    retry_delay = settings.ORDER_CREATION_RETRY_DELAY
+
     try:
-        logger.info("\n=== Starting create_order_from_payment ===")
+        logger.info("\n=== Starting Order Creation ===")
         logger.info(f"Payment Intent ID: {payment_intent.id}")
 
         # Get the order form data
@@ -274,46 +276,85 @@ def create_order_from_payment(request, payment_intent):
         if not form_data:
             raise ValueError("Order form data not found in session")
 
-        # Create an order form instance
-        order_form = OrderForm(form_data)
+        # Create and validate the form
+        form = OrderForm(form_data)
+        if not form.is_valid():
+            logger.error(f"Form validation failed: {form.errors}")
+            raise ValueError(f"Invalid form data: {form.errors}")
 
-        # Validate form data
-        if not order_form.is_valid():
-            raise ValueError("Invalid form data")
+        # Get validated form data
+        cleaned_data = form.cleaned_data
 
-        # Check if order already exists for this payment intent
+        # Get cart data
+        cart = Cart(request)
+        cart_context = cart_summary(request)
+
+        # First, check if order already exists
         existing_order = Order.objects.filter(
             stripe_piid=payment_intent.id).first()
         if existing_order:
-            logger.info(f"Order {existing_order.order_number} already exists "
-                        f"for payment {payment_intent.id}")
+            logger.info("View handler found existing order immediately: "
+                        f"{existing_order.order_number}")
             return existing_order
-        # Create an order from the form data
-        order = order_form.save(commit=False)
 
-        # Set payment details
-        order.stripe_piid = payment_intent.id
+        # If no order exists, wait briefly to give webhook priority
+        time.sleep(retry_delay)
 
-        # Set cart details
-        cart = Cart(request)
-        cart_context = cart_summary(request)
-        order.original_cart = cart.to_json()
-        order.delivery_cost = cart_context["delivery_cost"]
-        order.order_total = cart_context["cart_total"]
-        order.grand_total = cart_context["grand_total"]
+        for attempt in range(max_retries):
+            try:
+                # Check again after delay
+                existing_order = Order.objects.filter(
+                    stripe_piid=payment_intent.id).first()
+                if existing_order:
+                    logger.info("View handler found existing order after "
+                                f"delay: {existing_order.order_number}")
+                    return existing_order
 
-        # Save the order
-        order.save()
+                # If still no order, create one
+                order = Order.objects.create(
+                    stripe_piid=payment_intent.id,
+                    first_name=cleaned_data.get('first_name'),
+                    last_name=cleaned_data.get('last_name'),
+                    email=cleaned_data.get('email'),
+                    phone=cleaned_data.get('phone'),
+                    country=cleaned_data.get('country'),
+                    postal_code=cleaned_data.get('postal_code'),
+                    town_or_city=cleaned_data.get('town_or_city'),
+                    address_line1=cleaned_data.get('address_line1'),
+                    address_line2=cleaned_data.get('address_line2', ''),
+                    original_cart=cart.to_json(),
+                    order_total=cart_context['cart_total'],
+                    delivery_cost=cart_context['delivery_cost'],
+                    grand_total=cart_context['grand_total'],
+                )
 
-        # Create order items from cart
-        for item in cart:
-            OrderItem.objects.create(
-                order=order,
-                product=item['product'],
-                quantity=item['quantity'],
-            )
-        logger.info(f"Order created: {order.order_number}")
-        return order
+                logger.info("View handler created new order: "
+                            f"{order.order_number}")
+
+                # Create order items
+                for item in cart:
+                    OrderItem.objects.create(
+                        order=order,
+                        product=item['product'],
+                        quantity=item['quantity'],
+                        item_total=item['total_price']
+                    )
+
+                return order
+
+            except IntegrityError as e:
+                if attempt < max_retries - 1:
+                    logger.info(f"Retry attempt {attempt + 1}: Order creation "
+                                "failed, waiting...")
+                    time.sleep(retry_delay)
+                else:
+                    logger.error("Max retries reached, checking one last time "
+                                 "for existing order")
+                    final_check = Order.objects.filter(
+                        stripe_piid=payment_intent.id).first()
+                    if final_check:
+                        return final_check
+                    raise e
 
     except Exception as e:
         logger.error(f"Error creating order: {str(e)}")
