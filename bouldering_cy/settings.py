@@ -123,7 +123,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Email configuration
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.sendgrid.net'
-EMAIL_PORT = 465
+EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'apikey'
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_KEY")
@@ -132,7 +132,11 @@ SERVER_EMAIL = os.environ.get("DEFAULT_EMAIL")
 
 if not PRODUCTION:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-    EMAIL_PORT = 587
+
+print(f"PRODUCTION setting is: {PRODUCTION}")
+print(f"EMAIL_BACKEND being used: {EMAIL_BACKEND}")
+print(f"SENDGRID API KEY exists: {'EMAIL_HOST_KEY' in os.environ}")
+print(f"DEFAULT_EMAIL exists: {'DEFAULT_EMAIL' in os.environ}")
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
