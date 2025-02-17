@@ -208,14 +208,6 @@ def checkout_success(request):
                 logger.info(f"Email: {order.email}")
                 logger.info(f"Total: {order.grand_total}")
 
-                # Debug order items
-                items = order.items.all()
-                logger.info("\n=== Order Items ===")
-                logger.info(f"Number of items: {items.count()}")
-                for item in items:
-                    logger.info(f"- {item.quantity}x {item.product.name} "
-                                f"(€{item.item_total})")
-
                 # Clear the order form data from the session if not cleared
                 if 'order_form_data' in request.session:
                     del request.session['order_form_data']
