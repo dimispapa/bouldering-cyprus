@@ -70,7 +70,7 @@ def checkout(request):
 def store_order_metadata(request):
     """Endpoint to store order data in PaymentIntent metadata and session."""
     try:
-        logger.info("\n=== Store Order Metadata Debug ===")
+        logger.info("\n=== Storing Order Metadata ===")
         logger.info(f"POST data: {request.POST}")
 
         form = OrderForm(request.POST)
@@ -166,7 +166,7 @@ def store_order_metadata(request):
 @require_GET
 def checkout_success(request):
     """Endpoint to handle successful checkout and create order."""
-    logger.info("\n=== Starting checkout_success ===")
+    logger.info("\n=== Starting Checkout Success ===")
 
     payment_intent_id = request.GET.get('payment_intent')
     redirect_status = request.GET.get('redirect_status')
@@ -238,7 +238,7 @@ def checkout_success(request):
                 )
                 response = render(request, 'payments/checkout_success.html',
                                   context)
-                logger.info("\n=== Template Rendered ===")
+                logger.info("\n=== Checkout Success Template Rendered ===")
                 logger.info(f"Response status code: {response.status_code}")
                 return response
 
@@ -266,7 +266,7 @@ def create_order_from_payment(request, payment_intent):
     """Helper function to create an order from a payment intent
     and form data."""
     try:
-        logger.info("\n=== Starting create_order_from_payment ===")
+        logger.info("\n=== Starting Order Creation ===")
         logger.info(f"Payment Intent ID: {payment_intent.id}")
 
         # Get the order form data
@@ -274,45 +274,52 @@ def create_order_from_payment(request, payment_intent):
         if not form_data:
             raise ValueError("Order form data not found in session")
 
-        # Create an order form instance
-        order_form = OrderForm(form_data)
+        # Create and validate the form
+        form = OrderForm(form_data)
+        if not form.is_valid():
+            logger.error(f"Form validation failed: {form.errors}")
+            raise ValueError(f"Invalid form data: {form.errors}")
 
-        # Validate form data
-        if not order_form.is_valid():
-            raise ValueError("Invalid form data")
+        # Get validated form data
+        cleaned_data = form.cleaned_data
 
-        # Check if order already exists for this payment intent
-        existing_order = Order.objects.filter(
-            stripe_piid=payment_intent.id).first()
-        if existing_order:
-            logger.info(f"Order {existing_order.order_number} already exists "
-                        f"for payment {payment_intent.id}")
-            return existing_order
-        # Create an order from the form data
-        order = order_form.save(commit=False)
-
-        # Set payment details
-        order.stripe_piid = payment_intent.id
-
-        # Set cart details
+        # Get cart data
         cart = Cart(request)
         cart_context = cart_summary(request)
-        order.original_cart = cart.to_json()
-        order.delivery_cost = cart_context["delivery_cost"]
-        order.order_total = cart_context["cart_total"]
-        order.grand_total = cart_context["grand_total"]
 
-        # Save the order
-        order.save()
+        # Try to get or create the order
+        order, created = Order.objects.get_or_create(
+            stripe_piid=payment_intent.id,
+            defaults={
+                'first_name': cleaned_data.get('first_name'),
+                'last_name': cleaned_data.get('last_name'),
+                'email': cleaned_data.get('email'),
+                'phone': cleaned_data.get('phone'),
+                'country': cleaned_data.get('country'),
+                'postal_code': cleaned_data.get('postal_code'),
+                'town_or_city': cleaned_data.get('town_or_city'),
+                'address_line1': cleaned_data.get('address_line1'),
+                'address_line2': cleaned_data.get('address_line2', ''),
+                'original_cart': cart.to_json(),
+                'order_total': cart_context['cart_total'],
+                'delivery_cost': cart_context['delivery_cost'],
+                'grand_total': cart_context['grand_total'],
+            }
+        )
 
-        # Create order items from cart
-        for item in cart:
-            OrderItem.objects.create(
-                order=order,
-                product=item['product'],
-                quantity=item['quantity'],
-            )
-        logger.info(f"Order created: {order.order_number}")
+        if created:
+            logger.info(f"View created new order: {order.order_number}")
+            # Create order items
+            for item in cart:
+                OrderItem.objects.create(
+                    order=order,
+                    product=item['product'],
+                    quantity=item['quantity'],
+                    item_total=item['total_price']
+                )
+        else:
+            logger.info(f"View found existing order: {order.order_number}")
+
         return order
 
     except Exception as e:
