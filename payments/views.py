@@ -208,17 +208,8 @@ def checkout_success(request):
                 logger.info(f"Email: {order.email}")
                 logger.info(f"Total: {order.grand_total}")
 
-                # Clear the order form data from the session if not cleared
-                if 'order_form_data' in request.session:
-                    del request.session['order_form_data']
-
-                # Clear the cart
-                cart = Cart(request)
-                cart.clear()
-                if 'cart' in request.session:
-                    del request.session['cart']
-                    request.session.modified = True
-                logger.info("Cart cleared from session")
+                # Clear the session data
+                clear_session_data(request)
 
                 messages.success(
                     request, f'Order successfully processed! '
@@ -359,3 +350,19 @@ def create_order_from_payment(request, payment_intent):
     except Exception as e:
         logger.error(f"Error creating order: {str(e)}")
         raise e
+
+
+def clear_session_data(request):
+    """Clear the order form data and cart from the session."""
+    # Clear the order form data from the session if not cleared
+    if 'order_form_data' in request.session:
+        del request.session['order_form_data']
+    logger.info("Order form data cleared from session")
+
+    # Clear the cart
+    cart = Cart(request)
+    cart.clear()
+    if 'cart' in request.session:
+        del request.session['cart']
+        request.session.modified = True
+    logger.info("Cart cleared from session")
