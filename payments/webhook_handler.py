@@ -3,10 +3,9 @@ import stripe
 from django.conf import settings
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
-from orders.models import Order, OrderItem
 import json
 from django.http import JsonResponse
-
+from orders.models import Order, OrderItem
 # Configure logging
 logger = logging.getLogger(__name__)
 
@@ -106,7 +105,8 @@ class StripeWH_Handler:
                 return JsonResponse({'status': 'success'})
 
             except Exception as e:
-                logger.error(f"Error in order creation: {str(e)}")
+                logger.error("Error in order creation in webhook handler:"
+                             f" {str(e)}")
                 raise e
 
         except Exception as e:

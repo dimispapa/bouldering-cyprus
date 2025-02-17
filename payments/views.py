@@ -187,8 +187,8 @@ def checkout_success(request):
 
     try:
         # Simulate a failure in the normal checkout process
-        # if TEST_WEBHOOK_ORDER_HANDLING is True
-        if settings.TEST_WEBHOOK_ORDER_HANDLING:
+        # if TEST_WEBHOOK_ORDER_HANDLER is True
+        if settings.TEST_WEBHOOK_ORDER_HANDLER:
             logger.info("Simulating checkout failure for testing webhook "
                         "handling")
             raise Exception("Simulated checkout failure")
@@ -233,7 +233,8 @@ def checkout_success(request):
                 return response
 
             except Exception as e:
-                logger.error(f"Error in Order Creation: {str(e)}")
+                logger.error("Error in Order Creation in view handler:"
+                             f" {str(e)}")
                 raise e
 
         else:
