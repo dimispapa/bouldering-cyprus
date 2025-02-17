@@ -230,8 +230,7 @@ STRIPE_CURRENCY = "eur"
 STRIPE_WEBHOOK_SECRET = os.environ.get("STRIPE_WEBHOOK_SECRET")
 ORDER_CREATION_RETRIES = 3
 ORDER_CREATION_RETRY_DELAY = 3  # seconds
-if not PRODUCTION:
-    TEST_WEBHOOK_ORDER_HANDLER = True
+TEST_WEBHOOK_ORDER_HANDLER = os.environ.get("TEST_WEBHOOK_ORDER_HANDLER", "False").lower() == "true"
 
 # Sentry settings
 sentry_sdk.init(
