@@ -6,6 +6,7 @@ from django.template.loader import render_to_string
 import json
 from django.http import JsonResponse
 from orders.models import Order, OrderItem
+
 # Configure logging
 logger = logging.getLogger(__name__)
 
