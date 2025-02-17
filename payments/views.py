@@ -84,6 +84,9 @@ def store_order_metadata(request):
             # Get cart from the session object and use its methods
             cart = Cart(request)
             cart_context = cart_summary(request)
+            order_total = cart_context['cart_total']
+            delivery_cost = cart_context['delivery_cost']
+            grand_total = cart_context['grand_total']
 
             # Get client secret
             client_secret = request.POST.get('stripe-client-secret')
@@ -102,13 +105,15 @@ def store_order_metadata(request):
                 # Update PaymentIntent with metadata
                 stripe.PaymentIntent.modify(
                     payment_intent_id,
+                    # Update payment intent amount to include delivery cost
+                    amount=grand_total * 100,
                     metadata={
                         # Cart data using existing serialization method
                         'cart_data':
                         cart.to_json(),
-                        'cart_total': cart_context['cart_total'],
-                        'delivery_cost': cart_context['delivery_cost'],
-                        'grand_total': cart_context['grand_total']
+                        'cart_total': order_total,
+                        'delivery_cost': delivery_cost,
+                        'grand_total': grand_total
                     },
                     # Shipping details
                     shipping={
