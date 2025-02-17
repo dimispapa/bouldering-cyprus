@@ -64,12 +64,12 @@
           <div class="d-flex flex-wrap">
             <!-- Main Product Image as Large Thumbnail -->
             {% if product.image %}
-              <img src="{{ product.image.url }}" alt="{{ product.name }}" class="main-image img-thumbnail gallery-thumbnail" data-bs-toggle="modal" data-bs-target="#galleryModal" data-bs-image="{{ product.image.url }}" />
+              <img src="{{ product.image.url }}" alt="{{ product.name }}" class="main-image img-thumbnail gallery-thumbnail" data-bs-toggle="modal" data-bs-target="#galleryModal" />
             {% endif %}
 
             <!-- Other Gallery Images -->
             {% for image in product.gallery_images.all %}
-              <img src="{{ image.image.url }}" alt="Gallery Image" class="img-thumbnail gallery-thumbnail" data-bs-toggle="modal" data-bs-target="#galleryModal" data-bs-image="{{ image.image.url }}" />
+              <img src="{{ image.image.url }}" alt="Gallery Image" class="img-thumbnail gallery-thumbnail" data-bs-toggle="modal" data-bs-target="#galleryModal" />
             {% empty %}
               <p>No additional gallery images available.</p>
             {% endfor %}

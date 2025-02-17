@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document
     .querySelectorAll('.gallery-thumbnail')
     .forEach((thumbnail, index) => {
-      const imageUrl = thumbnail.getAttribute('data-bs-image');
+      const imageUrl = thumbnail.src;
       if (isValidImageUrl(imageUrl)) {
         images.push(imageUrl);
       }
