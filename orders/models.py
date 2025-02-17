@@ -25,20 +25,21 @@ class Order(models.Model):
     stripe_piid = models.CharField(max_length=255,
                                    null=False,
                                    blank=False,
-                                   default="")
-    original_cart = models.TextField(null=False, blank=False, default="")
+                                   # enforce uniqueness, avoid duplicate orders
+                                   unique=True,
+                                   # for better query performance
+                                   db_index=True)
+
+    original_cart = models.TextField(null=False, blank=False)
     delivery_cost = models.DecimalField(max_digits=6,
                                         decimal_places=2,
-                                        null=False,
-                                        default=0)
+                                        null=False)
     order_total = models.DecimalField(max_digits=10,
                                       decimal_places=2,
-                                      null=False,
-                                      default=0)
+                                      null=False)
     grand_total = models.DecimalField(max_digits=10,
                                       decimal_places=2,
-                                      null=False,
-                                      default=0)
+                                      null=False)
 
     class Meta:
         ordering = ("-date_created", )
