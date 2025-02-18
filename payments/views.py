@@ -77,6 +77,7 @@ def store_order_metadata(request):
 
         form = OrderForm(request.POST)
         if form.is_valid():
+            # Get the cleaned form data
             form_data = form.cleaned_data
             logger.info(f"Form data: {form_data}")
 
@@ -115,7 +116,8 @@ def store_order_metadata(request):
                         cart.to_json(),
                         'cart_total': order_total,
                         'delivery_cost': delivery_cost,
-                        'grand_total': grand_total
+                        'grand_total': grand_total,
+                        'order_form_data': form_data
                     },
                     # Shipping details
                     shipping={
@@ -264,18 +266,12 @@ def create_order_from_payment(request, payment_intent):
         logger.info(f"Payment Intent ID: {payment_intent.id}")
 
         # Get the order form data
-        form_data = request.session.get('order_form_data')
+        form_data = (request.session.get('order_form_data')
+                     if request.session.get('order_form_data')
+                     else payment_intent.metadata.get('order_form_data'))
         if not form_data:
-            raise ValueError("Order form data not found in session")
-
-        # Create and validate the form
-        form = OrderForm(form_data)
-        if not form.is_valid():
-            logger.error(f"Form validation failed: {form.errors}")
-            raise ValueError(f"Invalid form data: {form.errors}")
-
-        # Get validated form data
-        cleaned_data = form.cleaned_data
+            raise ValueError("Order form data not found in session or "
+                             "payment intent metadata")
 
         # Get cart data
         cart = Cart(request)
@@ -305,15 +301,15 @@ def create_order_from_payment(request, payment_intent):
                 # If still no order, create one
                 order = Order.objects.create(
                     stripe_piid=payment_intent.id,
-                    first_name=cleaned_data.get('first_name'),
-                    last_name=cleaned_data.get('last_name'),
-                    email=cleaned_data.get('email'),
-                    phone=cleaned_data.get('phone'),
-                    country=cleaned_data.get('country'),
-                    postal_code=cleaned_data.get('postal_code'),
-                    town_or_city=cleaned_data.get('town_or_city'),
-                    address_line1=cleaned_data.get('address_line1'),
-                    address_line2=cleaned_data.get('address_line2', ''),
+                    first_name=form_data.get('first_name'),
+                    last_name=form_data.get('last_name'),
+                    email=form_data.get('email'),
+                    phone=form_data.get('phone'),
+                    country=form_data.get('country'),
+                    postal_code=form_data.get('postal_code'),
+                    town_or_city=form_data.get('town_or_city'),
+                    address_line1=form_data.get('address_line1'),
+                    address_line2=form_data.get('address_line2', ''),
                     original_cart=cart.to_json(),
                     order_total=cart_context['cart_total'],
                     delivery_cost=cart_context['delivery_cost'],
