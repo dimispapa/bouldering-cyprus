@@ -3,12 +3,11 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from shop.models import Product
 from .cart import Cart
-from django.views.decorators.http import require_POST, require_GET
+from django.views.decorators.http import require_GET
 
 logger = logging.getLogger(__name__)
 
 
-@require_POST
 def cart_add(request, product_id):
     """Add a product to the cart."""
     # Initialize the cart
@@ -19,7 +18,8 @@ def cart_add(request, product_id):
     quantity = int(request.POST.get('quantity', 1))
 
     # Calculate potential new total (current cart quantity + new quantity)
-    current_qty = cart.cart[str(product.id)]["quantity"]
+    # Get current quantity, default to 0 if product not in cart
+    current_qty = cart.cart.get(str(product.id), {}).get('quantity', 0)
     potential_total = current_qty + quantity
 
     # Check if the potential total exceeds available stock
