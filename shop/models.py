@@ -1,6 +1,7 @@
 import os
 from django.db import models
 from django.utils.text import slugify
+from django.conf import settings
 
 
 class Product(models.Model):
@@ -20,6 +21,25 @@ class Product(models.Model):
     def is_in_stock(self):
         return self.stock > 0
 
+    def is_low_stock(self, threshold=settings.LOW_STOCK_THRESHOLD):
+        """Check if product is running low on stock"""
+        return 0 < self.stock <= threshold
+
+    def has_stock(self, quantity=1):
+        """Check if requested quantity is available"""
+        return self.stock >= quantity
+
+    def get_stock_status(self):
+        """Returns stock status message and CSS class"""
+        if self.stock == 0:
+            return {'message': 'Out of Stock', 'css_class': 'text-danger'}
+        elif self.is_low_stock():
+            return {
+                'message': f'Only {self.stock} left!',
+                'css_class': 'text-warning'
+            }
+        return {'message': 'In Stock', 'css_class': 'text-success'}
+
 
 def product_gallery_upload_path(instance, filename):
     """
@@ -32,9 +52,9 @@ def product_gallery_upload_path(instance, filename):
 
 
 class GalleryImage(models.Model):
-    product = models.ForeignKey(
-        Product, related_name="gallery_images", on_delete=models.CASCADE
-    )
+    product = models.ForeignKey(Product,
+                                related_name="gallery_images",
+                                on_delete=models.CASCADE)
     image = models.ImageField(upload_to=product_gallery_upload_path)
 
     def __str__(self):

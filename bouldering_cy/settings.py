@@ -236,6 +236,9 @@ ORDER_CREATION_RETRIES = 3
 ORDER_CREATION_RETRY_DELAY = 3  # seconds
 TEST_WEBHOOK_ORDER_HANDLER = os.environ.get("TEST_WEBHOOK_ORDER_HANDLER", "False").lower() == "true"
 
+# Stock Validation
+LOW_STOCK_THRESHOLD = 10
+
 # Sentry settings
 sentry_sdk.init(
     dsn=
