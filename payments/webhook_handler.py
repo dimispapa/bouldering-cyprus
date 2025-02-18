@@ -6,6 +6,7 @@ from django.template.loader import render_to_string
 import json
 from django.http import JsonResponse
 from orders.models import Order, OrderItem
+from shop.models import Product
 
 # Configure logging
 logger = logging.getLogger(__name__)
@@ -50,6 +51,17 @@ class StripeWH_Handler:
             logger.info("\n=== Webhook Payment Intent Processing ===")
             logger.info(f"Payment Intent ID: {intent.id}")
 
+            # Verify stock one last time before creating order
+            cart_data = json.loads(intent.metadata.get('cart_data', '{}'))
+            for item in cart_data.get('items', []):
+                product = Product.objects.get(id=item['product_id'])
+                if not product.has_stock(item['quantity']):
+                    logger.error(
+                        f"Insufficient stock for product {product.id}")
+                    return JsonResponse(
+                        {'error': 'Some items are no longer available'},
+                        status=400)
+
             # Try to get or create the order
             try:
                 order, created = Order.objects.get_or_create(
@@ -85,16 +97,23 @@ class StripeWH_Handler:
 
                 if created:
                     logger.info(f"Webhook created order: {order.order_number}")
-                    # Create order items
+                    # Create order items and update stock
                     cart_data = json.loads(
                         intent.metadata.get('cart_data', '{}'))
-                    if 'items' in cart_data:
-                        for item in cart_data['items']:
-                            OrderItem.objects.create(
-                                order=order,
-                                product_id=item['product_id'],
-                                quantity=item['quantity'],
-                                item_total=float(item['total_price']))
+                    # Iterate over items in cart
+                    for item in cart_data['items']:
+                        product = Product.objects.get(id=item['product_id'])
+                        # Create order item
+                        OrderItem.objects.create(order=order,
+                                                 product=product,
+                                                 quantity=item['quantity'],
+                                                 item_total=float(
+                                                     item['total_price']))
+                        # Update product stock
+                        product.stock -= item['quantity']
+                        product.save()
+                        logger.info(f"Updated stock for {product.name}: "
+                                    f"new stock level = {product.stock}")
 
                 else:
                     logger.info(

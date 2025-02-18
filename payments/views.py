@@ -1,5 +1,7 @@
 import stripe
 import logging
+import time
+import json
 from django.urls import reverse
 from django.shortcuts import render, redirect
 from django.conf import settings
@@ -11,8 +13,8 @@ from orders.models import Order
 from cart.cart import Cart
 from cart.contexts import cart_summary
 from orders.models import OrderItem
-import time
 from django.db import IntegrityError
+from shop.models import Product
 
 # Configure logging
 logger = logging.getLogger(__name__)
@@ -50,9 +52,19 @@ def checkout(request):
     cart = Cart(request)
     if not len(cart):
         messages.error(request, "Your cart is empty.")
-        return redirect(reverse("cart_detail"))
+        return redirect("cart_detail")
 
-    # Create a PaymentIntent
+    # Validate stock before proceeding
+    invalid_items = cart.validate_stock()
+    if invalid_items:
+        for item in invalid_items:
+            messages.error(
+                request,
+                f"Only {item['available']} units available for {item['name']}"
+            )
+        return redirect('cart_detail')
+
+    # Proceed with checkout
     intent = create_payment_intent(cart)
 
     # Render the checkout page with cart and order form objects
@@ -277,6 +289,19 @@ def create_order_from_payment(request, payment_intent):
         cart = Cart(request)
         cart_context = cart_summary(request)
 
+        # Verify stock one last time before creating order
+        cart_data = json.loads(payment_intent.metadata.get('cart_data', '{}'))
+        for item in cart_data.get('items', []):
+            product = Product.objects.get(id=item['product_id'])
+            if not product.has_stock(item['quantity']):
+                logger.error(f"Insufficient stock for product {product.id}")
+                messages.error(
+                    request,
+                    f"Sorry, only {product.stock} units available for "
+                    f"{product.name}"
+                )
+                return redirect("cart_detail")
+
         # First, check if order already exists
         existing_order = Order.objects.filter(
             stripe_piid=payment_intent.id).first()
@@ -319,14 +344,24 @@ def create_order_from_payment(request, payment_intent):
                 logger.info("View handler created new order: "
                             f"{order.order_number}")
 
-                # Create order items
+                # Create order items and update stock
                 for item in cart:
+                    product = item['product']
+                    quantity = item['quantity']
+
+                    # Create order item
                     OrderItem.objects.create(
                         order=order,
-                        product=item['product'],
-                        quantity=item['quantity'],
+                        product=product,
+                        quantity=quantity,
                         item_total=item['total_price']
                     )
+
+                    # Update product stock
+                    product.stock -= quantity
+                    product.save()
+                    logger.info(f"Updated stock for {product.name}: "
+                                f"new stock level = {product.stock}")
 
                 return order
 
