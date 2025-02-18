@@ -8,8 +8,7 @@ class Cart:
     def __init__(self, request):
         """Initialize the cart."""
         self.session = request.session
-        cart = self.session.get(settings.CART_SESSION_ID, {})
-        self.cart = cart
+        self.cart = self.session.get(settings.CART_SESSION_ID, {})
 
     def add(self, product, quantity=1, update_quantity=False):
         """
@@ -27,6 +26,8 @@ class Cart:
         else:
             self.cart[product_id]["quantity"] += quantity
         self.save()
+        # Return the new quantity
+        return self.cart[product_id]["quantity"]
 
     def save(self):
         """Mark the session as modified to ensure it is saved."""
@@ -95,3 +96,24 @@ class Cart:
     def to_json(self):
         """Return a JSON string representation of the cart."""
         return json.dumps(self.serialize())
+
+    def has_invalid_items(self):
+        """Check if any items in cart have invalid quantities"""
+        for item in self:
+            product = item['product']
+            if not product.has_stock(item['quantity']):
+                return True
+        return False
+
+    def validate_stock(self):
+        """Return list of items with stock issues"""
+        invalid_items = []
+        for item in self:
+            product = item['product']
+            if not product.has_stock(item['quantity']):
+                invalid_items.append({
+                    'name': product.name,
+                    'requested': item['quantity'],
+                    'available': product.stock
+                })
+        return invalid_items
