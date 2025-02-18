@@ -1,28 +1,47 @@
+import logging
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from shop.models import Product
 from .cart import Cart
+from django.views.decorators.http import require_POST, require_GET
+
+logger = logging.getLogger(__name__)
 
 
+@require_POST
 def cart_add(request, product_id):
     """Add a product to the cart."""
-    product = get_object_or_404(Product, id=product_id)
+    # Initialize the cart
     cart = Cart(request)
+    # Get the product added to the cart
+    product = get_object_or_404(Product, id=product_id)
+    # Get the post quantity
+    quantity = int(request.POST.get('quantity', 1))
 
-    if request.method == "POST":
-        try:
-            quantity = int(request.POST.get("quantity"))
-        except ValueError:
-            quantity = 1
-        cart.add(product=product, quantity=quantity)
-        messages.success(
-            request,
-            f"{product.name} was added to your cart.",
-            extra_tags="Cart updated",
-        )
-    return redirect("cart_detail")
+    # Check current cart quantity
+    total_qty = cart.add(product=product, quantity=quantity)
+
+    # Check if the product has stock
+    if not product.has_stock(total_qty):
+        logger.warning(f'Product {product.name} has insufficient stock. '
+                       f'A user tried to add {quantity} units')
+        if product.stock == 0:
+            messages.error(request, f'Sorry, {product.name} is out of stock')
+        else:
+            messages.error(
+                request, f'Sorry, only {product.stock} units available '
+                f'for {product.name}')
+        return redirect('shop')
+
+    messages.success(
+        request,
+        f"{product.name} was added to your cart.",
+        extra_tags="Cart updated",
+    )
+    return redirect('cart_detail')
 
 
+@require_POST
 def cart_remove(request, product_id):
     """Remove a product from the cart."""
     product = get_object_or_404(Product, id=product_id)
@@ -36,12 +55,14 @@ def cart_remove(request, product_id):
     return redirect("cart_detail")
 
 
+@require_GET
 def cart_detail(request):
     """Display the cart's contents."""
     cart = Cart(request)
     return render(request, "cart/cart_detail.html", {"cart": cart})
 
 
+@require_POST
 def cart_update(request):
     """Process the cart to either update quantities or checkout."""
     cart = Cart(request)
