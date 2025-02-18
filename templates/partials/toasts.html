@@ -5,7 +5,15 @@
         <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
           <div class="toast-header">
             <!-- Use message.tags (like success, info, warning, error) for the header -->
-            <strong class="me-auto">
+            <strong class="me-auto {% if message.tags == 'error' %}
+                text-danger
+              {% elif message.tags == 'warning' %}
+                text-warning
+              {% elif message.tags == 'info' %}
+                text-info
+              {% elif message.tags == 'success' %}
+                text-success
+              {% endif %}">
               {% if message.extra_tags %}
                 {{ message.extra_tags }}
               {% else %}
