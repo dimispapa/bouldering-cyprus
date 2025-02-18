@@ -2,28 +2,17 @@
   <div class="toast-container position-fixed bottom-0 end-0 p-3">
     {% if messages %}
       {% for message in messages %}
-        <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-          <div class="toast-header">
-            <!-- Use message.tags (like success, info, warning, error) for the header -->
-            <strong class="me-auto {% if message.tags == 'error' %}
-                text-danger
-              {% elif message.tags == 'warning' %}
-                text-warning
-              {% elif message.tags == 'info' %}
-                text-info
-              {% elif message.tags == 'success' %}
-                text-success
-              {% endif %}">
-              {% if message.extra_tags %}
-                {{ message.extra_tags }}
-              {% else %}
-                {{ message.tags|capfirst }}
-              {% endif %}
+        <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
+          <div class="toast-header {{ message.tags }}">
+            <strong class="me-auto">
+              {{ message.extra_tags|default:message.tags|capfirst|default:"Message"|safe }}
             </strong>
             <small class="text-muted">Just now</small>
             <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
           </div>
-          <div class="toast-body">{{ message }}</div>
+          <div class="toast-body">
+            {{ message }}
+          </div>
         </div>
       {% endfor %}
     {% endif %}

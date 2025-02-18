@@ -53,4 +53,8 @@
     @include for-size(phone-sm, down) {
         font-size: $xs-font;
     }
+    // Hidden class
+    &.hidden {
+        display: none;
+    }
 }

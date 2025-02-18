@@ -60,7 +60,9 @@
                         <a href="{% url 'cart_remove' item.product.id %}" class="button-remove" title="Remove"><i class="fa-solid fa-trash"></i></a>
                       </td>
                       <td>
-                        <div class="alert alert-{{ item.product.get_stock_status.css_class }}" role="alert">{{ item.product.get_stock_status.message }}</div>
+                        <div class="{{ item.product.get_stock_status.css_class }}" role="alert">
+                          <small>{{ item.product.get_stock_status.message }}</small>
+                        </div>
                       </td>
                     </tr>
                   {% endfor %}
