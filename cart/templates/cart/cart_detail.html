@@ -59,6 +59,11 @@
                       <td>
                         <a href="{% url 'cart_remove' item.product.id %}" class="button-remove" title="Remove"><i class="fa-solid fa-trash"></i></a>
                       </td>
+                      <td>
+                        <div class="{{ item.product.get_stock_status.css_class }}" role="alert">
+                          <small>{{ item.product.get_stock_status.message }}</small>
+                        </div>
+                      </td>
                     </tr>
                   {% endfor %}
                 </tbody>
@@ -71,10 +76,18 @@
               <h4 class="mb-2">Cart Total: € {{ cart.cart_total }}</h4>
               <p class="text-muted mb-3">* Delivery costs will be calculated at checkout</p>
               <!-- Checkout Button -->
-              <button type="submit" name="action" value="checkout" class="button-checkout">
-                <i class="fa-solid fa-credit-card"></i> Checkout
-                <small class="checkout-subscript"><i class="fa-solid fa-lock"></i> Secure</small>
-              </button>
+              {% if cart.has_invalid_items %}
+                <div class="alert alert-danger" role="alert">Some items in your cart are no longer available in the requested quantity. Please update your cart before proceeding to checkout.</div>
+                <button type="submit" name="action" value="checkout" class="button-checkout hidden" disabled>
+                  <i class="fa-solid fa-credit-card"></i> Checkout
+                  <small class="checkout-subscript"><i class="fa-solid fa-lock"></i> Secure</small>
+                </button>
+              {% else %}
+                <button type="submit" name="action" value="checkout" class="button-checkout">
+                  <i class="fa-solid fa-credit-card"></i> Checkout
+                  <small class="checkout-subscript"><i class="fa-solid fa-lock"></i> Secure</small>
+                </button>
+              {% endif %}
             </div>
           </form>
         {% else %}

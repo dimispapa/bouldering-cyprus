@@ -10,6 +10,9 @@
 {% endblock %}
 
 {% block content %}
+  <!-- Include Toast for messages -->
+  {% include 'partials/toasts.html' %}
+
   <!-- Hero Image -->
   <div id="hero-image"></div>
 
@@ -26,36 +29,32 @@
           <!-- Product Price -->
           <h2>€{{ product.price }}</h2>
           <!-- Product Stock -->
-          {% if product.stock > 0 %}
-            <p>
-              <strong>In Stock</strong>
-            </p>
-          {% else %}
-            <p>
-              <strong>Out of Stock</strong>
-            </p>
-          {% endif %}
-          <!-- Quantity Selector & Add to Cart -->
-          <div class="d-flex align-items-center mt-3 p-1">
-            <form action="{% url 'cart_add' product.id %}" method="post" class="w-100">
-              {% csrf_token %}
-              <div class="input-group">
-                <!-- Quantity Input -->
-                <label for="quantity-{{ product.id }}" class="input-group-text">Qty</label>
-                <input type="number" id="quantity-{{ product.id }}" name="quantity" class="form-control me-3" value="1" min="1" />
-
-                <!-- Add to Cart Button -->
-                <button type="submit" class="button-small">
-                  <!-- Cart Icon -->
-                  <i class="fas fa-shopping-cart"></i>
-                  <!-- Plus Icon for Small Screens -->
-                  <i class="fa-solid fa-plus d-inline d-lg-none"></i>
-                  <!-- Text for Larger Screens -->
-                  <span class="d-none d-lg-inline">Add to Cart</span>
-                </button>
-              </div>
-            </form>
+          <div class="{{ product.get_stock_status.css_class }}" role="alert">
+            <strong>{{ product.get_stock_status.message }}</strong>
           </div>
+          {% if product.is_in_stock %}
+            <!-- Quantity Selector & Add to Cart -->
+            <div class="d-flex align-items-center mt-3 p-1">
+              <form action="{% url 'cart_add' product.id %}" method="post" class="w-100">
+                {% csrf_token %}
+                <div class="input-group">
+                  <!-- Quantity Input -->
+                  <label for="quantity-{{ product.id }}" class="input-group-text">Qty</label>
+                  <input type="number" id="quantity-{{ product.id }}" name="quantity" class="form-control me-3" value="1" min="1" />
+
+                  <!-- Add to Cart Button -->
+                  <button type="submit" class="button-small">
+                    <!-- Cart Icon -->
+                    <i class="fas fa-shopping-cart"></i>
+                    <!-- Plus Icon for Small Screens -->
+                    <i class="fa-solid fa-plus d-inline d-lg-none"></i>
+                    <!-- Text for Larger Screens -->
+                    <span class="d-none d-lg-inline">Add to Cart</span>
+                  </button>
+                </div>
+              </form>
+            </div>
+          {% endif %}
         </div>
 
         <!-- Sneak Peek Gallery -->
@@ -107,4 +106,5 @@
 {% block postload_js %}
   {{ block.super }}
   <script src="{% static 'shop/js/shop.js' %}"></script>
+  <script src="{% static '../static/js/toasts.js' %}"></script>
 {% endblock %}
