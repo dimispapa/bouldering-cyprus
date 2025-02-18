@@ -133,11 +133,6 @@ SERVER_EMAIL = os.environ.get("DEFAULT_EMAIL")
 if not PRODUCTION:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-print(f"PRODUCTION setting is: {PRODUCTION}")
-print(f"EMAIL_BACKEND being used: {EMAIL_BACKEND}")
-print(f"SENDGRID API KEY exists: {'EMAIL_HOST_KEY' in os.environ}")
-print(f"DEFAULT_EMAIL exists: {'DEFAULT_EMAIL' in os.environ}")
-
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
@@ -323,3 +318,32 @@ LOGGING = {
         }
     }
 }
+
+print("\n\n---- SETTINGS CONFIGURATION ----")
+print(f"PRODUCTION setting is: {PRODUCTION}")
+print(f"DEBUG setting is: {DEBUG}")
+print("\n---- STRIPE SETTINGS ----")
+print(f"STRIPE_LIVE_MODE setting is: {STRIPE_LIVE_MODE}")
+print(f"STRIPE_PUBLIC_KEY setting exists: {bool(STRIPE_PUBLIC_KEY)}")
+print(f"STRIPE_SECRET_KEY setting exists: {bool(STRIPE_SECRET_KEY)}")
+print(f"STRIPE_WEBHOOK_SECRET setting exists: {bool(STRIPE_WEBHOOK_SECRET)}")
+print(f"TEST_WEBHOOK_ORDER_HANDLER setting is: {TEST_WEBHOOK_ORDER_HANDLER}")
+if PRODUCTION:
+    print("\n---- AWS SETTINGS ----")
+    print(f"AWS_STORAGE_BUCKET_NAME setting exists: {bool(AWS_STORAGE_BUCKET_NAME)}")
+    print(f"AWS_S3_REGION_NAME setting exists: {bool(AWS_S3_REGION_NAME)}")
+    print(f"AWS_ACCESS_KEY_ID setting exists: {bool(AWS_ACCESS_KEY_ID)}")
+    print(f"AWS_SECRET_ACCESS_KEY setting exists: {bool(AWS_SECRET_ACCESS_KEY)}")
+    print(f"AWS_CLOUDFRONT_DOMAIN setting exists: {bool(AWS_CLOUDFRONT_DOMAIN)}")
+print("\n---- ORDER SETTINGS ----")
+print(f"LOW_STOCK_THRESHOLD setting is: {LOW_STOCK_THRESHOLD}")
+print(f"STANDARD_DELIVERY_PERCENTAGE setting is: {STANDARD_DELIVERY_PERCENTAGE}")
+print(f"FREE_DELIVERY_THRESHOLD setting is: {FREE_DELIVERY_THRESHOLD}")
+print(f"STRIPE_CURRENCY setting is: {STRIPE_CURRENCY}")
+print(f"ORDER_CREATION_RETRIES setting is: {ORDER_CREATION_RETRIES}")
+print(f"ORDER_CREATION_RETRY_DELAY setting is: {ORDER_CREATION_RETRY_DELAY}")
+print("\n---- EMAIL SETTINGS ----")
+print(f"EMAIL_BACKEND being used: {EMAIL_BACKEND}")
+print(f"SENDGRID API KEY exists: {'EMAIL_HOST_KEY' in os.environ}")
+print(f"DEFAULT_EMAIL exists: {'DEFAULT_EMAIL' in os.environ}")
+print("\n\n")
