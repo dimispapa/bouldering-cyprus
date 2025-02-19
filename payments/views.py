@@ -2,6 +2,7 @@ import stripe
 import logging
 import time
 import json
+from decimal import Decimal
 from django.urls import reverse
 from django.shortcuts import render, redirect
 from django.conf import settings
@@ -14,7 +15,6 @@ from cart.cart import Cart
 from cart.contexts import cart_summary
 from orders.models import OrderItem
 from django.db import IntegrityError
-from shop.models import Product
 
 # Configure logging
 logger = logging.getLogger(__name__)
@@ -27,7 +27,7 @@ def create_payment_intent(cart):
     """Helper function to create a payment intent."""
     try:
         # Calculate the total amount
-        stripe_total = round(cart.cart_total() * 100)
+        stripe_total = int(cart.cart_total() * 100)
         # Create a PaymentIntent with the order amount and currency
         intent = stripe.PaymentIntent.create(
             amount=stripe_total,
@@ -35,14 +35,8 @@ def create_payment_intent(cart):
         )
         return intent
     except Exception as e:
-        logger.error(f"Error creating payment intent: {e}")
-        return JsonResponse(
-            {
-                "error":
-                "An error occurred while creating the payment intent. "
-                "Please get in touch if the problem persists."
-            },
-            status=403)
+        logger.error(f"Error creating payment intent: {str(e)}")
+        raise Exception(f"Error creating payment intent: {str(e)}")
 
 
 @require_GET
@@ -64,20 +58,22 @@ def checkout(request):
             )
         return redirect('cart_detail')
 
-    # Proceed with checkout
-    intent = create_payment_intent(cart)
+    try:
+        # Proceed with checkout
+        intent = create_payment_intent(cart)
 
-    # Render the checkout page with cart and order form objects
-    context = {
-        "cart":
-        cart,
-        "order_form":
-        OrderForm(
-            stripe_public_key=settings.STRIPE_PUBLIC_KEY,
-            stripe_client_secret=intent.client_secret,
-        ),
-    }
-    return render(request, "payments/checkout.html", context)
+        # Render the checkout page with cart and order form objects
+        context = {
+            "cart": cart,
+            "order_form": OrderForm(
+                stripe_public_key=settings.STRIPE_PUBLIC_KEY,
+                stripe_client_secret=intent.client_secret,
+            ),
+        }
+        return render(request, "payments/checkout.html", context)
+    except Exception as e:
+        messages.error(request, str(e))
+        return redirect('cart_detail')
 
 
 @require_POST
@@ -123,13 +119,12 @@ def store_order_metadata(request):
                     # Update payment intent amount to include delivery cost
                     amount=int(grand_total * 100),
                     metadata={
-                        # Cart data using existing serialization method
-                        'cart_data':
-                        cart.to_json(),
-                        'cart_total': order_total,
-                        'delivery_cost': delivery_cost,
-                        'grand_total': grand_total,
-                        'order_form_data': form_data
+                        'cart_data': cart.to_json(),
+                        'cart_total': str(order_total),
+                        'delivery_cost': str(delivery_cost),
+                        'grand_total': str(grand_total),
+                        'order_form_data': json.dumps(form_data),
+                        'session_id': request.session.session_key
                     },
                     # Shipping details
                     shipping={
@@ -259,12 +254,35 @@ def checkout_success(request):
         logger.error(f"Stripe error in checkout_success: {str(e)}")
         messages.error(request, f'Payment error: {str(e)}')
         return redirect(reverse('checkout'))
+
     except Exception as e:
         logger.error(f"Unexpected error in checkout_success: {str(e)}")
-        messages.error(
-            request,
-            'Sorry, an error occurred while processing your payment.')
-        return redirect(reverse('checkout'))
+        # Give webhook handler a chance to create the order
+        time.sleep(settings.ORDER_CREATION_RETRY_DELAY)
+
+        # Check if payment succeeded and order exists
+        payment_intent = stripe.PaymentIntent.retrieve(payment_intent_id)
+        order = Order.objects.filter(stripe_piid=payment_intent_id).first()
+
+        # If payment succeeded and order exists, render the success page
+        if payment_intent.status == 'succeeded' and order:
+            messages.success(
+                request,
+                'Order successfully processed! '
+                f'Your order number is {order.order_number}. '
+                f'A confirmation email will be sent to {order.email}.')
+
+            context = {
+                'order': order,
+                'payment_intent': payment_intent,
+            }
+            return render(request, 'payments/checkout_success.html', context)
+        # Otherwise, show an error message and redirect to checkout
+        else:
+            messages.error(
+                request,
+                'Sorry, an error occurred while processing your payment.')
+            return redirect(reverse('checkout'))
 
 
 def create_order_from_payment(request, payment_intent):
@@ -285,15 +303,27 @@ def create_order_from_payment(request, payment_intent):
             raise ValueError("Order form data not found in session or "
                              "payment intent metadata")
 
-        # Get cart data
-        cart = Cart(request)
-        cart_context = cart_summary(request)
+        # Try to get cart from session first,
+        # fall back to payment intent metadata
+        if settings.CART_SESSION_ID in request.session:
+            cart = Cart(request=request)
+            cart_context = cart_summary(request)
+            cart_total = cart_context['cart_total']
+            delivery_cost = cart_context['delivery_cost']
+            grand_total = cart_context['grand_total']
+        else:
+            cart = Cart(cart_data=json.loads(
+                payment_intent.metadata.get('cart_data')))
+            cart_total = Decimal(payment_intent.metadata.get('cart_total'))
+            delivery_cost = Decimal(
+                payment_intent.metadata.get('delivery_cost'))
+            grand_total = Decimal(payment_intent.metadata.get('grand_total'))
 
         # Verify stock one last time before creating order
-        cart_data = json.loads(payment_intent.metadata.get('cart_data', '{}'))
-        for item in cart_data.get('items', []):
-            product = Product.objects.get(id=item['product_id'])
-            if not product.has_stock(item['quantity']):
+        for item in cart.get_items():
+            product = item['product']
+            quantity = item['quantity']
+            if not product.has_stock(quantity):
                 logger.error(f"Insufficient stock for product {product.id}")
                 messages.error(
                     request,
@@ -336,9 +366,9 @@ def create_order_from_payment(request, payment_intent):
                     address_line1=form_data.get('address_line1'),
                     address_line2=form_data.get('address_line2', ''),
                     original_cart=cart.to_json(),
-                    order_total=cart_context['cart_total'],
-                    delivery_cost=cart_context['delivery_cost'],
-                    grand_total=cart_context['grand_total'],
+                    order_total=cart_total,
+                    delivery_cost=delivery_cost,
+                    grand_total=grand_total,
                 )
 
                 logger.info("View handler created new order: "
