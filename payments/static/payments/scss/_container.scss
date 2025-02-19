@@ -1,6 +1,6 @@
 @use "../../../../static/scss/mixins" as *;
 
-/* Full page background image */
+/* Full page background wrapper */
 body {
     @include body-checkout-style;
 }

@@ -7,60 +7,47 @@
 ========================================================= */
 /* Button Mixin
 ========================================================= */
-/* Full page background image */
+/* Full page background wrapper */
+.background-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  overflow: hidden;
+}
+.background-wrapper picture, .background-wrapper img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
 /* Centered container with a slightly transparent background */
 /* Hero Images */
-#hero-image,
-#hero-image2 {
+.hero-wrapper {
   width: 100%;
   height: 50vh;
-  /* Covers half the viewport height */
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  overflow: hidden;
+  position: relative;
+}
+.hero-wrapper picture, .hero-wrapper img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
-#hero-image2 {
-  background-position: 75% 75%;
-}
-
-/* Responsive Hero Images */
-#hero-image {
-  background-image: url(../images/hero_image8/dimis_climbing_zografos_1920.webp);
-}
-@media (max-width: 1441px) {
-  #hero-image {
-    background-image: url(../images/hero_image8/dimis_climbing_zografos_1440.webp);
-  }
-}
-@media (max-width: 1024px) {
-  #hero-image {
-    background-image: url(../images/hero_image8/dimis_climbing_zografos_1024.webp);
-  }
-}
-@media (max-width: 640px) {
-  #hero-image {
-    background-image: url(../images/hero_image8/dimis_climbing_zografos_640.webp);
-  }
-}
-
-#hero-image2 {
-  background-image: url(../images/hero_image6/kato_droushia_bouldering_afar_1920.webp);
-}
-@media (max-width: 1441px) {
-  #hero-image2 {
-    background-image: url(../images/hero_image6/kato_droushia_bouldering_afar_1440.webp);
-  }
-}
-@media (max-width: 1024px) {
-  #hero-image2 {
-    background-image: url(../images/hero_image6/kato_droushia_bouldering_afar_1024.webp);
-  }
-}
-@media (max-width: 640px) {
-  #hero-image2 {
-    background-image: url(../images/hero_image6/kato_droushia_bouldering_afar_640.webp);
-  }
+.hero-wrapper--offset img {
+  -o-object-position: 75% 80%;
+     object-position: 75% 80%;
 }
 
 /* Text Font */

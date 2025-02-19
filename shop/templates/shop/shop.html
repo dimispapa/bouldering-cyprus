@@ -14,7 +14,15 @@
   {% include 'partials/toasts.html' %}
 
   <!-- Hero Image -->
-  <div id="hero-image"></div>
+  <div class="hero-wrapper">
+    <picture>
+      <source media="(min-width: 1441px)" srcset="{% static 'shop/images/hero_image8/dimis_climbing_zografos_1920.webp' %}">
+      <source media="(min-width: 1025px)" srcset="{% static 'shop/images/hero_image8/dimis_climbing_zografos_1440.webp' %}">
+      <source media="(min-width: 641px)" srcset="{% static 'shop/images/hero_image8/dimis_climbing_zografos_1024.webp' %}">
+      <source media="(max-width: 640px)" srcset="{% static 'shop/images/hero_image8/dimis_climbing_zografos_640.webp' %}">
+      <img src="{% static 'shop/images/hero_image8/dimis_climbing_zografos_1920.webp' %}" alt="Climber ascending a rock face in Zografos">
+    </picture>
+  </div>
 
   <!-- Content Section -->
   <div class="container mt-5 mb-5 content-section">
@@ -83,7 +91,15 @@
   </div>
 
   <!-- Hero Image 2 -->
-  <div id="hero-image2"></div>
+  <div class="hero-wrapper hero-wrapper--offset">
+    <picture>
+      <source media="(min-width: 1441px)" srcset="{% static 'shop/images/hero_image6/kato_droushia_bouldering_afar_1920.webp' %}">
+      <source media="(min-width: 1025px)" srcset="{% static 'shop/images/hero_image6/kato_droushia_bouldering_afar_1440.webp' %}">
+      <source media="(min-width: 641px)" srcset="{% static 'shop/images/hero_image6/kato_droushia_bouldering_afar_1024.webp' %}">
+      <source media="(max-width: 640px)" srcset="{% static 'shop/images/hero_image6/kato_droushia_bouldering_afar_640.webp' %}">
+      <img src="{% static 'shop/images/hero_image6/kato_droushia_bouldering_afar_1920.webp' %}" alt="Panoramic view of Kato Droushia bouldering area">
+    </picture>
+  </div>
 
   <!-- Modal Slideshow -->
   <div id="galleryModal" class="modal fade" tabindex="-1">
