@@ -7,54 +7,40 @@
 ========================================================= */
 /* Button Mixin
 ========================================================= */
-/* Full page background image */
+/* Full page background wrapper */
+.background-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  overflow: hidden;
+}
+.background-wrapper picture, .background-wrapper img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
 /* Centered container with a slightly transparent background */
 /* Hero Images */
-#hero-image,
-#hero-image2 {
+.hero-wrapper {
   width: 100%;
   height: 50vh;
-  /* Covers half the viewport height */
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  overflow: hidden;
+  position: relative;
 }
-
-/* Responsive Hero Images */
-#hero-image {
-  background-image: url(../images/hero_image1/sunset_cloudy_climber_diedro_1920.webp);
-}
-@media (max-width: 1441px) {
-  #hero-image {
-    background-image: url(../images/hero_image1/sunset_cloudy_climber_diedro_1440.webp);
-  }
-}
-@media (max-width: 1024px) {
-  #hero-image {
-    background-image: url(../images/hero_image1/sunset_cloudy_climber_diedro_1024.webp);
-  }
-}
-@media (max-width: 640px) {
-  #hero-image {
-    background-image: url(../images/hero_image1/sunset_cloudy_climber_diedro_640.webp);
-  }
-}
-
-#hero-image2 {
-  background-image: url(../images/hero_image2/gerakopetra_hill_boulderer_walking_1920.webp);
-}
-@media (max-width: 1441px) {
-  #hero-image2 {
-    background-image: url(../images/hero_image2/gerakopetra_hill_boulderer_walking_1440.webp);
-  }
-}
-@media (max-width: 1024px) {
-  #hero-image2 {
-    background-image: url(../images/hero_image2/gerakopetra_hill_boulderer_walking_1024.webp);
-  }
-}
-@media (max-width: 640px) {
-  #hero-image2 {
-    background-image: url(../images/hero_image2/gerakopetra_hill_boulderer_walking_640.webp);
-  }
+.hero-wrapper picture, .hero-wrapper img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
 }/*# sourceMappingURL=checkout-success.css.map */
