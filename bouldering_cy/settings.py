@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     "cart",
     "payments",
     "orders",
+    "rentals",
 ]
 
 MIDDLEWARE = [
@@ -211,8 +212,10 @@ else:
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-# Cart session key
+# Session configuration
 CART_SESSION_ID = 'cart'
+SESSION_COOKIE_AGE = 60 * 60 * 24 * 7  # 7 days
+SESSION_COOKIE_SECURE = True
 
 # Stripe settings
 STRIPE_LIVE_MODE = os.environ.get("STRIPE_LIVE_MODE", "False").lower() == "true"
