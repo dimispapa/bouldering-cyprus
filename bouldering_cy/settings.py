@@ -215,7 +215,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 CART_SESSION_ID = 'cart'
 
 # Stripe settings
-STRIPE_LIVE_MODE = False
+STRIPE_LIVE_MODE = os.environ.get("STRIPE_LIVE_MODE", "False").lower() == "true"
 if STRIPE_LIVE_MODE:
     STRIPE_PUBLIC_KEY = os.environ.get("STRIPE_LIVE_PUBLIC_KEY")
     STRIPE_SECRET_KEY = os.environ.get("STRIPE_LIVE_SECRET_KEY")
@@ -288,7 +288,7 @@ LOGGING = {
     "handlers": {
         "console": {
             "level": "INFO",
-            "filters": ["require_debug_true"],
+            "filters": [],
             "class": "logging.StreamHandler",
             "formatter": "simple"
         },
