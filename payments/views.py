@@ -195,6 +195,14 @@ def checkout_success(request):
         return redirect(reverse('checkout'))
 
     try:
+        # First try to find an existing order
+        order = Order.objects.filter(stripe_piid=payment_intent_id).first()
+
+        if order:
+            # Order exists, just show the success page
+            return render(request, 'payments/checkout_success.html',
+                          {'order': order})
+
         # Simulate a failure in the normal checkout process
         # if TEST_WEBHOOK_ORDER_HANDLER is True
         if settings.TEST_WEBHOOK_ORDER_HANDLER:
@@ -202,6 +210,7 @@ def checkout_success(request):
                         "handling")
             raise Exception("Simulated checkout failure")
 
+        # If no order exists, try to create it
         # Retrieve the payment intent
         payment_intent = stripe.PaymentIntent.retrieve(payment_intent_id)
         logger.info("\n=== Payment Intent ===")
@@ -225,18 +234,13 @@ def checkout_success(request):
                     f'Your order number is {order.order_number}. '
                     f'A confirmation email will be sent to {order.email}.')
 
-                context = {
-                    'order': order,
-                    'payment_intent': payment_intent,
-                }
-
                 logger.info(
                     f"Items in order: {[f'{item.product.name} '
                                         f'(qty: {item.quantity})'
                                         for item in order.items.all()]}"
                 )
                 response = render(request, 'payments/checkout_success.html',
-                                  context)
+                                  {'order': order})
                 logger.info("\n=== Checkout Success Template Rendered ===")
                 logger.info(f"Response status code: {response.status_code}")
                 return response
@@ -272,11 +276,8 @@ def checkout_success(request):
                 f'Your order number is {order.order_number}. '
                 f'A confirmation email will be sent to {order.email}.')
 
-            context = {
-                'order': order,
-                'payment_intent': payment_intent,
-            }
-            return render(request, 'payments/checkout_success.html', context)
+            return render(request, 'payments/checkout_success.html',
+                          {'order': order})
         # Otherwise, show an error message and redirect to checkout
         else:
             messages.error(
@@ -295,10 +296,13 @@ def create_order_from_payment(request, payment_intent):
         logger.info("\n=== Starting Order Creation ===")
         logger.info(f"Payment Intent ID: {payment_intent.id}")
 
-        # Get the order form data
-        form_data = (request.session.get('order_form_data')
-                     if request.session.get('order_form_data')
-                     else payment_intent.metadata.get('order_form_data'))
+        # Get the order form data from session or payment intent metadata
+        form_data = request.session.get('order_form_data')
+        if not form_data:
+            metadata_form_data = payment_intent.metadata.get('order_form_data')
+            if metadata_form_data:
+                form_data = json.loads(metadata_form_data)
+
         if not form_data:
             raise ValueError("Order form data not found in session or "
                              "payment intent metadata")
