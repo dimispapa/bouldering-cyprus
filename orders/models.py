@@ -3,6 +3,9 @@ from shop.models import Product
 from django.conf import settings
 from django_countries.fields import CountryField
 import uuid
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class Order(models.Model):
@@ -22,13 +25,14 @@ class Order(models.Model):
     country = CountryField(blank_label="Country *", null=False, blank=False)
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
-    stripe_piid = models.CharField(max_length=255,
-                                   null=False,
-                                   blank=False,
-                                   # enforce uniqueness, avoid duplicate orders
-                                   unique=True,
-                                   # for better query performance
-                                   db_index=True)
+    stripe_piid = models.CharField(
+        max_length=255,
+        null=False,
+        blank=False,
+        # enforce uniqueness, avoid duplicate orders
+        unique=True,
+        # for better query performance
+        db_index=True)
 
     original_cart = models.TextField(null=False, blank=False)
     delivery_cost = models.DecimalField(max_digits=6,
@@ -70,6 +74,39 @@ class Order(models.Model):
             self.delivery_cost = 0
         self.grand_total = self.order_total + self.delivery_cost
         self.save()
+
+    def delete(self, *args, **kwargs):
+        """
+        Override the delete method to release product stock
+        before deleting the order
+        """
+        try:
+            logger.info(
+                f"Starting delete process for order {self.order_number}")
+            # Release stock for each order item
+            items_count = self.items.count()
+            logger.info(f"Found {items_count} items to process")
+
+            for order_item in self.items.all():
+                product = order_item.product
+                old_stock = product.stock
+                product.stock += order_item.quantity
+                product.save()
+                logger.info(
+                    f"Released {order_item.quantity} units back to stock "
+                    f"for product {product.name} "
+                    f"(ID: {product.id}) from deleted order "
+                    f"{self.order_number}. "
+                    f"Stock changed from {old_stock} to {product.stock}")
+        except Exception as e:
+            logger.error(f"Error releasing stock for "
+                         f"order {self.order_number}: {e}")
+            # Re-raise the exception to prevent deletion if stock release fails
+            raise
+
+        # Finally call the delete method
+        logger.info(f"Proceeding with deletion of order {self.order_number}")
+        super().delete(*args, **kwargs)
 
     def __str__(self):
         return f"Order {self.order_number}"
