@@ -44,6 +44,26 @@ class StripeWH_Handler:
             logger.error(f"Error sending confirmation email: {e}")
             return False
 
+    def _clear_cart(self, session_id):
+        """Clear the cart from the session"""
+        try:
+            from django.contrib.sessions.models import Session
+            from django.contrib.sessions.backends.db import SessionStore
+
+            # Create a SessionStore instance with the session key
+            session_store = SessionStore(session_key=session_id)
+
+            # Clear cart data using proper session methods
+            if settings.CART_SESSION_ID in session_store:
+                del session_store[settings.CART_SESSION_ID]
+                session_store.save()
+                logger.info(f"Cart cleared from session {session_id}")
+
+        except Session.DoesNotExist:
+            logger.warning(f"Session {session_id} not found")
+        except Exception as e:
+            logger.error(f"Error clearing cart from session: {e}")
+
     def handle_payment_intent_succeeded(self, event):
         """Handle the payment_intent.succeeded webhook."""
         try:
@@ -64,6 +84,7 @@ class StripeWH_Handler:
 
             # Try to get or create the order
             try:
+                # Get or create the order
                 order, created = Order.objects.get_or_create(
                     stripe_piid=intent.id,
                     defaults={
@@ -95,6 +116,8 @@ class StripeWH_Handler:
                         float(intent.metadata.get('grand_total')),
                     })
 
+                # If the order was created, we need to create the order items
+                # and update the stock
                 if created:
                     logger.info(f"Webhook created order: {order.order_number}")
                     # Create order items and update stock
@@ -121,6 +144,9 @@ class StripeWH_Handler:
 
                 # Send confirmation email in any case
                 self._send_confirmation_email(order)
+                # Ensure the cart is cleared from the session
+                session_id = intent.metadata.get('session_id')
+                self._clear_cart(session_id)
 
                 return JsonResponse({'status': 'success'})
 
