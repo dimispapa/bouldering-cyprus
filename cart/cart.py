@@ -9,11 +9,14 @@ logger = logging.getLogger(__name__)
 
 class Cart:
 
-    def __init__(self, request):
+    def __init__(self, request=None, cart_data=None):
         """Initialize the cart."""
-        self.session = request.session
-        cart = self.session.get(settings.CART_SESSION_ID, {})
-        self.cart = cart
+        if request:
+            self.session = request.session
+            cart = self.session.get(settings.CART_SESSION_ID, {})
+            self.cart = cart
+        elif cart_data:
+            self.cart = cart_data
 
     def add(self, product, quantity=1, update_quantity=False):
         """
@@ -77,10 +80,9 @@ class Cart:
             # Create a new dictionary for each item
             item = cart[str(product.id)].copy()  # Make a copy of the cart item
             item['product'] = product
-            item['price'] = str(item['price'])
+            item['price'] = item['price']  # Already a string from session
             item['quantity'] = int(item['quantity'])
-            item['total_price'] = str(
-                Decimal(item['price']) * item['quantity'])
+            item['total_price'] = Decimal(item['price']) * item['quantity']
             yield item
 
     def __len__(self):
@@ -92,7 +94,7 @@ class Cart:
         total = sum(
             Decimal(item["price"]) * int(item["quantity"])
             for item in self.cart.values())
-        return str(total)  # Return as string to ensure JSON serialization
+        return total
 
     def clear(self):
         """Remove the bag from the session."""
@@ -114,7 +116,7 @@ class Cart:
                 'total_price': str(item['total_price'])
             } for item in self.get_items()],
             'total':
-            self.cart_total(),
+            str(self.cart_total()),
         }
 
     def to_json(self):
