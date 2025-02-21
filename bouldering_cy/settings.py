@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "crispy_forms",
     "crispy_bootstrap5",
     "storages",
+    "rest_framework",
     "home",
     "shop",
     "cart",
@@ -89,8 +90,24 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "bouldering_cy.wsgi.application"
 
+# Crispy Form Templates
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
+
+# Rest Framework settings
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ],
+    'DEFAULT_PAGINATION_CLASS':
+    'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE':
+    10,
+}
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
@@ -218,7 +235,8 @@ SESSION_COOKIE_AGE = 60 * 60 * 24 * 7  # 7 days
 SESSION_COOKIE_SECURE = True
 
 # Stripe settings
-STRIPE_LIVE_MODE = os.environ.get("STRIPE_LIVE_MODE", "False").lower() == "true"
+STRIPE_LIVE_MODE = os.environ.get("STRIPE_LIVE_MODE",
+                                  "False").lower() == "true"
 if STRIPE_LIVE_MODE:
     STRIPE_PUBLIC_KEY = os.environ.get("STRIPE_LIVE_PUBLIC_KEY")
     STRIPE_SECRET_KEY = os.environ.get("STRIPE_LIVE_SECRET_KEY")
@@ -232,7 +250,8 @@ STRIPE_CURRENCY = "eur"
 STRIPE_WEBHOOK_SECRET = os.environ.get("STRIPE_WEBHOOK_SECRET")
 ORDER_CREATION_RETRIES = 3
 ORDER_CREATION_RETRY_DELAY = 3  # seconds
-TEST_WEBHOOK_ORDER_HANDLER = os.environ.get("TEST_WEBHOOK_ORDER_HANDLER", "False").lower() == "true"
+TEST_WEBHOOK_ORDER_HANDLER = os.environ.get("TEST_WEBHOOK_ORDER_HANDLER",
+                                            "False").lower() == "true"
 
 # Stock Validation
 LOW_STOCK_THRESHOLD = 10
@@ -333,14 +352,19 @@ print(f"STRIPE_WEBHOOK_SECRET setting exists: {bool(STRIPE_WEBHOOK_SECRET)}")
 print(f"TEST_WEBHOOK_ORDER_HANDLER setting is: {TEST_WEBHOOK_ORDER_HANDLER}")
 if PRODUCTION:
     print("\n---- AWS SETTINGS ----")
-    print(f"AWS_STORAGE_BUCKET_NAME setting exists: {bool(AWS_STORAGE_BUCKET_NAME)}")
+    print(
+        f"AWS_STORAGE_BUCKET_NAME setting exists: {bool(AWS_STORAGE_BUCKET_NAME)}"
+    )
     print(f"AWS_S3_REGION_NAME setting exists: {bool(AWS_S3_REGION_NAME)}")
     print(f"AWS_ACCESS_KEY_ID setting exists: {bool(AWS_ACCESS_KEY_ID)}")
-    print(f"AWS_SECRET_ACCESS_KEY setting exists: {bool(AWS_SECRET_ACCESS_KEY)}")
-    print(f"AWS_CLOUDFRONT_DOMAIN setting exists: {bool(AWS_CLOUDFRONT_DOMAIN)}")
+    print(
+        f"AWS_SECRET_ACCESS_KEY setting exists: {bool(AWS_SECRET_ACCESS_KEY)}")
+    print(
+        f"AWS_CLOUDFRONT_DOMAIN setting exists: {bool(AWS_CLOUDFRONT_DOMAIN)}")
 print("\n---- ORDER SETTINGS ----")
 print(f"LOW_STOCK_THRESHOLD setting is: {LOW_STOCK_THRESHOLD}")
-print(f"STANDARD_DELIVERY_PERCENTAGE setting is: {STANDARD_DELIVERY_PERCENTAGE}")
+print(
+    f"STANDARD_DELIVERY_PERCENTAGE setting is: {STANDARD_DELIVERY_PERCENTAGE}")
 print(f"FREE_DELIVERY_THRESHOLD setting is: {FREE_DELIVERY_THRESHOLD}")
 print(f"STRIPE_CURRENCY setting is: {STRIPE_CURRENCY}")
 print(f"ORDER_CREATION_RETRIES setting is: {ORDER_CREATION_RETRIES}")
