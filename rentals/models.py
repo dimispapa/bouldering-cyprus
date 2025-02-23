@@ -1,25 +1,46 @@
 from django.db import models
 from django.conf import settings
 from django_countries.fields import CountryField
+from django.utils.text import slugify
+import os
 
 
 class Crashpad(models.Model):
     name = models.CharField(max_length=100,
                             blank=False,
-                            null=False,
-                            unique=True)
-    model = models.CharField(max_length=100, blank=False, null=False)
+                            null=False)
     brand = models.CharField(max_length=100, blank=False, null=False)
+    model = models.CharField(max_length=100, blank=False, null=False)
+    dimensions = models.CharField(max_length=100, blank=False, null=False)
     description = models.TextField(blank=False, null=False)
     price_per_day = models.DecimalField(max_digits=10,
                                         decimal_places=2,
                                         blank=False,
                                         null=False)
-    capacity = models.IntegerField(default=1, blank=False, null=False)
     image = models.ImageField(upload_to='crashpads/', null=True, blank=True)
 
     def __str__(self):
         return self.name
+
+
+def crashpad_gallery_upload_path(instance, filename):
+    """
+    Upload images to 'media/crashpad_gallery/{crashpad_name}/'
+    with sanitized names.
+    """
+    # Converts name to a slug
+    crashpad_name_slug = slugify(instance.crashpad.name)
+    return os.path.join("crashpad_gallery", crashpad_name_slug, filename)
+
+
+class CrashpadGalleryImage(models.Model):
+    crashpad = models.ForeignKey(Crashpad,
+                                 related_name="gallery_images",
+                                 on_delete=models.CASCADE)
+    image = models.ImageField(upload_to=crashpad_gallery_upload_path)
+
+    def __str__(self):
+        return f"Gallery image for {self.crashpad.name}"
 
 
 class Booking(models.Model):
