@@ -317,6 +317,45 @@ h4 {
   }
 }
 
+.button-very-small {
+  background-color: #f4edd2;
+  box-shadow: 5px 5px 10px 1px #ed6c2c;
+  color: #000;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+  box-sizing: border-box;
+  text-align: center;
+  max-width: -moz-fit-content;
+  max-width: fit-content;
+  padding: 5px 10px;
+  font-size: 1.2rem;
+}
+@media (min-width: 1024px) {
+  .button-very-small:hover {
+    background-color: #ed6c2c;
+    color: #ffffff;
+  }
+}
+@media (max-width: 1024px) {
+  .button-very-small {
+    font-size: 1rem;
+  }
+}
+@media (max-width: 767px) {
+  .button-very-small {
+    font-size: 0.8rem;
+  }
+}
+.button-very-small.selected {
+  background-color: #ed6c2c;
+  color: #ffffff;
+}
+
 footer {
   color: #000;
   background-color: rgba(255, 255, 255, 0.9);
@@ -459,4 +498,8 @@ footer a:hover {
 .img-cart-thumbnail {
   max-width: 60px;
   height: auto;
+}
+
+main {
+  min-height: 100vh;
 }/*# sourceMappingURL=base.css.map */
