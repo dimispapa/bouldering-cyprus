@@ -1,23 +1,23 @@
 from rest_framework import serializers
-from .models import Crashpad, Booking
+from .models import Crashpad, Booking, CrashpadGalleryImage
+
+
+class CrashpadGalleryImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CrashpadGalleryImage
+        fields = ['image']
 
 
 class CrashpadSerializer(serializers.ModelSerializer):
     availability_status = serializers.SerializerMethodField()
-    image_url = serializers.SerializerMethodField()
+    gallery_images = CrashpadGalleryImageSerializer(many=True, read_only=True)
 
     class Meta:
         model = Crashpad
         fields = [
-            'id', 'model', 'brand', 'name', 'description', 'price_per_day',
-            'capacity', 'image', 'image_url', 'availability_status'
+            'id', 'name', 'description', 'price_per_day', 'image',
+            'availability_status', 'gallery_images'
         ]
-        read_only_fields = ['availability_status', 'image_url']
-
-    def get_image_url(self, obj):
-        if obj.image:
-            return self.context['request'].build_absolute_uri(obj.image.url)
-        return None
 
     def get_availability_status(self, obj):
         check_in = self.context.get('check_in')
