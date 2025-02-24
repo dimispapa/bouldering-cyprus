@@ -6,17 +6,26 @@ import os
 
 
 class Crashpad(models.Model):
-    name = models.CharField(max_length=100,
-                            blank=False,
-                            null=False)
+    name = models.CharField(max_length=100, blank=False, null=False)
     brand = models.CharField(max_length=100, blank=False, null=False)
     model = models.CharField(max_length=100, blank=False, null=False)
     dimensions = models.CharField(max_length=100, blank=False, null=False)
     description = models.TextField(blank=False, null=False)
-    price_per_day = models.DecimalField(max_digits=10,
-                                        decimal_places=2,
-                                        blank=False,
-                                        null=False)
+    day_rate = models.DecimalField(max_digits=10,
+                                   decimal_places=2,
+                                   default=0,
+                                   blank=False,
+                                   null=False)
+    seven_day_rate = models.DecimalField(max_digits=10,
+                                         decimal_places=2,
+                                         default=0,
+                                         blank=False,
+                                         null=False)
+    fourteen_day_rate = models.DecimalField(max_digits=10,
+                                            decimal_places=2,
+                                            default=0,
+                                            blank=False,
+                                            null=False)
     image = models.ImageField(upload_to='crashpads/', null=True, blank=True)
 
     def __str__(self):

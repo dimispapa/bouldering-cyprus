@@ -14,11 +14,12 @@ class CrashpadGalleryImageInline(admin.TabularInline):
 
 @admin.register(Crashpad)
 class CrashpadAdmin(SummernoteModelAdmin):
-    list_display = ('name', 'brand', 'model', 'price_per_day')
+    list_display = ('name', 'brand', 'model', 'day_rate', 'seven_day_rate',
+                    'fourteen_day_rate')
     summernote_fields = ('description', )
     list_filter = ('brand', )
     search_fields = ('name', 'brand', 'model', 'description')
-    ordering = ('name', 'brand', 'model', 'price_per_day')
+    ordering = ('name', 'brand', 'model', 'day_rate')
     list_per_page = 20
 
     inlines = [CrashpadGalleryImageInline
