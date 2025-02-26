@@ -1,9 +1,11 @@
 from django.db import models
 from shop.models import Product
+from rentals.models import Crashpad
 from django.conf import settings
 from django_countries.fields import CountryField
 import uuid
 import logging
+from django.core.exceptions import ValidationError
 
 logger = logging.getLogger(__name__)
 
@@ -120,20 +122,98 @@ class OrderItem(models.Model):
                               on_delete=models.CASCADE,
                               related_name="items")
     product = models.ForeignKey(Product,
-                                null=False,
-                                blank=False,
-                                on_delete=models.CASCADE)
-    quantity = models.PositiveIntegerField(null=False, blank=False, default=0)
+                                null=True,
+                                blank=True,
+                                on_delete=models.SET_NULL,
+                                related_name="order_items")
+    crashpad = models.ForeignKey(Crashpad,
+                                 null=True,
+                                 blank=True,
+                                 on_delete=models.SET_NULL,
+                                 related_name="order_items")
+    type = models.CharField(max_length=10,
+                            choices=[('product', 'Product'),
+                                     ('rental', 'Rental')])
+    quantity = models.IntegerField(default=1)
     item_total = models.DecimalField(max_digits=10,
                                      decimal_places=2,
                                      null=False,
-                                     blank=False,
-                                     default=0)
+                                     blank=False)
+    # Rental specific fields
+    check_in = models.DateField(null=True, blank=True)
+    check_out = models.DateField(null=True, blank=True)
+    rental_days = models.IntegerField(null=True, blank=True)
+    daily_rate = models.DecimalField(max_digits=10,
+                                     decimal_places=2,
+                                     null=True,
+                                     blank=True)
+
+    def clean(self):
+        """
+        Validate the OrderItem based on its type
+        """
+        super().clean()
+        errors = {}
+
+        # Validate item type and corresponding fields
+        if self.type == 'product':
+            # Product-specific validation
+            if not self.product:
+                errors['product'] = 'Product is required for product-type ' \
+                                    'items'
+            if self.crashpad:
+                errors['crashpad'] = 'Crashpad should not be set for ' \
+                                     'product-type items'
+            if (self.check_in or self.check_out or self.rental_days
+                    or self.daily_rate):
+                errors['rental_fields'] = 'Rental fields should not be set ' \
+                                          'for product-type items'
+            if self.quantity < 1:
+                errors['quantity'] = 'Quantity must be at least 1 for products'
+
+        elif self.type == 'rental':
+            # Rental-specific validation
+            if not self.crashpad:
+                errors['crashpad'] = 'Crashpad is required for rental-type ' \
+                                     'items'
+            if self.product:
+                errors['product'] = 'Product should not be set for ' \
+                                    'rental-type items'
+            if not self.check_in:
+                errors['check_in'] = 'Check-in date is required for rentals'
+            if not self.check_out:
+                errors['check_out'] = 'Check-out date is required for rentals'
+            if not self.rental_days:
+                errors['rental_days'] = 'Rental days is required for rentals'
+            if not self.daily_rate:
+                errors['daily_rate'] = 'Daily rate is required for rentals'
+            if self.quantity != 1:
+                errors['quantity'] = 'Quantity must be exactly 1 for rentals'
+
+            # Validate dates if both are present
+            if self.check_in and self.check_out:
+                if self.check_in >= self.check_out:
+                    errors['dates'] = 'Check-out date must be after ' \
+                                      'check-in date'
+                if self.rental_days != (self.check_out - self.check_in).days:
+                    errors['rental_days'] = 'Rental days does not match the ' \
+                                            'date range'
+
+        if errors:
+            raise ValidationError(errors)
 
     def save(self, *args, **kwargs):
-        """Calculate the item total and save the order item"""
-        self.item_total = self.product.price * self.quantity
+        """
+        Override save to ensure full_clean is called for validation.
+        Calculate the item total and save the order item.
+        """
+        self.full_clean()
+        if self.type == 'product':
+            self.item_total = self.product.price * self.quantity
+        elif self.type == 'rental':
+            self.item_total = self.daily_rate * self.rental_days
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"{self.quantity} x {self.product.name}"
+        item_name = self.product.name if self.product else self.crashpad.name
+        return f"{self.order.order_number} - {item_name}"

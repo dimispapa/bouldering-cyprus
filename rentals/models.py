@@ -39,6 +39,12 @@ class Crashpad(models.Model):
                                           check_out__gte=check_in)
         return not bookings.exists()
 
+    def create_booking(self, check_in, check_out):
+        """Create a booking for the crashpad"""
+        Booking.objects.create(crashpad=self,
+                               check_in=check_in,
+                               check_out=check_out)
+
 
 def crashpad_gallery_upload_path(instance, filename):
     """

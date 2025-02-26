@@ -7,7 +7,9 @@ import json
 from django.http import JsonResponse
 from orders.models import Order, OrderItem
 from shop.models import Product
-
+from rentals.models import Crashpad
+from datetime import datetime
+from payments.utils import validate_item_stock
 # Configure logging
 logger = logging.getLogger(__name__)
 
@@ -71,94 +73,83 @@ class StripeWH_Handler:
             logger.info("\n=== Webhook Payment Intent Processing ===")
             logger.info(f"Payment Intent ID: {intent.id}")
 
-            # Verify stock one last time before creating order
             cart_data = json.loads(intent.metadata.get('cart_data', '{}'))
-            for item in cart_data.get('items', []):
-                product = Product.objects.get(id=item['product_id'])
-                if not product.has_stock(item['quantity']):
-                    logger.error(
-                        f"Insufficient stock for product {product.id}")
-                    return JsonResponse(
-                        {'error': 'Some items are no longer available'},
-                        status=400)
 
-            # Try to get or create the order
-            try:
-                # Get or create the order
-                order, created = Order.objects.get_or_create(
-                    stripe_piid=intent.id,
-                    defaults={
-                        'first_name':
-                        intent.shipping.name.split()[0],
-                        'last_name':
-                        intent.shipping.name.split()[-1],
-                        'email':
-                        intent.receipt_email,
-                        'phone':
-                        intent.shipping.phone,
-                        'country':
-                        intent.shipping.address.country,
-                        'postal_code':
-                        intent.shipping.address.postal_code,
-                        'town_or_city':
-                        intent.shipping.address.city,
-                        'address_line1':
-                        intent.shipping.address.line1,
-                        'address_line2':
-                        intent.shipping.address.line2,
-                        'original_cart':
-                        intent.metadata.get('cart_data'),
-                        'order_total':
-                        float(intent.metadata.get('cart_total')),
-                        'delivery_cost':
-                        float(intent.metadata.get('delivery_cost')),
-                        'grand_total':
-                        float(intent.metadata.get('grand_total')),
-                    })
+            # Verify stock and availability for all items
+            for item in cart_data.get('items'):
+                validate_item_stock(item)
 
-                # If the order was created, we need to create the order items
-                # and update the stock
-                if created:
-                    logger.info(f"Webhook created order: {order.order_number}")
-                    # Create order items and update stock
-                    cart_data = json.loads(
-                        intent.metadata.get('cart_data', '{}'))
-                    # Iterate over items in cart
-                    for item in cart_data['items']:
-                        product = Product.objects.get(id=item['product_id'])
-                        # Create order item
+            # Create or get order
+            order, created = Order.objects.get_or_create(
+                stripe_piid=intent.id,
+                defaults={
+                    'first_name': intent.shipping.name.split()[0],
+                    'last_name': intent.shipping.name.split()[-1],
+                    'email': intent.receipt_email,
+                    'phone': intent.shipping.phone,
+                    'country': intent.shipping.address.country,
+                    'postal_code': intent.shipping.address.postal_code,
+                    'town_or_city': intent.shipping.address.city,
+                    'address_line1': intent.shipping.address.line1,
+                    'address_line2': intent.shipping.address.line2,
+                    'original_cart': intent.metadata.get('cart_data'),
+                    'order_total': float(intent.metadata.get('cart_total')),
+                    'delivery_cost':
+                    float(intent.metadata.get('delivery_cost')),
+                    'grand_total': float(intent.metadata.get('grand_total')),
+                })
+
+            # If the order was created, we need to create the order items
+            # and update the stock
+            if created:
+                logger.info(f"Webhook created order: {order.order_number}")
+                # Create order items and update inventory
+                for item in cart_data['items']:
+                    if item['type'] == 'product':
+                        product = Product.objects.get(id=item['item_id'])
                         OrderItem.objects.create(order=order,
                                                  product=product,
                                                  quantity=item['quantity'],
                                                  item_total=float(
-                                                     item['total_price']))
-                        # Update product stock
+                                                     item['total_price']),
+                                                 type='product')
                         product.stock -= item['quantity']
                         product.save()
-                        logger.info(f"Updated stock for {product.name}: "
-                                    f"new stock level = {product.stock}")
+                    elif item['type'] == 'rental':
+                        crashpad = Crashpad.objects.get(id=item['item_id'])
+                        OrderItem.objects.create(
+                            order=order,
+                            crashpad=crashpad,
+                            quantity=1,
+                            item_total=float(item['total_price']),
+                            type='rental',
+                            check_in=item['check_in'],
+                            check_out=item['check_out'],
+                            rental_days=item['rental_days'],
+                            daily_rate=item['daily_rate'])
+                        # Create rental booking
+                        crashpad.create_booking(check_in=datetime.strptime(
+                            item['check_in'], '%Y-%m-%d').date(),
+                                                check_out=datetime.strptime(
+                                                    item['check_out'],
+                                                    '%Y-%m-%d').date())
 
-                else:
-                    logger.info(
-                        f"Webhook found existing order: {order.order_number}")
+            else:
+                logger.info(
+                    f"Webhook found existing order: {order.order_number}")
 
-                # Send confirmation email in any case
-                self._send_confirmation_email(order)
-                # Ensure the cart is cleared from the session
-                session_id = intent.metadata.get('session_id')
-                self._clear_cart(session_id)
+            # Send confirmation email in any case
+            self._send_confirmation_email(order)
+            # Ensure the cart is cleared from the session
+            session_id = intent.metadata.get('session_id')
+            self._clear_cart(session_id)
 
-                return JsonResponse({'status': 'success'})
-
-            except Exception as e:
-                logger.error("Error in order creation in webhook handler:"
-                             f" {str(e)}")
-                raise e
+            return JsonResponse({'status': 'success'})
 
         except Exception as e:
-            logger.error(f"Error in webhook handler: {str(e)}")
-            return JsonResponse({'error': "Error in webhook handler"},
-                                status=500)
+            logger.error("Error in order creation in webhook handler:"
+                         f" {str(e)}")
+            raise e
 
     def handle_payment_intent_failed(self, event):
         """Handle the payment_intent.failed webhook."""
