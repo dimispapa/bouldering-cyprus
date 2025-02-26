@@ -16,11 +16,11 @@
   <!-- Hero Image -->
   <div class="hero-wrapper">
     <picture>
-      <source media="(min-width: 1441px)" srcset="{% static 'shop/images/hero_image8/dimis_climbing_zografos_1920.webp' %}">
-      <source media="(min-width: 1025px)" srcset="{% static 'shop/images/hero_image8/dimis_climbing_zografos_1440.webp' %}">
-      <source media="(min-width: 641px)" srcset="{% static 'shop/images/hero_image8/dimis_climbing_zografos_1024.webp' %}">
-      <source media="(max-width: 640px)" srcset="{% static 'shop/images/hero_image8/dimis_climbing_zografos_640.webp' %}">
-      <img src="{% static 'shop/images/hero_image8/dimis_climbing_zografos_1920.webp' %}" alt="Climber ascending a rock face in Zografos">
+      <source media="(min-width: 1441px)" srcset="{% static 'shop/images/hero_image8/dimis_climbing_zografos_1920.webp' %}" />
+      <source media="(min-width: 1025px)" srcset="{% static 'shop/images/hero_image8/dimis_climbing_zografos_1440.webp' %}" />
+      <source media="(min-width: 641px)" srcset="{% static 'shop/images/hero_image8/dimis_climbing_zografos_1024.webp' %}" />
+      <source media="(max-width: 640px)" srcset="{% static 'shop/images/hero_image8/dimis_climbing_zografos_640.webp' %}" />
+      <img src="{% static 'shop/images/hero_image8/dimis_climbing_zografos_1920.webp' %}" alt="Climber ascending a rock face in Zografos" />
     </picture>
   </div>
 
@@ -44,8 +44,9 @@
             {% if product.is_in_stock %}
               <!-- Quantity Selector & Add to Cart -->
               <div class="d-flex align-items-center mt-3 p-1">
-                <form action="{% url 'cart_add' product.id %}" method="post" class="w-100">
+                <form action="{% url 'cart_add' 'product' %}" method="post" class="w-100">
                   {% csrf_token %}
+                  <input type="hidden" name="product_id" value="{{ product.id }}" />
                   <div class="input-group">
                     <!-- Quantity Input -->
                     <label for="quantity-{{ product.id }}" class="input-group-text">Qty</label>
@@ -93,11 +94,11 @@
   <!-- Hero Image 2 -->
   <div class="hero-wrapper hero-wrapper--offset">
     <picture>
-      <source media="(min-width: 1441px)" srcset="{% static 'shop/images/hero_image6/kato_droushia_bouldering_afar_1920.webp' %}">
-      <source media="(min-width: 1025px)" srcset="{% static 'shop/images/hero_image6/kato_droushia_bouldering_afar_1440.webp' %}">
-      <source media="(min-width: 641px)" srcset="{% static 'shop/images/hero_image6/kato_droushia_bouldering_afar_1024.webp' %}">
-      <source media="(max-width: 640px)" srcset="{% static 'shop/images/hero_image6/kato_droushia_bouldering_afar_640.webp' %}">
-      <img src="{% static 'shop/images/hero_image6/kato_droushia_bouldering_afar_1920.webp' %}" alt="Panoramic view of Kato Droushia bouldering area">
+      <source media="(min-width: 1441px)" srcset="{% static 'shop/images/hero_image6/kato_droushia_bouldering_afar_1920.webp' %}" />
+      <source media="(min-width: 1025px)" srcset="{% static 'shop/images/hero_image6/kato_droushia_bouldering_afar_1440.webp' %}" />
+      <source media="(min-width: 641px)" srcset="{% static 'shop/images/hero_image6/kato_droushia_bouldering_afar_1024.webp' %}" />
+      <source media="(max-width: 640px)" srcset="{% static 'shop/images/hero_image6/kato_droushia_bouldering_afar_640.webp' %}" />
+      <img src="{% static 'shop/images/hero_image6/kato_droushia_bouldering_afar_1920.webp' %}" alt="Panoramic view of Kato Droushia bouldering area" />
     </picture>
   </div>
 
@@ -124,5 +125,4 @@
 {% block postload_js %}
   {{ block.super }}
   <script src="{% static 'shop/js/shop.js' %}"></script>
-  <script src="{% static '../static/js/toasts.js' %}"></script>
 {% endblock %}

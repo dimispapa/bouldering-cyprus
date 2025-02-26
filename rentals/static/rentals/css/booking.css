@@ -178,6 +178,21 @@
   height: 24px;
 }
 
+.price-table {
+  font-size: 0.9rem;
+}
+.price-table th {
+  text-align: center;
+  color: #000;
+  font-weight: normal;
+  border-top: none;
+}
+.price-table td {
+  text-align: center;
+  color: #ed6c2c;
+  font-weight: bold;
+}
+
 .hidden {
   display: none;
 }/*# sourceMappingURL=booking.css.map */
