@@ -15,8 +15,9 @@ class CrashpadSerializer(serializers.ModelSerializer):
     class Meta:
         model = Crashpad
         fields = [
-            'id', 'name', 'description', 'price_per_day', 'image',
-            'availability_status', 'gallery_images'
+            'id', 'name', 'description', 'day_rate', 'seven_day_rate',
+            'fourteen_day_rate', 'image', 'availability_status',
+            'gallery_images'
         ]
 
     def get_availability_status(self, obj):

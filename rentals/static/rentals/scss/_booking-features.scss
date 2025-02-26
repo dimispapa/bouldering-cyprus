@@ -155,3 +155,21 @@
     width: 24px;
     height: 24px;
 }
+
+// Price table styles
+.price-table {
+    font-size: 0.9rem;
+    
+    th {
+        text-align: center;
+        color: $black;
+        font-weight: normal;
+        border-top: none;
+    }
+    
+    td {
+        text-align: center;
+        color: $orange;
+        font-weight: bold;
+    }
+}

@@ -31,6 +31,14 @@ class Crashpad(models.Model):
     def __str__(self):
         return self.name
 
+    def is_available(self, check_in, check_out):
+        """Check if the crashpad is available for the given dates"""
+        bookings = Booking.objects.filter(crashpad=self,
+                                          status='confirmed',
+                                          check_in__lte=check_out,
+                                          check_out__gte=check_in)
+        return not bookings.exists()
+
 
 def crashpad_gallery_upload_path(instance, filename):
     """

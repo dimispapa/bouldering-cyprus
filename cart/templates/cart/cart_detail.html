@@ -13,11 +13,11 @@
   <!-- Background Image -->
   <div class="background-wrapper">
     <picture>
-      <source media="(min-width: 1441px)" srcset="{% static 'images/checkout-bg-image/sandstone_rock_features_closeup_1920.webp' %}">
-      <source media="(min-width: 1025px)" srcset="{% static 'images/checkout-bg-image/sandstone_rock_features_closeup_1440.webp' %}">
-      <source media="(min-width: 641px)" srcset="{% static 'images/checkout-bg-image/sandstone_rock_features_closeup_1024.webp' %}">
-      <source media="(max-width: 640px)" srcset="{% static 'images/checkout-bg-image/sandstone_rock_features_closeup_640.webp' %}">
-      <img src="{% static 'images/checkout-bg-image/sandstone_rock_features_closeup_1920.webp' %}" alt="Sandstone rock features background">
+      <source media="(min-width: 1441px)" srcset="{% static 'images/checkout-bg-image/sandstone_rock_features_closeup_1920.webp' %}" />
+      <source media="(min-width: 1025px)" srcset="{% static 'images/checkout-bg-image/sandstone_rock_features_closeup_1440.webp' %}" />
+      <source media="(min-width: 641px)" srcset="{% static 'images/checkout-bg-image/sandstone_rock_features_closeup_1024.webp' %}" />
+      <source media="(max-width: 640px)" srcset="{% static 'images/checkout-bg-image/sandstone_rock_features_closeup_640.webp' %}" />
+      <img src="{% static 'images/checkout-bg-image/sandstone_rock_features_closeup_1920.webp' %}" alt="Sandstone rock features background" />
     </picture>
   </div>
 
@@ -54,26 +54,46 @@
                 <tbody>
                   {% for item in cart %}
                     <tr>
-                      <td>{{ item.product.name }}</td>
                       <td>
-                        {% if item.product.image %}
-                          <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="cart-item-image" style="max-width: 50px; height: auto;" />
-                        {% else %}
-                          <img src="{% static 'images/noimage.png' %}" alt="No image available" class="cart-item-image" style="max-width: 50px; height: auto;" />
+                        {{ item.item.name }}
+                        {% if item.type == 'rental' %}
+                          <br />
+                          <small class="text-muted">
+                            Check-in: {{ item.check_in }}<br />
+                            Check-out: {{ item.check_out }}<br />
+                            {% if item.rental_days >= 14 %}
+                              14+ day rate (€{{ item.daily_rate }} from standard €{{ item.item.day_rate }})
+                            {% elif item.rental_days >= 7 %}
+                              7+ day rate (€{{ item.daily_rate }} from standard €{{ item.item.day_rate }})
+                            {% else %}
+                              Standard daily rate (€{{ item.daily_rate }})
+                            {% endif %}
+                          </small>
                         {% endif %}
                       </td>
                       <td>
-                        <input type="number" name="quantity_{{ item.product.id }}" class="form-control text-content" value="{{ item.quantity }}" min="0" />
+                        {% if item.item.image %}
+                          <img src="{{ item.item.image.url }}" alt="{{ item.item.name }}" class="cart-item-image" />
+                        {% else %}
+                          <img src="{% static 'images/noimage.png' %}" alt="No image available" class="cart-item-image" />
+                        {% endif %}
                       </td>
-                      <td class="text-nowrap">€ {{ item.price }}</td>
+                      <td>
+                        {% if item.type == 'product' %}
+                          <input type="number" name="quantity_{{ item.type }}_{{ item.item.id }}" class="form-control text-content" value="{{ item.quantity }}" min="1" />
+                        {% else %}
+                          {{ item.rental_days }} days
+                        {% endif %}
+                      </td>
+                      <td class="text-nowrap">
+                        € {{ item.price }}
+                        {% if item.type == 'rental' %}
+                          /day
+                        {% endif %}
+                      </td>
                       <td class="text-nowrap">€ {{ item.total_price }}</td>
                       <td>
-                        <a href="{% url 'cart_remove' item.product.id %}" class="button-remove" title="Remove"><i class="fa-solid fa-trash"></i></a>
-                      </td>
-                      <td>
-                        <div class="{{ item.product.get_stock_status.css_class }}" role="alert">
-                          <small>{{ item.product.get_stock_status.message }}</small>
-                        </div>
+                        <a href="{% url 'cart_remove' item.type item.item.id %}" class="button-remove"><i class="fa-solid fa-trash"></i></a>
                       </td>
                     </tr>
                   {% endfor %}
@@ -88,7 +108,20 @@
               <p class="text-muted mb-3">* Delivery costs will be calculated at checkout</p>
               <!-- Checkout Button -->
               {% if cart.has_invalid_items %}
-                <div class="alert alert-danger" role="alert">Some items in your cart are no longer available in the requested quantity. Please update your cart before proceeding to checkout.</div>
+                <div class="alert alert-danger" role="alert">
+                  <h5>Please update your cart before proceeding:</h5>
+                  <ul>
+                    {% for item in cart.validate_stock %}
+                      <li>
+                        <strong>{{ item.name }}</strong>:{% if item.type == 'product' %}
+                          Requested: {{ item.requested }}, {{ item.error }}
+                        {% else %}
+                          {{ item.error }} ({{ item.dates }})
+                        {% endif %}
+                      </li>
+                    {% endfor %}
+                  </ul>
+                </div>
                 <button type="submit" name="action" value="checkout" class="button-checkout hidden" disabled>
                   <i class="fa-solid fa-credit-card"></i> Checkout
                   <small class="checkout-subscript"><i class="fa-solid fa-lock"></i> Secure</small>
@@ -115,6 +148,5 @@
 {% endblock %}
 
 {% block postload_js %}
-  {{ block.super }}
-  <script src="{% static '../static/js/toasts.js' %}"></script>
+
 {% endblock %}

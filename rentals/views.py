@@ -53,36 +53,46 @@ class CrashpadViewSet(viewsets.ReadOnlyModelViewSet):
         try:
             check_in_date = parse_date(check_in)
             check_out_date = parse_date(check_out)
+            now = datetime.now().date()
 
             if check_in_date >= check_out_date:
-                raise ValueError("Check-out must be after check-in")
+                return Response(
+                    {'error': 'Check-out date must be after check-in date'},
+                    status=status.HTTP_400_BAD_REQUEST)
 
-            if check_in_date < datetime.now().date():
-                raise ValueError("Check-in cannot be in the past")
+            if check_in_date < now:
+                return Response(
+                    {
+                        'error':
+                        'Check-in date cannot be in the past. '
+                        f'Please select a date from {now} onwards.'
+                    },
+                    status=status.HTTP_400_BAD_REQUEST)
+
+            # Get booked crashpad IDs for the date range
+            booked_crashpad_ids = Booking.objects.filter(
+                status='confirmed',
+                check_out__gt=check_in_date,
+                check_in__lt=check_out_date).values_list('crashpad_id',
+                                                         flat=True)
+
+            # Get available crashpads by excluding booked crashpad IDs
+            available_crashpads = self.get_queryset().exclude(
+                id__in=booked_crashpad_ids)
+
+            # Serialize available crashpads
+            serializer = self.get_serializer(available_crashpads,
+                                             many=True,
+                                             context={
+                                                 'check_in': check_in_date,
+                                                 'check_out': check_out_date
+                                             })
+
+            return Response(serializer.data)
 
         except ValueError as e:
             return Response({'error': str(e)},
                             status=status.HTTP_400_BAD_REQUEST)
-
-        # Get booked crashpad IDs for the date range
-        booked_crashpad_ids = Booking.objects.filter(
-            status='confirmed',
-            check_out__gt=check_in_date,
-            check_in__lt=check_out_date).values_list('crashpad_id', flat=True)
-
-        # Get available crashpads by excluding booked crashpad IDs
-        available_crashpads = self.get_queryset().exclude(
-            id__in=booked_crashpad_ids)
-
-        # Serialize available crashpads
-        serializer = self.get_serializer(available_crashpads,
-                                         many=True,
-                                         context={
-                                             'check_in': check_in_date,
-                                             'check_out': check_out_date
-                                         })
-
-        return Response(serializer.data)
 
 
 class BookingViewSet(viewsets.ModelViewSet):
