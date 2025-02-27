@@ -1,4 +1,5 @@
 @use "../../../../static/scss/mixins" as *;
+@use "../../../../static/scss/variables" as *;
 
 /* Full page background wrapper */
 body {
@@ -8,4 +9,8 @@ body {
 /* Centered container with a slightly transparent background */
 #cart-container {
     @include checkout-container-style;
+}
+
+.card-header {
+    background-color: lighten($beige, 5%);
 }

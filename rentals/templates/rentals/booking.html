@@ -1,0 +1,168 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_title %}
+  Rent a Crashpad
+{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daterangepicker@3.1.0/daterangepicker.css" />
+  <link rel="stylesheet" href="{% static 'rentals/css/booking.css' %}" />
+{% endblock %}
+
+{% block extra_js %}
+  <script src="https://cdn.jsdelivr.net/npm/moment@2.30.1/min/moment.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/moment-timezone@0.5.43/builds/moment-timezone-with-data.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/daterangepicker@3.1.0/daterangepicker.min.js"></script>
+{% endblock %}
+
+{% block content %}
+  <!-- Include Toast for messages -->
+  {% include 'partials/toasts.html' %}
+
+  <!-- Hero Image -->
+  <div class="hero-wrapper hero-wrapper--offset">
+    <picture>
+      <source media="(min-width: 1441px)" srcset="{% static 'rentals/images/hero_image9/climbers_walking_open_field_crashpads_1920.webp' %}" />
+      <source media="(min-width: 1025px)" srcset="{% static 'rentals/images/hero_image9/climbers_walking_open_field_crashpads_1440.webp' %}" />
+      <source media="(min-width: 641px)" srcset="{% static 'rentals/images/hero_image9/climbers_walking_open_field_crashpads_1024.webp' %}" />
+      <source media="(max-width: 640px)" srcset="{% static 'rentals/images/hero_image9/climbers_walking_open_field_crashpads_640.webp' %}" />
+      <img src="{% static 'rentals/images/hero_image9/climbers_walking_open_field_crashpads_1920.webp' %}" alt="Climbers walking accross an open field with crashpads on their backs and the sea in the background" />
+    </picture>
+  </div>
+
+  <!-- Content Section -->
+  <div class="container py-5">
+    <h1 class="mb-4">Book a Crashpad</h1>
+
+    <!-- Date Selection -->
+    <div class="card mb-4" id="booking-container">
+      <div class="card-body">
+        <h5 class="card-title">Select your dates to see available crashpads</h5>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="daterange" class="form-label d-none" aria-hidden="true">Select date range</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="fa-solid fa-calendar-days"></i></span>
+                <input type="text" id="daterange" class="form-control" placeholder="Check-in - check-out" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Available Crashpads -->
+    <div id="crashpads-container" class="mb-4 hidden">
+      <h2 class="mb-3">Available Crashpads</h2>
+      <div class="row" id="crashpads-list">
+        <!-- Crashpads will be populated here -->
+      </div>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div id="loading-spinner" class="text-center hidden">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+
+    <!-- Selected Items Summary -->
+    <div id="selection-summary" class="fixed-bottom bg-white border-top py-3 hidden">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col">
+            <span id="selected-count">0 crashpads selected</span>
+          </div>
+          <div class="col text-end">
+            <button id="add-to-cart" class="button-small">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Crashpad Card Template -->
+  <template id="crashpad-card-template">
+    <div class="col-md-4 mb-4">
+      <div class="card h-100 crashpad-card">
+        <div class="card-img-wrapper">
+          <img src="" class="card-img-top img-fluid" alt="Crashpad Image" />
+          <button class="btn btn-sm btn-light gallery-btn" data-bs-toggle="modal"><i class="fas fa-images"></i> Gallery</button>
+        </div>
+        <div class="card-body">
+          <h5 class="card-title"></h5>
+          <!-- Description -->
+          <div class="description-container">
+            <p class="card-text description truncated"></p>
+            <button class="btn btn-link p-0 show-more-btn">Show more</button>
+          </div>
+          <hr />
+          <!-- Price Table -->
+          <h6 class="card-subtitle mb-2 mt-2 text-muted">Daily Rates</h6>
+          <table class="table table-sm price-table mb-3">
+            <thead>
+              <tr>
+                <th>1-6 days</th>
+                <th>7-13 days</th>
+                <th>14+ days</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="price"></tr>
+            </tbody>
+          </table>
+          <!-- Select Button -->
+          <div class="d-flex justify-content-end">
+            <button class="button-very-small select-crashpad">Select</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </template>
+
+  <!-- Hero Image 2 -->
+  <div class="hero-wrapper">
+    <picture>
+      <source media="(min-width: 1441px)" srcset="{% static 'rentals/images/hero_image10/female_climbers_at_arkham_spotting_1920.webp' %}" />
+      <source media="(min-width: 1025px)" srcset="{% static 'rentals/images/hero_image10/female_climbers_at_arkham_spotting_1440.webp' %}" />
+      <source media="(min-width: 641px)" srcset="{% static 'rentals/images/hero_image10/female_climbers_at_arkham_spotting_1024.webp' %}" />
+      <source media="(max-width: 640px)" srcset="{% static 'rentals/images/hero_image10/female_climbers_at_arkham_spotting_640.webp' %}" />
+      <img src="{% static 'rentals/images/hero_image10/female_climbers_at_arkham_spotting_1920.webp' %}" alt="Two female climbers at Arkham bouldering spot in action, one climbing and the other spotting" />
+    </picture>
+  </div>
+
+  <!-- Add modal template at the bottom of the content block -->
+  <div class="modal fade" id="galleryModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Crashpad Gallery</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div id="galleryCarousel" class="carousel slide">
+            <div class="carousel-inner">
+              <!-- Images will be inserted here -->
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#galleryCarousel" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#galleryCarousel" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block postload_js %}
+  {{ block.super }}
+  <script src="{% static 'rentals/js/booking.js' %}" type="module"></script>
+{% endblock %}

@@ -64,14 +64,23 @@ class Order(models.Model):
         super().save(*args, **kwargs)
 
     def update_total(self):
-        """Update the order total, delivery cost and grand total"""
-        self.order_total = self.items.aggregate(
+        """Update grand total including both products and rentals"""
+        # Sum product totals
+        product_total = self.items.aggregate(
             models.Sum("item_total"))["item_total__sum"] or 0
+
+        # Sum rental totals
+        rental_total = self.crashpads.aggregate(
+            models.Sum("total_price"))["total_price__sum"] or 0
+
+        self.order_total = product_total + rental_total
+
         if self.order_total < settings.FREE_DELIVERY_THRESHOLD:
             self.delivery_cost = (settings.STANDARD_DELIVERY_PERCENTAGE *
                                   self.order_total / 100)
         else:
             self.delivery_cost = 0
+
         self.grand_total = self.order_total + self.delivery_cost
         self.save()
 
@@ -113,7 +122,7 @@ class Order(models.Model):
 
 
 class OrderItem(models.Model):
-    """Order item model linking order to product"""
+    """Order item model for products only"""
     order = models.ForeignKey(Order,
                               null=False,
                               blank=False,
@@ -123,17 +132,21 @@ class OrderItem(models.Model):
                                 null=False,
                                 blank=False,
                                 on_delete=models.CASCADE)
-    quantity = models.PositiveIntegerField(null=False, blank=False, default=0)
+    quantity = models.IntegerField(null=False, blank=False, default=1)
     item_total = models.DecimalField(max_digits=10,
                                      decimal_places=2,
                                      null=False,
-                                     blank=False,
-                                     default=0)
+                                     blank=False)
 
     def save(self, *args, **kwargs):
-        """Calculate the item total and save the order item"""
-        self.item_total = self.product.price * self.quantity
+        """Calculate item total on save"""
+        if self.product:
+            self.item_total = self.product.price * self.quantity
         super().save(*args, **kwargs)
 
+    @property
+    def price(self):
+        return self.product.price
+
     def __str__(self):
-        return f"{self.quantity} x {self.product.name}"
+        return f"{self.order.order_number} - {self.product.name}"

@@ -4,6 +4,7 @@
 {% url 'shop' as shop_url %}
 {% url 'rental' as rental_url %}
 {% url 'cart_detail' as cart_url %}
+{% url 'booking' as booking_url %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -81,10 +82,10 @@
                   {% endif %}" href="{% url 'shop' %}"><i class="fa-solid fa-book"></i> Guidebook</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link mx-3 {% if request.path == rental_url %}
+                <a class="nav-link mx-3 {% if request.path == booking_url %}
                     active
                     page
-                  {% endif %}" href="#"><i class="fa-solid fa-layer-group"></i> Crashpad Rental</a>
+                  {% endif %}" href="{% url 'rentals:booking' %}"><i class="fa-solid fa-layer-group"></i> Crashpad Rental</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link mx-3 {% if request.path == cart_url %}
@@ -152,6 +153,7 @@
     {% block postload_js %}
       <script src="{% static 'js/navbar.js' %}"></script>
       <script src="{% static 'js/sentry.js' %}"></script>
+      <script src="{% static 'js/toasts.js' %}" type="module"></script>
     {% endblock %}
   </body>
 </html>

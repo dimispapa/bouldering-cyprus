@@ -47,6 +47,18 @@ h1, h2, h3 {
   vertical-align: baseline;
 }
 
+.cart-item-image {
+  max-width: 50px;
+  height: auto;
+}
+
+.card-body a {
+  color: #ed6c2c;
+}
+.card-body a:hover {
+  color: #d45212;
+}
+
 /* Hero Images */
 #hero-image,
 #hero-image2 {
@@ -200,4 +212,8 @@ body {
   max-width: 75vw;
   margin: 100px auto;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+  background-color: #f9f5e6;
 }/*# sourceMappingURL=cart.css.map */

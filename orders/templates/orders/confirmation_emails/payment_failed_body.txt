@@ -7,10 +7,22 @@ Error: {{ payment_error }}
 Cart Details:
 {% if cart_items %}
 {% for item in cart_items %}
-{{ item.name }} - Quantity: {{ item.quantity }} - €{{ item.total_price|floatformat:2 }}
+{% if item.type == 'product' %}
+{{ item.item.name }} - Quantity: {{ item.quantity }} - €{{ item.total_price|floatformat:2 }}
+{% else %}
+{{ item.item.name }} - Rental
+    Check-in: {{ item.check_in }}
+    Check-out: {{ item.check_out }}
+    {{ item.rental_days }} days @ €{{ item.daily_rate }}/day
+    Total: €{{ item.total_price|floatformat:2 }}
+{% endif %}
 {% endfor %}
 
 Cart Total: €{{ cart_total|floatformat:2 }}
+{% if delivery_cost %}
+Delivery Cost: €{{ delivery_cost|floatformat:2 }}
+Grand Total: €{{ grand_total|floatformat:2 }}
+{% endif %}
 {% else %}
 No items found in cart.
 {% endif %}

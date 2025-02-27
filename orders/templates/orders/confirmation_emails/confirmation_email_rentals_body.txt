@@ -1,0 +1,39 @@
+Hello {{ order.first_name }}
+
+This is a confirmation of your order. The details are below:
+
+Order Number: {{ order.order_number }}
+Order Date: {{ order.date_created }}
+
+{% if order.crashpads.all %}
+Rental Items:
+{% for booking in order.crashpads.all %}
+{{ booking.crashpad.name }}
+    Check-in: {{ booking.check_in }}
+    Check-out: {{ booking.check_out }}
+    {{ booking.rental_days }} days @ €{{ booking.daily_rate }}/day
+    Subtotal: €{{ booking.total_price }}
+{% endfor %}
+{% endif %}
+------------------------------------------
+Total: €{{ order.crashpads.all.total_price|sum|floatformat:2 }}
+
+Your Contact Details:
+Phone: {{ order.phone }}
+Email: {{ order.email }}
+
+Please pickup your crashpads from the following address on the first day of your booking:
+Address: <em>{{ CRASHPAD_PICKUP_ADDRESS_LINE1 }}</em>
+Address Line 2: <em>{{ CRASHPAD_PICKUP_ADDRESS_LINE2 }}</em>
+Town/City: <em>{{ CRASHPAD_PICKUP_TOWN_OR_CITY }}</em>
+Postal Code: <em>{{ CRASHPAD_PICKUP_POSTAL_CODE }}</em>
+Country: <em>{{ CRASHPAD_PICKUP_COUNTRY }}</em>
+
+Return the crashpads to the same address on the last day of your booking.
+
+If you have any questions, please contact us at {{ contact_email }} or via Phone/WhatsApp on {{ whatsapp_number }}.
+
+Thank you for your order!
+
+Best regards,
+The Bouldering Cyprus Team

@@ -39,13 +39,18 @@
               <div class="d-flex justify-content-between align-items-center mb-3">
                 <div class="d-flex align-items-center">
                   {% if item.image_url %}
-                    <img src="{{ item.image_url }}" alt="{{ item.product.name }}" class="me-3 img-cart-thumbnail" />
+                    <img src="{{ item.image_url }}" alt="{{ item.item.name }}" class="me-3 img-cart-thumbnail" />
                   {% else %}
                     <img src="{% static 'images/noimage.png' %}" alt="No image available" class="me-3 img-cart-thumbnail" />
                   {% endif %}
                   <div>
-                    <span class="fw-bold">{{ item.product.name }}</span>
-                    <small class="text-muted d-block">Quantity: {{ item.quantity }}</small>
+                    <span class="fw-bold">{{ item.item.name }}</span>
+                    {% if item.type == 'rental' %}
+                      <small class="text-muted d-block">Rental: {{ item.check_in }} to {{ item.check_out }}</small>
+                      <small class="text-muted d-block">{{ item.rental_days }} days at €{{ item.daily_rate }}/day</small>
+                    {% else %}
+                      <small class="text-muted d-block">Quantity: {{ item.quantity }}</small>
+                    {% endif %}
                   </div>
                 </div>
                 <span>€{{ item.total_price|floatformat:2 }}</span>
@@ -87,6 +92,5 @@
 
 {% block postload_js %}
   {{ block.super }}
-  <script src="{% static '../static/js/toasts.js' %}"></script>
   <script src="{% static '../static/payments/js/checkout.js' %}"></script>
 {% endblock %}

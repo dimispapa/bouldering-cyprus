@@ -46,7 +46,6 @@ function initStripe(stripePublicKey, clientSecret) {
 // Function to handle the submit button and payment processing workflow
 async function handleSubmit(e, stripe, elements) {
   e.preventDefault();
-  const baseUrl = window.location.origin;
   const form = e.target;
   setLoading(true);
 
@@ -55,8 +54,8 @@ async function handleSubmit(e, stripe, elements) {
     const formData = new FormData(form);
     const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
-    // Store form data in PaymentIntent metadata and s
-    const response = await fetch(`${baseUrl}/payments/store-order-metadata/`, {
+    // Store form data in PaymentIntent metadata
+    const response = await fetch('/payments/store-order-metadata/', {
       method: 'POST',
       body: formData,
       headers: {
@@ -68,11 +67,14 @@ async function handleSubmit(e, stripe, elements) {
       throw new Error('Failed to store order data');
     }
 
+    // Construct absolute URL for return_url
+    const returnUrl = new URL('/payments/checkout-success/', window.location.href).href;
+
     // Proceed with payment confirmation
     const { error } = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        return_url: `${baseUrl}/payments/checkout-success/`,
+        return_url: returnUrl,
       },
     });
 

@@ -15,7 +15,6 @@ class GalleryImageInline(admin.TabularInline):
 @admin.register(Product)
 class ProductAdmin(SummernoteModelAdmin):
     list_display = ('name', 'price', 'stock', 'is_active', 'created_at')
-    prepopulated_fields = {"slug": ("name",)}
     search_fields = ('name', 'description')
     list_filter = ('is_active', 'created_at')
     summernote_fields = ('description',)

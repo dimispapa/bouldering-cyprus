@@ -1,4 +1,3 @@
-from decimal import Decimal
 from .cart import Cart
 from django.conf import settings
 
@@ -6,23 +5,35 @@ from django.conf import settings
 def cart_summary(request):
     cart = Cart(request)
     cart_items = [{
-        "product":
-        item["product"],
+        "item":
+        item["item"],
         "quantity":
         item["quantity"],
         "total_price":
         item["total_price"],
+        "type":
+        item["type"],
         "image_url":
-        item["product"].image.url if item["product"].image else None,
+        item["item"].image.url if item["item"].image else None,
+        "dates":
+        item.get("dates", None),
+        "check_in":
+        item.get("check_in"),
+        "check_out":
+        item.get("check_out"),
+        "rental_days":
+        item.get("rental_days"),
+        "daily_rate":
+        item.get("daily_rate"),
     } for item in cart]
 
-    cart_total = Decimal(str(cart.cart_total()))
+    cart_total = cart.cart_total()
 
     if cart_total < settings.FREE_DELIVERY_THRESHOLD:
-        delivery_cost = Decimal(
-            str(settings.STANDARD_DELIVERY_PERCENTAGE * cart_total / 100))
+        delivery_cost = (settings.STANDARD_DELIVERY_PERCENTAGE * cart_total /
+                         100)
     else:
-        delivery_cost = Decimal('0')
+        delivery_cost = 0
     grand_total = cart_total + delivery_cost
 
     return {
