@@ -155,11 +155,13 @@ if not PRODUCTION:
 WHATSAPP_NUMBER = os.environ.get("WHATSAPP_NUMBER")
 
 # Crashpad pickup address
-CRASHPAD_PICKUP_ADDRESS_LINE1 = 'Drouseia village center - opposite Agios Epifanios church'
-CRASHPAD_PICKUP_ADDRESS_LINE2 = 'Sappho Manor House'
-CRASHPAD_PICKUP_TOWN_OR_CITY = 'Drouseia'
-CRASHPAD_PICKUP_POSTAL_CODE = '8700'
-CRASHPAD_PICKUP_COUNTRY = 'Cyprus'
+CRASHPAD_PICKUP_ADDRESS = {
+    'line1': 'Drouseia village center - opposite Agios Epifanios church',
+    'line2': 'Sappho Manor House',
+    'town_or_city': 'Drouseia',
+    'postal_code': '8700',
+    'country': 'Cyprus'
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/

@@ -23,11 +23,11 @@ Phone: {{ order.phone }}
 Email: {{ order.email }}
 
 Please pickup your crashpads from the following address on the first day of your booking:
-Address: <em>{{ CRASHPAD_PICKUP_ADDRESS_LINE1 }}</em>
-Address Line 2: <em>{{ CRASHPAD_PICKUP_ADDRESS_LINE2 }}</em>
-Town/City: <em>{{ CRASHPAD_PICKUP_TOWN_OR_CITY }}</em>
-Postal Code: <em>{{ CRASHPAD_PICKUP_POSTAL_CODE }}</em>
-Country: <em>{{ CRASHPAD_PICKUP_COUNTRY }}</em>
+Address: <em>{{ crashpad_pickup_address.line1 }}</em>
+Address Line 2: <em>{{ crashpad_pickup_address.line2 }}</em>
+Town/City: <em>{{ crashpad_pickup_address.town_or_city }}</em>
+Postal Code: <em>{{ crashpad_pickup_address.postal_code }}</em>
+Country: <em>{{ crashpad_pickup_address.country }}</em>
 
 Return the crashpads to the same address on the last day of your booking.
 

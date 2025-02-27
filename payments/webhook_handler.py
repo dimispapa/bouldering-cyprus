@@ -34,7 +34,8 @@ class StripeWH_Handler:
                 'orders/confirmation_emails/confirmation_email_body.txt', {
                     'order': order,
                     'whatsapp_number': settings.WHATSAPP_NUMBER,
-                    'contact_email': settings.DEFAULT_FROM_EMAIL
+                    'contact_email': settings.DEFAULT_FROM_EMAIL,
+                    'crashpad_pickup_address': settings.CRASHPAD_PICKUP_ADDRESS
                 })
             send_mail(subject, body, settings.DEFAULT_FROM_EMAIL,
                       [order.email])
@@ -56,18 +57,15 @@ class StripeWH_Handler:
                 'confirmation_email_rentals_subject.txt', {'order': order})
             body = render_to_string(
                 'orders/confirmation_emails/'
-                'confirmation_email_rentals_body.txt',
-                {
+                'confirmation_email_rentals_body.txt', {
                     'order': order,
                     'whatsapp_number': settings.WHATSAPP_NUMBER,
                     'contact_email': settings.DEFAULT_FROM_EMAIL
                 })
             send_mail(subject, body, settings.DEFAULT_FROM_EMAIL,
                       [order.email])
-            logger.info(
-                "Rental confirmation email sent "
-                f"for order {order.order_number}"
-            )
+            logger.info("Rental confirmation email sent "
+                        f"for order {order.order_number}")
             return True
         except Exception as e:
             logger.error(f"Error sending rental confirmation email: {e}")
