@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Crashpad, Booking, CrashpadGalleryImage
+from .models import Crashpad, CrashpadBooking, CrashpadGalleryImage
 
 
 class CrashpadGalleryImageSerializer(serializers.ModelSerializer):
@@ -28,7 +28,7 @@ class CrashpadSerializer(serializers.ModelSerializer):
             return 'unknown'
 
         # Check for overlapping bookings
-        overlapping_bookings = Booking.objects.filter(
+        overlapping_bookings = CrashpadBooking.objects.filter(
             crashpad=obj,
             status='confirmed',
             check_out__gt=check_in,
@@ -40,11 +40,10 @@ class CrashpadSerializer(serializers.ModelSerializer):
 class BookingSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = Booking
+        model = CrashpadBooking
         fields = [
-            'id', 'crashpad', 'user', 'check_in', 'check_out', 'status',
-            'booking_number', 'first_name', 'last_name', 'email', 'phone',
-            'address_line1', 'address_line2', 'town_or_city', 'postal_code',
-            'country'
+            'id', 'crashpad', 'check_in', 'check_out', 'status',
+            'rental_days', 'daily_rate', 'total_price', 'customer_name',
+            'customer_email', 'customer_phone'
         ]
-        read_only_fields = ['status', 'user']
+        read_only_fields = ['status']

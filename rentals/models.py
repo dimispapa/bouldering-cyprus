@@ -1,8 +1,7 @@
 from django.db import models
-from django.conf import settings
-from django_countries.fields import CountryField
 from django.utils.text import slugify
 import os
+from orders.models import Order
 
 
 class Crashpad(models.Model):
@@ -33,17 +32,11 @@ class Crashpad(models.Model):
 
     def is_available(self, check_in, check_out):
         """Check if the crashpad is available for the given dates"""
-        bookings = Booking.objects.filter(crashpad=self,
-                                          status='confirmed',
-                                          check_in__lte=check_out,
-                                          check_out__gte=check_in)
+        bookings = CrashpadBooking.objects.filter(crashpad=self,
+                                                  status='confirmed',
+                                                  check_in__lte=check_out,
+                                                  check_out__gte=check_in)
         return not bookings.exists()
-
-    def create_booking(self, check_in, check_out):
-        """Create a booking for the crashpad"""
-        Booking.objects.create(crashpad=self,
-                               check_in=check_in,
-                               check_out=check_out)
 
 
 def crashpad_gallery_upload_path(instance, filename):
@@ -66,46 +59,70 @@ class CrashpadGalleryImage(models.Model):
         return f"Gallery image for {self.crashpad.name}"
 
 
-class Booking(models.Model):
-    PENDING = 'pending'
-    CONFIRMED = 'confirmed'
-    CANCELLED = 'cancelled'
-    REFUNDED = 'refunded'
-    PARTIALLY_REFUNDED = 'partially_refunded'
-
-    STATUS_CHOICES = [
-        (PENDING, 'Pending'),
-        (CONFIRMED, 'Confirmed'),
-        (CANCELLED, 'Cancelled'),
-        (REFUNDED, 'Refunded'),
-        (PARTIALLY_REFUNDED, 'Partially Refunded'),
-    ]
-
+class CrashpadBooking(models.Model):
     crashpad = models.ForeignKey(Crashpad, on_delete=models.CASCADE)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL,
-                             on_delete=models.CASCADE)
-    check_in = models.DateField(blank=False, null=False)
-    check_out = models.DateField(blank=False, null=False)
-    booking_number = models.CharField(max_length=32,
-                                      null=False,
-                                      editable=False,
-                                      unique=True)
-    first_name = models.CharField(max_length=50, null=False, blank=False)
-    last_name = models.CharField(max_length=50, null=False, blank=False)
-    email = models.EmailField(max_length=250, null=False, blank=False)
-    phone = models.CharField(max_length=20, null=False, blank=False)
-    address_line1 = models.CharField(max_length=250, null=False, blank=False)
-    address_line2 = models.CharField(max_length=250, null=True, blank=True)
-    town_or_city = models.CharField(max_length=100, null=False, blank=False)
-    postal_code = models.CharField(max_length=20, null=False, blank=False)
-    country = CountryField(blank_label="Country *", null=False, blank=False)
-    status = models.CharField(max_length=20,
-                              choices=STATUS_CHOICES,
-                              default=PENDING,
-                              blank=False,
-                              null=False)
+    order = models.ForeignKey(Order,
+                              on_delete=models.CASCADE,
+                              related_name='crashpads')
+    check_in = models.DateField()
+    check_out = models.DateField()
+    rental_days = models.IntegerField()
+    daily_rate = models.DecimalField(max_digits=10, decimal_places=2)
+    total_price = models.DecimalField(max_digits=10, decimal_places=2)
+    status = models.CharField(max_length=10,
+                              choices=[
+                                  ('confirmed', 'Confirmed'),
+                                  ('cancelled', 'Cancelled'),
+                              ],
+                              default='confirmed')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    # Methods for calculated fields
+    def calculate_rental_days(self):
+        return (self.check_out - self.check_in).days
+
+    def calculate_daily_rate(self):
+        # Calculate daily rate
+        if self.rental_days >= 14:
+            daily_rate = self.crashpad.fourteen_day_rate
+        elif self.rental_days >= 7:
+            daily_rate = self.crashpad.seven_day_rate
+        else:
+            daily_rate = self.crashpad.day_rate
+        return daily_rate
+
+    def calculate_total_price(self):
+        return self.daily_rate * self.calculate_rental_days()
+
+    def get_customer_name(self):
+        return f"{self.order.first_name} {self.order.last_name}"
+
+    def get_customer_email(self):
+        return self.order.email
+
+    def get_customer_phone(self):
+        return self.order.phone
+
+    # Database fields that use the methods
+    rental_days = models.IntegerField(editable=False)
+    customer_name = models.CharField(max_length=255, editable=False)
+    customer_email = models.EmailField(editable=False)
+    customer_phone = models.CharField(max_length=20, editable=False)
+
+    def save(self, *args, **kwargs):
+        """Populate calculated fields before saving"""
+        self.rental_days = self.calculate_rental_days()
+        self.daily_rate = self.calculate_daily_rate()
+        self.total_price = self.calculate_total_price()
+        self.customer_name = self.get_customer_name()
+        self.customer_email = self.get_customer_email()
+        self.customer_phone = self.get_customer_phone()
+        super().save(*args, **kwargs)
+
     def __str__(self):
-        return f"{self.crashpad.name} - {self.check_in} to {self.check_out}"
+        return f"Booking {self.id} - {self.crashpad.name} " \
+               f"({self.check_in} to {self.check_out})"
+
+    class Meta:
+        ordering = ['-created_at']

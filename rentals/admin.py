@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django_summernote.admin import SummernoteModelAdmin
-from .models import Crashpad, Booking, CrashpadGalleryImage
+from .models import Crashpad, CrashpadBooking, CrashpadGalleryImage
 
 
 class CrashpadGalleryImageInline(admin.TabularInline):
@@ -26,26 +26,18 @@ class CrashpadAdmin(SummernoteModelAdmin):
                ]  # Add the inline for multiple image uploads
 
 
-@admin.register(Booking)
-class BookingAdmin(admin.ModelAdmin):
-    list_display = ('booking_number', 'crashpad', 'user', 'check_in',
-                    'check_out', 'status', 'created_at')
-    list_filter = ('status', 'check_in', 'check_out', 'created_at')
-    search_fields = ('booking_number', 'user__email', 'first_name',
-                     'last_name', 'email')
-    readonly_fields = ('booking_number', 'created_at', 'updated_at')
-    ordering = ('-created_at', )
-    list_per_page = 20
+@admin.register(CrashpadBooking)
+class CrashpadBookingAdmin(admin.ModelAdmin):
+    list_display = ('id', 'crashpad', 'customer_name', 'customer_email',
+                    'check_in', 'check_out', 'rental_days', 'daily_rate',
+                    'total_price', 'status')
 
-    fieldsets = (('Booking Information', {
-        'fields': ('booking_number', 'crashpad', 'user', 'status', 'check_in',
-                   'check_out')
-    }), ('Customer Information', {
-        'fields': ('first_name', 'last_name', 'email', 'phone')
-    }), ('Address Information', {
-        'fields': ('address_line1', 'address_line2', 'town_or_city',
-                   'postal_code', 'country')
-    }), ('Timestamps', {
-        'fields': ('created_at', 'updated_at'),
-        'classes': ('collapse', )
-    }))
+    list_filter = ('crashpad', 'status', 'check_in', 'check_out', 'created_at',
+                   'customer_name', 'customer_email', 'customer_phone')
+
+    search_fields = ('crashpad__name', 'customer_email', 'customer_name',
+                     'customer_phone')
+
+    readonly_fields = ('created_at', 'updated_at', 'rental_days', 'daily_rate',
+                       'total_price', 'customer_name', 'customer_email',
+                       'customer_phone')
