@@ -3,7 +3,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from django.utils.dateparse import parse_date
-from .models import Crashpad, Booking
+from .models import Crashpad, CrashpadBooking
 from .serializers import CrashpadSerializer, BookingSerializer
 from django.views.generic import TemplateView
 from datetime import datetime
@@ -70,7 +70,7 @@ class CrashpadViewSet(viewsets.ReadOnlyModelViewSet):
                     status=status.HTTP_400_BAD_REQUEST)
 
             # Get booked crashpad IDs for the date range
-            booked_crashpad_ids = Booking.objects.filter(
+            booked_crashpad_ids = CrashpadBooking.objects.filter(
                 status='confirmed',
                 check_out__gt=check_in_date,
                 check_in__lt=check_out_date).values_list('crashpad_id',
@@ -106,7 +106,7 @@ class BookingViewSet(viewsets.ModelViewSet):
         """
         Users can only see their own bookings
         """
-        return Booking.objects.filter(user=self.request.user)
+        return CrashpadBooking.objects.filter(user=self.request.user)
 
     def perform_create(self, serializer):
         """
