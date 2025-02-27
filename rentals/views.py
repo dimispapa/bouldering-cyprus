@@ -91,8 +91,12 @@ class CrashpadViewSet(viewsets.ReadOnlyModelViewSet):
             return Response(serializer.data)
 
         except ValueError as e:
-            return Response({'error': str(e)},
-                            status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {
+                    'error':
+                    f"Error getting available crashpads: {type(e).__name__}"
+                },
+                status=status.HTTP_400_BAD_REQUEST)
 
 
 class BookingViewSet(viewsets.ModelViewSet):

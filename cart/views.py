@@ -80,7 +80,9 @@ def cart_add(request, item_type):
     except Exception as e:
         logger.error(f"Error adding item to cart: {e}")
         if item_type == 'rental':
-            return JsonResponse({'error': str(e)}, status=400)
+            return JsonResponse(
+                {'error': f"Error adding item to cart: {type(e).__name__}"},
+                status=400)
         messages.error(request, "Error adding item to cart")
         return redirect('shop')
 
