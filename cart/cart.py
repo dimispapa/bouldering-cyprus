@@ -129,17 +129,17 @@ class Cart:
         Iterate over the items in the cart and get the products/rentals.
         """
         product_ids = []
-        rental_ids = []
+        crashpad_ids = []
 
         for key in self.cart.keys():
             item_type, item_id = key.split('_')
             if item_type == 'product':
                 product_ids.append(item_id)
             elif item_type == 'rental':
-                rental_ids.append(item_id)
+                crashpad_ids.append(item_id)
 
         products = Product.objects.filter(id__in=product_ids)
-        rentals = Crashpad.objects.filter(id__in=rental_ids)
+        crashpads = Crashpad.objects.filter(id__in=crashpad_ids)
 
         # Create a copy of the cart to avoid modifying the session directly
         cart = self.cart.copy()
@@ -153,10 +153,10 @@ class Cart:
             yield item
 
         # Handle rentals
-        for rental in rentals:
-            key = f"rental_{rental.id}"
+        for crashpad in crashpads:
+            key = f"rental_{crashpad.id}"
             item = cart[key].copy()
-            item['item'] = rental
+            item['item'] = crashpad
             # Force quantity to 1 for rentals as a safety measure
             item['quantity'] = 1
             # For rentals, total price is just the daily rate * number of days

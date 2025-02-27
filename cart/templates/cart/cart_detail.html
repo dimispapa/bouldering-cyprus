@@ -138,15 +138,11 @@
           <div class="alert" role="alert">
             <p>Your cart is empty.</p>
             <p>
-              Add a <a href="{% url 'shop' %}">guidebook</a> to your cart for purchase or add a <a href="#">crashpad</a> for rent.
+              Add a <a href="{% url 'shop' %}">guidebook</a> to your cart for purchase or add a <a href="{% url 'rentals:booking' %}">crashpad</a> for rent.
             </p>
           </div>
         {% endif %}
       </div>
     </div>
   </div>
-{% endblock %}
-
-{% block postload_js %}
-
 {% endblock %}

@@ -112,63 +112,62 @@ def cart_detail(request):
     return render(request, "cart/cart_detail.html", {"cart": cart})
 
 
+@require_POST
 def cart_update(request):
     """Process the cart to either update quantities or checkout."""
     cart = Cart(request)
-    if request.method == "POST":
-        # Determine which action was requested
-        action = request.POST.get("action")
 
-        # If the action is to update the cart, update the quantities
-        if action == "update":
-            update_successful = True
-            # Loop over all items in the cart and update quantities
-            for item in cart:
-                item_type = item['type']
-                item_id = item['item'].id
-                input_name = f'quantity_{item_type}_{item_id}'
-                new_qty = request.POST.get(input_name)
+    # Determine which action was requested
+    action = request.POST.get("action")
 
-                # Skip rental items as they don't have editable quantities
-                if item_type == 'rental':
+    # If the action is to update the cart, update the quantities
+    if action == "update":
+        update_successful = True
+        # Loop over all items in the cart and update quantities
+        for item in cart:
+            item_type = item['type']
+            item_id = item['item'].id
+            input_name = f'quantity_{item_type}_{item_id}'
+            new_qty = request.POST.get(input_name)
+
+            # Skip rental items as they don't have editable quantities
+            if item_type == 'rental':
+                continue
+
+            if new_qty:
+                try:
+                    new_qty = int(new_qty)
+                    if new_qty > 0:
+                        # Perform stock validation for products
+                        if item_type == 'product':
+                            product = get_object_or_404(Product, id=item_id)
+                            if not product.has_stock(new_qty):
+                                messages.error(
+                                    request, f'Sorry, only {product.stock} '
+                                    f'units available for {product.name}')
+                                update_successful = False
+                                continue
+                        # Add the item to the cart with the new quantity
+                        cart.add(item=item['item'],
+                                 quantity=new_qty,
+                                 update_quantity=True,
+                                 item_type=item_type,
+                                 dates=item.get('dates'))
+                    # If the quantity is 0, remove the item from the cart
+                    else:
+                        cart.remove(item['item'], item_type)
+                except ValueError:
                     continue
 
-                if new_qty:
-                    try:
-                        new_qty = int(new_qty)
-                        if new_qty > 0:
-                            # Perform stock validation for products
-                            if item_type == 'product':
-                                product = get_object_or_404(Product,
-                                                            id=item_id)
-                                if not product.has_stock(new_qty):
-                                    messages.error(
-                                        request,
-                                        f'Sorry, only {product.stock} '
-                                        f'units available for {product.name}')
-                                    update_successful = False
-                                    continue
-                            # Add the item to the cart with the new quantity
-                            cart.add(item=item['item'],
-                                     quantity=new_qty,
-                                     update_quantity=True,
-                                     item_type=item_type,
-                                     dates=item.get('dates'))
-                        # If the quantity is 0, remove the item from the cart
-                        else:
-                            cart.remove(item['item'], item_type)
-                    except ValueError:
-                        continue
+        if update_successful:
+            messages.success(
+                request,
+                "Your cart has been updated.",
+                extra_tags="Cart updated",
+            )
 
-            if update_successful:
-                messages.success(
-                    request,
-                    "Your cart has been updated.",
-                    extra_tags="Cart updated",
-                )
-
-        # If the action is to checkout, redirect to checkout
-        elif action == "checkout":
-            return redirect("checkout")
+    # If the action is to checkout, redirect to checkout
+    elif action == "checkout":
+        return redirect("checkout")
 
     return redirect("cart_detail")

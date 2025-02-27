@@ -16,7 +16,15 @@ def cart_summary(request):
         "image_url":
         item["item"].image.url if item["item"].image else None,
         "dates":
-        item.get("dates", None)
+        item.get("dates", None),
+        "check_in":
+        item.get("check_in"),
+        "check_out":
+        item.get("check_out"),
+        "rental_days":
+        item.get("rental_days"),
+        "daily_rate":
+        item.get("daily_rate"),
     } for item in cart]
 
     cart_total = cart.cart_total()
