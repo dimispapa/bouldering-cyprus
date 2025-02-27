@@ -340,8 +340,15 @@ def checkout_success(request):
 
         if order:
             # Order exists, just show the success page
-            return render(request, 'payments/checkout_success.html',
-                          {'order': order})
+            # Render the success page with order details,
+            # contact details, and crashpad pickup address
+            context = {
+                'order': order,
+                'whatsapp_number': settings.WHATSAPP_NUMBER,
+                'contact_email': settings.DEFAULT_FROM_EMAIL,
+                'crashpad_pickup_address': settings.CRASHPAD_PICKUP_ADDRESS
+            }
+            return render(request, 'payments/checkout_success.html', context)
 
         # Simulate a failure in the normal checkout process
         # if TEST_WEBHOOK_ORDER_HANDLER is True
@@ -374,12 +381,13 @@ def checkout_success(request):
                     f'Your order number is {order.order_number}. '
                     f'A confirmation email will be sent to {order.email}.')
 
-                # Render the success page with order details
-                # and contact details
+                # Render the success page with order details,
+                # contact details, and crashpad pickup address
                 context = {
                     'order': order,
                     'whatsapp_number': settings.WHATSAPP_NUMBER,
-                    'contact_email': settings.DEFAULT_FROM_EMAIL
+                    'contact_email': settings.DEFAULT_FROM_EMAIL,
+                    'crashpad_pickup_address': settings.CRASHPAD_PICKUP_ADDRESS
                 }
                 response = render(request, 'payments/checkout_success.html',
                                   context)
@@ -416,11 +424,13 @@ def checkout_success(request):
                 request, 'Order successfully processed! '
                 f'Your order number is {order.order_number}. '
                 f'A confirmation email will be sent to {order.email}.')
-            # Render the success page with order details and contact details
+            # Render the success page with order details,
+            # contact details, and crashpad pickup address
             context = {
                 'order': order,
                 'whatsapp_number': settings.WHATSAPP_NUMBER,
-                'contact_email': settings.DEFAULT_FROM_EMAIL
+                'contact_email': settings.DEFAULT_FROM_EMAIL,
+                'crashpad_pickup_address': settings.CRASHPAD_PICKUP_ADDRESS
             }
             return render(request, 'payments/checkout_success.html', context)
         # Otherwise, show an error message and redirect to checkout

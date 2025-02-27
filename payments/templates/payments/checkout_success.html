@@ -44,8 +44,8 @@
         <div class="row">
           <div class="col-md-8">
             <h4>Order Details</h4>
-            <p>Order Number: {{ order.order_number }}</p>
-            <p>Order Date: {{ order.date_created }}</p>
+            <p><em>Order Number:</em> {{ order.order_number }}</p>
+            <p><em>Order Date:</em> {{ order.date_created }}</p>
 
             {% if order.items.all %}
               <h5 class="mt-4">Products</h5>
@@ -67,24 +67,24 @@
               {% endfor %}
               <h5 class="mt-4">Delivery Details</h5>
               <p>
-                Full Name: <em>{{ order.first_name }} {{ order.last_name }}</em>
+                <em>Full Name:</em> {{ order.first_name }} {{ order.last_name }}
               </p>
               <p>
-                Address: <em>{{ order.address_line1 }}</em>
+                <em>Address:</em> {{ order.address_line1 }}
               </p>
               {% if order.address_line2 %}
                 <p>
-                  Address Line 2: <em>{{ order.address_line2 }}</em>
+                  <em>Address Line 2:</em> {{ order.address_line2 }}
                 </p>
               {% endif %}
               <p>
-                Town/City: <em>{{ order.town_or_city }}</em>
+                <em>Town/City:</em> {{ order.town_or_city }}
               </p>
               <p>
-                Postal Code: <em>{{ order.postal_code }}</em>
+                <em>Postal Code:</em> {{ order.postal_code }}
               </p>
               <p>
-                Country: <em>{{ order.country.name }}</em>
+                <em>Country:</em> {{ order.country.name }}
               </p>
               <p>An email will be sent to you once the product items are shipped along with courier tracking details.</p>
             {% endif %}
@@ -112,19 +112,21 @@
               <h5 class="mt-4">Crashpad Pickup Details</h5>
               <p>Please pickup your crashpads from the following address on the first day of your booking:</p>
               <p>
-                Address: <em>{{ CRASHPAD_PICKUP_ADDRESS_LINE1 }}</em>
+                <em>Address:</em> {{ crashpad_pickup_address.line1 }}
+              </p>
+              {% if crashpad_pickup_address.line2 %}
+                <p>
+                  <em>Address Line 2:</em> {{ crashpad_pickup_address.line2 }}
+                </p>
+              {% endif %}
+              <p>
+                <em>Town/City:</em> {{ crashpad_pickup_address.town_or_city }}
               </p>
               <p>
-                Address Line 2: <em>{{ CRASHPAD_PICKUP_ADDRESS_LINE2 }}</em>
+                <em>Postal Code:</em> {{ crashpad_pickup_address.postal_code }}
               </p>
               <p>
-                Town/City: <em>{{ CRASHPAD_PICKUP_TOWN_OR_CITY }}</em>
-              </p>
-              <p>
-                Postal Code: <em>{{ CRASHPAD_PICKUP_POSTAL_CODE }}</em>
-              </p>
-              <p>
-                Country: <em>{{ CRASHPAD_PICKUP_COUNTRY }}</em>
+                <em>Country:</em> {{ crashpad_pickup_address.country }}
               </p>
               <p>Return the crashpads to the same address on the last day of your booking.</p>
             {% endif %}
@@ -132,10 +134,10 @@
 
           <div class="col-md-4 border-start">
             <h4>Order Summary</h4>
-            <p>Subtotal: €{{ order.order_total|floatformat:2 }}</p>
-            <p>Delivery: €{{ order.delivery_cost|floatformat:2 }}</p>
+            <p><em>Subtotal:</em> €{{ order.order_total|floatformat:2 }}</p>
+            <p><em>Delivery:</em> €{{ order.delivery_cost|floatformat:2 }}</p>
             <hr />
-            <p class="h5">Total: €{{ order.grand_total|floatformat:2 }}</p>
+            <p class="h5"><em>Total:</em> €{{ order.grand_total|floatformat:2 }}</p>
           </div>
         </div>
 
