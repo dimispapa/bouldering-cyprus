@@ -12,6 +12,7 @@ from django.contrib import messages
 from django.views.decorators.http import require_POST, require_GET
 from orders.forms import OrderForm
 from orders.models import Order, OrderItem
+from rentals.models import CrashpadBooking
 from cart.cart import Cart
 from cart.contexts import cart_summary
 from django.db import IntegrityError, transaction
@@ -50,22 +51,8 @@ def checkout(request):
         return redirect("cart_detail")
 
     # Validate stock and availability before proceeding
-    invalid_items = cart.validate_stock()
-    if invalid_items:
-        for item in invalid_items:
-            if item['type'] == 'product':
-                messages.error(
-                    request,
-                    f"Only {item['available']} units available for "
-                    f"{item['name']}"
-                )
-            else:  # rental
-                messages.error(
-                    request,
-                    f"{item['name']}: {item['error']} for dates "
-                    f"{item['dates']}"
-                )
-        return redirect('cart_detail')
+    for item in cart.get_items():
+        validate_item_stock(item, request)
 
     try:
         # Proceed with checkout
@@ -73,8 +60,10 @@ def checkout(request):
 
         # Render the checkout page with cart and order form objects
         context = {
-            "cart": cart,
-            "order_form": OrderForm(
+            "cart":
+            cart,
+            "order_form":
+            OrderForm(
                 stripe_public_key=settings.STRIPE_PUBLIC_KEY,
                 stripe_client_secret=intent.client_secret,
             ),
@@ -137,11 +126,13 @@ def store_order_metadata(request):
                     },
                     # Shipping details
                     shipping={
-                        'name': " ".join([
+                        'name':
+                        " ".join([
                             form_data.get('first_name'),
                             form_data.get('last_name')
                         ]),
-                        'phone': form_data.get('phone'),
+                        'phone':
+                        form_data.get('phone'),
                         'address': {
                             'line1': form_data.get('address_line1'),
                             'line2': form_data.get('address_line2', ''),
@@ -151,8 +142,7 @@ def store_order_metadata(request):
                         },
                     },
                     # Receipt email
-                    receipt_email=form_data.get('email')
-                )
+                    receipt_email=form_data.get('email'))
 
                 logger.info("Successfully stored metadata in PaymentIntent")
                 return JsonResponse({'status': 'success'})
@@ -216,15 +206,15 @@ def create_order_from_payment(request, payment_intent):
             delivery_cost = cart_context['delivery_cost']
             grand_total = cart_context['grand_total']
         else:
-            cart = Cart(cart_data=json.loads(
-                payment_intent.metadata.get('cart_data')))
+            cart = Cart(
+                cart_data=json.loads(payment_intent.metadata.get('cart_data')))
             cart_total = Decimal(payment_intent.metadata.get('cart_total'))
             delivery_cost = Decimal(
                 payment_intent.metadata.get('delivery_cost'))
             grand_total = Decimal(payment_intent.metadata.get('grand_total'))
 
         # Verify stock and availability one last time before creating order
-        for item in cart:
+        for item in cart.get_items():
             validate_item_stock(item, request)
 
         # First, check if order already exists
@@ -270,20 +260,19 @@ def create_order_from_payment(request, payment_intent):
                     logger.info("View handler created new order: "
                                 f"{order.order_number}")
 
-                    # Create order items and update stock/availability
+                    # Create order items/bookings and update stock/availability
                     for item in cart:
+                        # Create order items for products
                         if item['type'] == 'product':
                             product = item['item']
                             quantity = item['quantity']
+                            total_price = item['total_price']
 
                             # Create order item
-                            OrderItem.objects.create(
-                                order=order,
-                                product=product,
-                                type='product',
-                                quantity=quantity,
-                                item_total=item['total_price']
-                            )
+                            OrderItem.objects.create(order=order,
+                                                     product=product,
+                                                     quantity=quantity,
+                                                     item_total=total_price)
 
                             # Update product stock
                             product.stock -= quantity
@@ -291,31 +280,23 @@ def create_order_from_payment(request, payment_intent):
                             logger.info(f"Updated stock for {product.name}: "
                                         f"new stock level = {product.stock}")
 
+                        # Create bookings for crashpad rentals
                         elif item['type'] == 'rental':
                             crashpad = item['item']
-                            check_in = datetime.strptime(item['check_in'],
-                                                         '%Y-%m-%d').date()
-                            check_out = datetime.strptime(item['check_out'],
-                                                          '%Y-%m-%d').date()
-
-                            # Create order item
-                            OrderItem.objects.create(
-                                order=order,
-                                crashpad=crashpad,
-                                type='rental',
-                                quantity=1,
-                                item_total=item['total_price'],
-                                check_in=check_in,
-                                check_out=check_out,
-                                rental_days=item['rental_days'],
-                                daily_rate=item['daily_rate']
-                            )
-
+                            check_in = datetime.strptime(
+                                item['check_in'], '%Y-%m-%d').date()
+                            check_out = datetime.strptime(
+                                item['check_out'], '%Y-%m-%d').date()
                             # Create rental booking
-                            crashpad.create_booking(check_in=check_in,
-                                                    check_out=check_out)
+                            CrashpadBooking.objects.create(crashpad=crashpad,
+                                                           order=order,
+                                                           check_in=check_in,
+                                                           check_out=check_out)
                             logger.info(f"Created booking for {crashpad.name}"
                                         f": {check_in} to {check_out}")
+
+                        # Update order totals
+                        order.update_total()
 
                     return order
 
@@ -393,16 +374,15 @@ def checkout_success(request):
                     f'Your order number is {order.order_number}. '
                     f'A confirmation email will be sent to {order.email}.')
 
-                logger.info(
-                    f"Items in order: "
-                    f"{[f'{item.product.name
-                           if item.product else item.crashpad.name} '
-                        f'({"qty: " + str(item.quantity)
-                            if item.type == "product" else "rental"})'
-                        for item in order.items.all()]}"
-                )
+                # Render the success page with order details
+                # and contact details
+                context = {
+                    'order': order,
+                    'whatsapp_number': settings.WHATSAPP_NUMBER,
+                    'contact_email': settings.DEFAULT_FROM_EMAIL
+                }
                 response = render(request, 'payments/checkout_success.html',
-                                  {'order': order})
+                                  context)
                 logger.info("\n=== Checkout Success Template Rendered ===")
                 logger.info(f"Response status code: {response.status_code}")
                 return response
@@ -433,13 +413,16 @@ def checkout_success(request):
         # If payment succeeded and order exists, render the success page
         if payment_intent.status == 'succeeded' and order:
             messages.success(
-                request,
-                'Order successfully processed! '
+                request, 'Order successfully processed! '
                 f'Your order number is {order.order_number}. '
                 f'A confirmation email will be sent to {order.email}.')
-
-            return render(request, 'payments/checkout_success.html',
-                          {'order': order})
+            # Render the success page with order details and contact details
+            context = {
+                'order': order,
+                'whatsapp_number': settings.WHATSAPP_NUMBER,
+                'contact_email': settings.DEFAULT_FROM_EMAIL
+            }
+            return render(request, 'payments/checkout_success.html', context)
         # Otherwise, show an error message and redirect to checkout
         else:
             messages.error(

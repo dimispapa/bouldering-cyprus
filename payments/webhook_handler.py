@@ -6,8 +6,7 @@ from django.template.loader import render_to_string
 import json
 from django.http import JsonResponse
 from orders.models import Order, OrderItem
-from shop.models import Product
-from rentals.models import Crashpad
+from rentals.models import CrashpadBooking
 from datetime import datetime
 from payments.utils import validate_item_stock
 # Configure logging
@@ -34,6 +33,7 @@ class StripeWH_Handler:
             body = render_to_string(
                 'orders/confirmation_emails/confirmation_email_body.txt', {
                     'order': order,
+                    'whatsapp_number': settings.WHATSAPP_NUMBER,
                     'contact_email': settings.DEFAULT_FROM_EMAIL
                 })
             send_mail(subject, body, settings.DEFAULT_FROM_EMAIL,
@@ -44,6 +44,33 @@ class StripeWH_Handler:
             return True
         except Exception as e:
             logger.error(f"Error sending confirmation email: {e}")
+            return False
+
+    def _send_rental_confirmation_email(self, order):
+        """
+        Send the user a confirmation email for the rental
+        """
+        try:
+            subject = render_to_string(
+                'orders/confirmation_emails/'
+                'confirmation_email_rentals_subject.txt', {'order': order})
+            body = render_to_string(
+                'orders/confirmation_emails/'
+                'confirmation_email_rentals_body.txt',
+                {
+                    'order': order,
+                    'whatsapp_number': settings.WHATSAPP_NUMBER,
+                    'contact_email': settings.DEFAULT_FROM_EMAIL
+                })
+            send_mail(subject, body, settings.DEFAULT_FROM_EMAIL,
+                      [order.email])
+            logger.info(
+                "Rental confirmation email sent "
+                f"for order {order.order_number}"
+            )
+            return True
+        except Exception as e:
+            logger.error(f"Error sending rental confirmation email: {e}")
             return False
 
     def _clear_cart(self, session_id):
@@ -73,7 +100,7 @@ class StripeWH_Handler:
             logger.info("\n=== Webhook Payment Intent Processing ===")
             logger.info(f"Payment Intent ID: {intent.id}")
 
-            cart_data = json.loads(intent.metadata.get('cart_data', '{}'))
+            cart_data = json.loads(intent.metadata.get('cart_data'))
 
             # Verify stock and availability for all items
             for item in cart_data.get('items'):
@@ -105,35 +132,36 @@ class StripeWH_Handler:
                 logger.info(f"Webhook created order: {order.order_number}")
                 # Create order items and update inventory
                 for item in cart_data['items']:
+                    # Create order items for products
                     if item['type'] == 'product':
-                        product = Product.objects.get(id=item['item_id'])
+                        product = item['item']
+                        quantity = item['quantity']
+                        total_price = item['total_price']
+
+                        # Create order item
                         OrderItem.objects.create(order=order,
                                                  product=product,
-                                                 quantity=item['quantity'],
-                                                 item_total=float(
-                                                     item['total_price']),
-                                                 type='product')
+                                                 quantity=quantity,
+                                                 item_total=total_price)
                         product.stock -= item['quantity']
                         product.save()
+                    # Create order items for rentals
                     elif item['type'] == 'rental':
-                        crashpad = Crashpad.objects.get(id=item['item_id'])
-                        OrderItem.objects.create(
-                            order=order,
-                            crashpad=crashpad,
-                            quantity=1,
-                            item_total=float(item['total_price']),
-                            type='rental',
-                            check_in=item['check_in'],
-                            check_out=item['check_out'],
-                            rental_days=item['rental_days'],
-                            daily_rate=item['daily_rate'])
+                        crashpad = item['item']
+                        check_in = datetime.strptime(item['check_in'],
+                                                     '%Y-%m-%d').date()
+                        check_out = datetime.strptime(item['check_out'],
+                                                      '%Y-%m-%d').date()
                         # Create rental booking
-                        crashpad.create_booking(check_in=datetime.strptime(
-                            item['check_in'], '%Y-%m-%d').date(),
-                                                check_out=datetime.strptime(
-                                                    item['check_out'],
-                                                    '%Y-%m-%d').date())
+                        CrashpadBooking.objects.create(crashpad=crashpad,
+                                                       order=order,
+                                                       check_in=check_in,
+                                                       check_out=check_out)
 
+                    # Update order totals
+                    order.update_total()
+
+            # If order was not created, it means it already exists
             else:
                 logger.info(
                     f"Webhook found existing order: {order.order_number}")

@@ -55,7 +55,7 @@ async function handleSubmit(e, stripe, elements) {
     const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
     // Store form data in PaymentIntent metadata
-    const response = await fetch(`/payments/store-order-metadata/`, {
+    const response = await fetch('/payments/store-order-metadata/', {
       method: 'POST',
       body: formData,
       headers: {
@@ -67,11 +67,14 @@ async function handleSubmit(e, stripe, elements) {
       throw new Error('Failed to store order data');
     }
 
+    // Construct absolute URL for return_url
+    const returnUrl = new URL('/payments/checkout-success/', window.location.href).href;
+
     // Proceed with payment confirmation
     const { error } = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        return_url: `/payments/checkout-success/`,
+        return_url: returnUrl,
       },
     });
 
