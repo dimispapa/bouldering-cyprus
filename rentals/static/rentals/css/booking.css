@@ -50,6 +50,11 @@
      object-position: 75% 80%;
 }
 
+#booking-container {
+  background-color: rgba(244, 237, 210, 0.9);
+  box-shadow: 3px 3px 7px 1px #ed6c2c;
+}
+
 .crashpad-card {
   transition: transform 0.1s ease-in-out;
   cursor: pointer;

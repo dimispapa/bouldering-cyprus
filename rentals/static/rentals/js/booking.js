@@ -89,6 +89,13 @@ document.addEventListener('DOMContentLoaded', function () {
     selectedCrashpads.clear()
     updateSelectionSummary()
 
+    if (crashpads.length === 0) {
+      const card = template.content.cloneNode(true)
+      container.innerHTML =
+        '<div class="alert border border-danger-subtle text-alert-emphasis">Sorry, no crashpads available for the selected dates. Please try again with different dates.</div>'
+      return
+    }
+
     crashpads.forEach(crashpad => {
       const card = template.content.cloneNode(true)
 
@@ -175,14 +182,40 @@ document.addEventListener('DOMContentLoaded', function () {
   function updateSelectionSummary () {
     const summary = document.getElementById('selection-summary')
     const count = document.getElementById('selected-count')
+    const dateRange = $('#daterange').data('daterangepicker')
 
-    if (selectedCrashpads.size > 0) {
-      showElement(summary)
-      count.textContent = `${selectedCrashpads.size} crashpad${
-        selectedCrashpads.size > 1 ? 's' : ''
-      } selected`
+    if (selectedCrashpads.size > 0 && dateRange.startDate && dateRange.endDate) {
+        // Calculate number of days
+        const days = dateRange.endDate.diff(dateRange.startDate, 'days')
+        
+        // Calculate total cost for all selected crashpads
+        let totalCost = 0
+        selectedCrashpads.forEach(crashpadId => {
+            const crashpadCard = document.querySelector(`.crashpad-card[data-crashpad-id="${crashpadId}"]`)
+            let dailyRate
+            
+            // Determine which rate to use based on rental duration
+            if (days >= 14) {
+                dailyRate = parseFloat(crashpadCard.querySelector('.price td:nth-child(3)').textContent.replace('€', ''))
+            } else if (days >= 7) {
+                dailyRate = parseFloat(crashpadCard.querySelector('.price td:nth-child(2)').textContent.replace('€', ''))
+            } else {
+                dailyRate = parseFloat(crashpadCard.querySelector('.price td:first-child').textContent.replace('€', ''))
+            }
+            
+            totalCost += dailyRate * days
+        })
+
+        showElement(summary)
+        count.innerHTML = `
+            ${selectedCrashpads.size} crashpad${selectedCrashpads.size > 1 ? 's' : ''} selected
+            <span class="ms-2">|</span>
+            <span class="ms-2">${days} day${days > 1 ? 's' : ''}</span>
+            <span class="ms-2">|</span>
+            <span class="ms-2">Total: €${totalCost.toFixed(2)}</span>
+        `
     } else {
-      hideElement(summary)
+        hideElement(summary)
     }
   }
 

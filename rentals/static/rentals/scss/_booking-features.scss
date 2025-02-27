@@ -1,6 +1,12 @@
 @use "../../../../static/scss/mixins" as *;
 @use "../../../../static/scss/variables" as *;
 
+// Booking container
+#booking-container {
+    background-color: $beige-semi-transparent;
+    box-shadow: 3px 3px 7px 1px $orange;
+}
+
 // Crashpad card styles
 .crashpad-card {
     transition: transform $transition-very-fast;
@@ -51,7 +57,7 @@
     .btn-primary {
         background-color: $orange;
         border-color: $beige;
-        
+
         &:hover {
             background-color: darken($orange, 10%);
             border-color: darken($orange, 10%);
@@ -95,7 +101,7 @@
     position: relative;
     padding-top: 100%; // Make it square (1:1 ratio)
     overflow: hidden;
-    
+
     .card-img-top {
         position: absolute;
         top: 0;
@@ -104,14 +110,14 @@
         height: 100%;
         object-fit: cover;
     }
-    
+
     .gallery-btn {
         position: absolute;
         bottom: 10px;
         right: 10px;
         opacity: 0.8;
         z-index: 1;
-        
+
         &:hover {
             opacity: 1;
         }
@@ -135,7 +141,7 @@
     transform: translateY(-50%);
     border-radius: 50%;
     opacity: 0.8;
-    
+
     &:hover {
         opacity: 1;
         background-color: rgba($black, 0.7);
@@ -159,14 +165,14 @@
 // Price table styles
 .price-table {
     font-size: 0.9rem;
-    
+
     th {
         text-align: center;
         color: $black;
         font-weight: normal;
         border-top: none;
     }
-    
+
     td {
         text-align: center;
         color: $orange;
