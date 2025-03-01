@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block extra_title %}
+  Sign Out
+{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/accounts.css' %}" />
+{% endblock %}
+
+{% block content %}
+  {% include 'partials/rock-background.html' %}
+  <div class="container">
+    <div class="auth-container">
+      <h1>{% trans 'Sign Out' %}</h1>
+
+      <p>
+        {% trans 'Are you sure you want to sign out?' %}
+      </p>
+
+      <form method="post" action="{% url 'account_logout' %}">
+        {% csrf_token %}
+        {% if redirect_field_value %}
+          <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+        {% endif %}
+
+        <div class="auth-buttons">
+          <a href="{% url 'home' %}" class="btn btn-cancel">{% trans 'Cancel' %}</a>
+          <button type="submit" class="button-very-small flex-grow-1">{% trans 'Sign Out' %}</button>
+        </div>
+      </form>
+    </div>
+  </div>
+{% endblock %}

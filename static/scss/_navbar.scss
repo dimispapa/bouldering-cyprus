@@ -69,6 +69,38 @@
         text-align: right;
     }
 
+    a.dropdown-item {
+        // Font sizes
+        font-size: $s-font;
+        @include for-size(desktop-lg, down) {
+            font-size: $xs-font;
+        }
+        @include for-size(phone, down) {
+            font-size: $xxs-font;
+        }
+        // Colours
+        color: $black;
+        // Orange text when solid navbar
+        @include for-size(991px, down) {
+            color: $orange;
+        }
+        transition: color $transition-fast;
+        // Hover effects
+        &:hover {
+            color: $orange;
+            font-weight: 600;
+        }
+        // Active state
+        &:active,
+        &:focus {
+            background-color: $orange-transparent !important;
+            color: darken($orange, 10%) !important;
+        }
+        // Text alignment
+        text-align: right;
+        padding-right: 5px;
+    }
+
     .badge {
         background-color: $black;
         color: $white;
@@ -85,6 +117,13 @@
 
     a.nav-link,
     a.navbar-brand {
+        color: $orange;
+        &:hover {
+            color: $black;
+        }
+    }
+
+    a.dropdown-item {
         color: $orange;
         &:hover {
             color: $black;

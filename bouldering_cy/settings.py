@@ -40,21 +40,27 @@ ALLOWED_HOSTS = [
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
+    "django.contrib.sites",  # Required for allauth
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "allauth",
+    "allauth.account",
     "django_summernote",
     "crispy_forms",
     "crispy_bootstrap5",
     "storages",
     "rest_framework",
+    # Custom apps
     "home",
     "shop",
     "cart",
     "payments",
     "orders",
     "rentals",
+    "accounts",
+    "newsletter",
 ]
 
 MIDDLEWARE = [
@@ -63,6 +69,7 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "allauth.account.middleware.AccountMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
@@ -108,6 +115,35 @@ REST_FRAMEWORK = {
     'PAGE_SIZE':
     10,
 }
+
+# Authentication backends
+AUTHENTICATION_BACKENDS = [
+    # Needed to login by username in Django admin
+    'django.contrib.auth.backends.ModelBackend',
+    # `allauth` specific authentication methods
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+# Required site ID for django.contrib.sites
+if PRODUCTION:
+    SITE_ID = 3
+else:
+    SITE_ID = 2
+
+# Allauth settings for email authentication
+ACCOUNT_LOGIN_METHODS = {'email'}  # Use email for authentication
+ACCOUNT_EMAIL_REQUIRED = True  # Email is required
+ACCOUNT_UNIQUE_EMAIL = True  # Email must be unique
+ACCOUNT_USERNAME_REQUIRED = False  # Username is not required
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'  # Options: 'none', 'optional', 'mandatory'
+ACCOUNT_MAX_EMAIL_ADDRESSES = 1  # Only one email address per user
+ACCOUNT_CONFIRM_EMAIL_ON_GET = True  # Confirm email on GET request
+ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True  # Login after email confirmation
+ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 3  # Email confirmation link expires after 3 days
+
+# Login/logout URLs
+LOGIN_REDIRECT_URL = '/'  # Redirect after login
+LOGOUT_REDIRECT_URL = '/'  # Redirect after logout
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
@@ -257,7 +293,7 @@ else:
     STRIPE_SECRET_KEY = os.environ.get("STRIPE_TEST_SECRET_KEY")
 
 STANDARD_DELIVERY_PERCENTAGE = 10
-FREE_DELIVERY_THRESHOLD = 65.00 # euros
+FREE_DELIVERY_THRESHOLD = 65.00  # euros
 STRIPE_CURRENCY = "eur"
 STRIPE_WEBHOOK_SECRET = os.environ.get("STRIPE_WEBHOOK_SECRET")
 ORDER_CREATION_RETRIES = 3

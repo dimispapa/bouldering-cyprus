@@ -76,4 +76,14 @@
         background-color: $orange;
         color: $white;
     }
+
+    // Danger button
+    &.danger {
+        background-color: $dark-red;
+        color: $white;
+        &:hover {
+            background-color: $off-pink;
+            color: $black;
+        }
+    }
 }
