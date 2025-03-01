@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
 })
 
 // Function to initialize Stripe and Elements
-function initStripe(stripePublicKey, clientSecret) {
+function initStripe (stripePublicKey, clientSecret) {
   // Initialize Stripe with your public key
   const stripe = Stripe(stripePublicKey)
 
@@ -33,61 +33,59 @@ function initStripe(stripePublicKey, clientSecret) {
   paymentElement.mount('#payment-element')
 
   // Create an Express Checkout Element
-  const expressCheckoutOptions = {}
-  const expressCheckoutElement = elements.create(
-    'expressCheckout',
-    expressCheckoutOptions
-  )
+  const expressCheckoutElement = elements.create('expressCheckout')
   expressCheckoutElement.mount('#express-checkout-element')
 
-  return { stripe, elements}
+  return { stripe, elements }
 }
 
 // Function to handle the submit button and payment processing workflow
-async function handleSubmit(e, stripe, elements) {
-  e.preventDefault();
-  const form = e.target;
-  setLoading(true);
+async function handleSubmit (e, stripe, elements) {
+  e.preventDefault()
+  const form = e.target
+  setLoading(true)
 
   try {
     // Get the form data
-    const formData = new FormData(form);
-    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    const formData = new FormData(form)
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value
 
     // Store form data in PaymentIntent metadata
     const response = await fetch('/payments/store-order-metadata/', {
       method: 'POST',
       body: formData,
       headers: {
-        'X-CSRFToken': csrfToken,
+        'X-CSRFToken': csrfToken
       }
-    });
+    })
 
     if (!response.ok) {
-      throw new Error('Failed to store order data');
+      throw new Error('Failed to store order data')
     }
 
     // Construct absolute URL for return_url
-    const returnUrl = new URL('/payments/checkout-success/', window.location.href).href;
+    const returnUrl = new URL(
+      '/payments/checkout-success/',
+      window.location.href
+    ).href
 
     // Proceed with payment confirmation
     const { error } = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        return_url: returnUrl,
-      },
-    });
+        return_url: returnUrl
+      }
+    })
 
     if (error) {
-      showError(error.message);
+      showError(error.message)
     }
     // Note: No need for form submission here as Stripe will handle the redirect
-
   } catch (err) {
-    console.error('Error:', err);
-    showError('An error occurred. Please try again.');
+    console.error('Error:', err)
+    showError('An error occurred. Please try again.')
   } finally {
-    setLoading(false);
+    setLoading(false)
   }
 }
 
