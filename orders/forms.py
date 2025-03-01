@@ -11,6 +11,7 @@ from crispy_forms.layout import (
     Fieldset,
     Hidden,
 )
+from crispy_forms.bootstrap import Accordion, AccordionGroup
 
 
 class OrderForm(forms.ModelForm):
@@ -27,6 +28,7 @@ class OrderForm(forms.ModelForm):
             "town_or_city",
             "postal_code",
             "country",
+            "comments",
         ]
 
     def set_placeholders(self, placeholders):
@@ -45,15 +47,26 @@ class OrderForm(forms.ModelForm):
 
         super().__init__(*args, **kwargs)
         placeholders = {
-            "first_name": "First name",
-            "last_name": "Last name",
-            "email": "Email address",
-            "phone": "Phone number",
-            "address_line1": "Street address 1",
-            "address_line2": "Street address 2",
-            "town_or_city": "Town or city",
-            "postal_code": "Postal code",
-            "country": "Country",
+            "first_name":
+            "First name",
+            "last_name":
+            "Last name",
+            "email":
+            "Email address",
+            "phone":
+            "Phone number",
+            "address_line1":
+            "Street address 1",
+            "address_line2":
+            "Street address 2",
+            "town_or_city":
+            "Town or city",
+            "postal_code":
+            "Postal code",
+            "country":
+            "Country",
+            "comments":
+            "Add any additional information, comments or requests here",
         }
         # Set autofocus on first name field
         self.fields["first_name"].widget.attrs["autofocus"] = True
@@ -90,6 +103,13 @@ class OrderForm(forms.ModelForm):
                     css_class="form-row",
                 ),
             ),
+            # Additional Information Section - Using Accordion
+            Accordion(
+                AccordionGroup(
+                    "Additional information",
+                    Field("comments"),
+                    active=False,
+                ), ),
             HTML("""<hr>"""),
             # Payment Details Section
             Fieldset(
