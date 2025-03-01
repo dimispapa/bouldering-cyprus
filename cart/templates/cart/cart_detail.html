@@ -103,11 +103,44 @@
             <div class="d-flex flex-column align-items-end mt-4">
               <!-- Update Cart Button -->
               <button type="submit" name="action" value="update" class="button-update mb-4"><i class="fa-solid fa-pen-to-square"></i> Update Cart</button>
-              <!-- Order Total -->
-              <h4 class="mb-2">Cart Total: € {{ cart.cart_total }}</h4>
-              <p class="text-muted mb-3">* Delivery costs will be calculated at checkout</p>
-              <!-- Checkout Button -->
-              {% if cart.has_invalid_items %}
+              <!-- Order Summary -->
+              <div class="order-summary mb-2">
+                <h4 class="mb-2">Order Summary</h4>
+                <div class="summary-line">
+                  <span>Cart Total:</span>
+                  <span>€{{ cart_total|floatformat:2 }}</span>
+                </div>
+                
+                {% if has_products %}
+                  <div class="summary-line">
+                    {% if delivery_cost > 0 %}
+                      <span>Delivery:</span>
+                      <span>€{{ delivery_cost|floatformat:2 }}</span>
+                      <small class="d-block text-muted">
+                        * Free delivery on orders over €{{ free_delivery_threshold|floatformat:0 }}
+                      </small>
+                    {% else %}
+                      <span class="text-success">Free delivery - order over €{{ free_delivery_threshold|floatformat:0 }}</span>
+                    {% endif %}
+                  </div>
+                  <hr>
+                {% endif %}
+                
+                {% if has_rentals %}
+                  <div class="summary-line">
+                    <span>Handling Fee:</span>
+                    <span>€{{ handling_fee|floatformat:2 }}</span>
+                    <small class="d-block text-muted">* Processing fee for crashpad rentals</small>
+                  </div>
+                  <hr>
+                {% endif %}
+                
+                <div class="summary-line total mb-2">
+                  <span>Grand Total:</span>
+                  <span>€{{ grand_total|floatformat:2 }}</span>
+                </div>
+              </div>
+              {% if cart.has_invalid_items.0 %}
                 <div class="alert alert-danger" role="alert">
                   <h5>Please update your cart before proceeding:</h5>
                   <ul>
@@ -122,14 +155,19 @@
                     {% endfor %}
                   </ul>
                 </div>
+                <!-- Checkout Button -->
                 <button type="submit" name="action" value="checkout" class="button-checkout hidden" disabled>
-                  <i class="fa-solid fa-credit-card"></i> Checkout
-                  <small class="checkout-subscript"><i class="fa-solid fa-lock"></i> Secure</small>
+                  <div class="d-flex flex-column align-items-center btn-checkout-text">
+                    <span><i class="fa-solid fa-credit-card"></i> Checkout</span>
+                    <small class="checkout-subscript text-muted align-self-end"><i class="fa-solid fa-lock"></i> Secured by Stripe</small>
+                  </div>
                 </button>
               {% else %}
                 <button type="submit" name="action" value="checkout" class="button-checkout">
-                  <i class="fa-solid fa-credit-card"></i> Checkout
-                  <small class="checkout-subscript"><i class="fa-solid fa-lock"></i> Secure</small>
+                  <div class="d-flex flex-column align-items-center btn-checkout-text">
+                    <span><i class="fa-solid fa-credit-card"></i> Checkout</span>
+                    <small class="checkout-subscript text-muted align-self-end"><i class="fa-solid fa-lock"></i> Secured by Stripe</small>
+                  </div>
                 </button>
               {% endif %}
             </div>

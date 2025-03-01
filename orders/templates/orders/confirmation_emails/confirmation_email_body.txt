@@ -1,3 +1,4 @@
+{% load order_tags %}
 Hello {{ order.first_name }}
 
 This is a confirmation of your order. The details are below:
@@ -11,40 +12,47 @@ Product Items:
 {{ item.quantity }}x {{ item.product.name }} @ €{{ item.product.price }} each
     Subtotal: €{{ item.item_total }}
 {% endfor %}
-    Total: €{{ order.items.all.item_total|sum|floatformat:2 }}
+Products Total: €{{ order.items.all|sum_product_items|floatformat:2 }}
 {% endif %}
 
 {% if order.crashpads.all %}
-You have rented the following crashpads (A separate email will be sent to you with the pickup details):
+You have also rented the following crashpads (A separate email will be sent to you with the pickup details):
 {% for booking in order.crashpads.all %}
 {{ booking.crashpad.name }}
+    Booking ID: {{ booking.id }}
     Check-in: {{ booking.check_in }}
     Check-out: {{ booking.check_out }}
-    Total: €{{ booking.total_price }}
+    {{ booking.rental_days }} days @ €{{ booking.daily_rate }}/day
+    Subtotal: €{{ booking.total_price }}
 {% endfor %}
-    Total: €{{ order.crashpads.all.total_price|sum|floatformat:2 }}
+Rentals Total: €{{ order.crashpads.all|sum_rental_items|floatformat:2 }}
 {% endif %}
 
+Order Summary:
+------------------------------------------
 Order Total: €{{ order.order_total|floatformat:2 }}
-Delivery Cost: €{{ order.delivery_cost|floatformat:2 }}
+Delivery: €{% if order.delivery_cost %}{{ order.delivery_cost|floatformat:2 }}{% else %}0.00{% endif %}
+{% if order.handling_fee %}Handling Fee: €{{ order.handling_fee|floatformat:2 }}{% endif %}
 ------------------------------------------
 Grand Total: €{{ order.grand_total|floatformat:2 }}
 
-Your product orders will be delivered to the following address. (Please see the separate email for the crashpad pickup details):
+{% if order.items.all %}
+Your product items will be delivered to:
 
-Address: <em>{{ order.address_line1 }}</em>
-{% if order.address_line2 %}
-Address Line 2: <em>{{ order.address_line2 }}</em>
+Address: {{ order.address_line1 }}
+{% if order.address_line2 %}Address Line 2: {{ order.address_line2 }}{% endif %}
+Town/City: {{ order.town_or_city }}
+Postal Code: {{ order.postal_code }}
+Country: {{ order.country }}
 {% endif %}
-Town/City: <em>{{ order.town_or_city }}</em>
-Postal Code: <em>{{ order.postal_code }}</em>
-Country: <em>{{ order.country }}</em>
 
 Your Contact Details:
-Phone: <em>{{ order.phone }}</em>
-Email: <em>{{ order.email }}</em>
+Phone: {{ order.phone }}
+Email: {{ order.email }}
 
-An email will be sent to you once the product items are shipped along with courier tracking details.
+{% if order.items.all %}An email will be sent to you once the product items are shipped along with courier tracking details.{% endif %}
+{% if order.crashpads.all %}Please see the separate email for crashpad pickup details.{% endif %}
+
 If you have any questions, please contact us at {{ contact_email }} or via Phone/WhatsApp on {{ whatsapp_number }}.
 
 Thank you for your order!

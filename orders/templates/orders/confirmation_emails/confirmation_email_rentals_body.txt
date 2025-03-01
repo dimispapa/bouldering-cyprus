@@ -1,6 +1,7 @@
+{% load order_tags %}
 Hello {{ order.first_name }}
 
-This is a confirmation of your order. The details are below:
+This is a confirmation of your crashpad rental booking. The details are below:
 
 Order Number: {{ order.order_number }}
 Order Date: {{ order.date_created }}
@@ -9,25 +10,31 @@ Order Date: {{ order.date_created }}
 Rental Items:
 {% for booking in order.crashpads.all %}
 {{ booking.crashpad.name }}
+    Booking ID: {{ booking.id }}
     Check-in: {{ booking.check_in }}
     Check-out: {{ booking.check_out }}
     {{ booking.rental_days }} days @ €{{ booking.daily_rate }}/day
     Subtotal: €{{ booking.total_price }}
 {% endfor %}
-{% endif %}
+
+Order Summary:
 ------------------------------------------
-Total: €{{ order.crashpads.all.total_price|sum|floatformat:2 }}
+Rentals Total: €{{ order.crashpads.all|sum_rental_items|floatformat:2 }}
+Handling Fee: €{{ order.handling_fee|floatformat:2 }}
+------------------------------------------
+Grand Total: €{{ order.crashpads.all|sum_rental_items|add_decimal:order.handling_fee|floatformat:2 }}
+{% endif %}
 
 Your Contact Details:
 Phone: {{ order.phone }}
 Email: {{ order.email }}
 
 Please pickup your crashpads from the following address on the first day of your booking:
-Address: <em>{{ crashpad_pickup_address.line1 }}</em>
-Address Line 2: <em>{{ crashpad_pickup_address.line2 }}</em>
-Town/City: <em>{{ crashpad_pickup_address.town_or_city }}</em>
-Postal Code: <em>{{ crashpad_pickup_address.postal_code }}</em>
-Country: <em>{{ crashpad_pickup_address.country }}</em>
+Address: {{ crashpad_pickup_address.line1 }}
+Address Line 2: {{ crashpad_pickup_address.line2 }}
+Town/City: {{ crashpad_pickup_address.town_or_city }}
+Postal Code: {{ crashpad_pickup_address.postal_code }}
+Country: {{ crashpad_pickup_address.country }}
 
 Return the crashpads to the same address on the last day of your booking.
 

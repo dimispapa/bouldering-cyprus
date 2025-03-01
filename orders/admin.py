@@ -27,18 +27,42 @@ class CrashpadBookingInline(admin.TabularInline):
 class OrderAdmin(admin.ModelAdmin):
     inlines = (OrderItemInline, CrashpadBookingInline)
     readonly_fields = ('order_number', 'date_created', 'date_updated',
-                       'original_cart', 'stripe_piid', 'delivery_cost',
-                       'order_total', 'grand_total')
+                       'stripe_piid', 'order_type', 'delivery_cost',
+                       'handling_fee', 'order_total', 'grand_total', 'id',
+                       'comments')
 
-    list_display = ('order_number', 'date_created', 'first_name', 'last_name',
-                    'order_total', 'delivery_cost', 'grand_total')
+    list_display = ('order_number', 'id', 'date_created', 'first_name',
+                    'last_name', 'order_type', 'order_total', 'delivery_cost',
+                    'handling_fee', 'grand_total')
 
     ordering = ('-date_created', )
 
     search_fields = ('order_number', 'first_name', 'last_name', 'email',
                      'phone')
 
-    list_filter = ('date_created', 'country')
+    list_filter = ('date_created', 'country', 'order_type')
+
+    fieldsets = (
+        ('Order Details', {
+            'fields': ('order_number', 'id', 'date_created', 'date_updated',
+                       'order_type')
+        }),
+        ('Customer Information', {
+            'fields': ('first_name', 'last_name', 'email', 'phone')
+        }),
+        ('Delivery Information', {
+            'fields': ('address_line1', 'address_line2', 'town_or_city',
+                       'postal_code', 'country')
+        }),
+        ('Financial Details', {
+            'fields': ('order_total', 'delivery_cost', 'handling_fee',
+                       'grand_total', 'stripe_piid')
+        }),
+        ('Additional Information', {
+            'fields': ('comments', ),
+            'classes': ('collapse', )
+        }),
+    )
 
     def save_formset(self, request, form, formset, change):
         formset.save()
