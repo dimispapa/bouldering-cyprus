@@ -33,6 +33,7 @@ def create_payment_intent(cart):
         intent = stripe.PaymentIntent.create(
             amount=stripe_total,
             currency=settings.STRIPE_CURRENCY,
+            payment_method_types=['card', 'link'],
         )
         return intent
     except Exception as e:
