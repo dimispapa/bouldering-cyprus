@@ -26,6 +26,35 @@ document.addEventListener('DOMContentLoaded', function () {
     })
   }
 
+  // Check for date parameters in URL
+  const urlParams = new URLSearchParams(window.location.search)
+  const checkIn = urlParams.get('check_in')
+  const checkOut = urlParams.get('check_out')
+  
+  if (checkIn && checkOut) {
+    // Parse dates using moment
+    const startDate = moment(checkIn, 'YYYY-MM-DD')
+    const endDate = moment(checkOut, 'YYYY-MM-DD')
+    
+    if (startDate.isValid() && endDate.isValid()) {
+      // Set the date picker value
+      $('#daterange').val(
+        startDate.format('DD-MMM-YYYY') + ' - ' + endDate.format('DD-MMM-YYYY')
+      )
+      
+      // Initialize with these dates
+      setTimeout(function() {
+        // Use timeout to ensure daterangepicker is fully initialized
+        if ($('#daterange').data('daterangepicker')) {
+          $('#daterange').data('daterangepicker').setStartDate(startDate)
+          $('#daterange').data('daterangepicker').setEndDate(endDate)
+          // Trigger the fetch for available crashpads
+          fetchAvailableCrashpads(startDate, endDate)
+        }
+      }, 100)
+    }
+  }
+
   // Date selection handlers
   $('#daterange').on('apply.daterangepicker', function (ev, picker) {
     $(this).val(
@@ -51,13 +80,23 @@ document.addEventListener('DOMContentLoaded', function () {
       showElement(spinner)
       hideElement(container)
 
-      const url = `/rentals/api/crashpads/available/?check_in=${startDate.format(
-        'YYYY-MM-DD'
-      )}&check_out=${endDate.format('YYYY-MM-DD')}`
+      // Format dates for API request
+      const checkInFormatted = startDate.format('YYYY-MM-DD')
+      const checkOutFormatted = endDate.format('YYYY-MM-DD')
 
-      console.log('Fetching from URL:', url) // Debug log
+      const apiUrl = `/rentals/api/crashpads/available/?check_in=${checkInFormatted}&check_out=${checkOutFormatted}`
 
-      const response = await fetch(url)
+      // Update browser URL without reloading the page - use same format as API
+      const urlParams = new URLSearchParams(window.location.search)
+      urlParams.set('check_in', checkInFormatted)
+      urlParams.set('check_out', checkOutFormatted)
+
+      const newUrl = `${window.location.pathname}?${urlParams.toString()}`
+      window.history.pushState({ path: newUrl }, '', newUrl)
+
+      console.log('Fetching from URL:', apiUrl) // Debug log
+
+      const response = await fetch(apiUrl)
       const data = await response.json()
 
       if (!response.ok) {
@@ -184,38 +223,58 @@ document.addEventListener('DOMContentLoaded', function () {
     const count = document.getElementById('selected-count')
     const dateRange = $('#daterange').data('daterangepicker')
 
-    if (selectedCrashpads.size > 0 && dateRange.startDate && dateRange.endDate) {
-        // Calculate number of days
-        const days = dateRange.endDate.diff(dateRange.startDate, 'days')
-        
-        // Calculate total cost for all selected crashpads
-        let totalCost = 0
-        selectedCrashpads.forEach(crashpadId => {
-            const crashpadCard = document.querySelector(`.crashpad-card[data-crashpad-id="${crashpadId}"]`)
-            let dailyRate
-            
-            // Determine which rate to use based on rental duration
-            if (days >= 14) {
-                dailyRate = parseFloat(crashpadCard.querySelector('.price td:nth-child(3)').textContent.replace('€', ''))
-            } else if (days >= 7) {
-                dailyRate = parseFloat(crashpadCard.querySelector('.price td:nth-child(2)').textContent.replace('€', ''))
-            } else {
-                dailyRate = parseFloat(crashpadCard.querySelector('.price td:first-child').textContent.replace('€', ''))
-            }
-            
-            totalCost += dailyRate * days
-        })
+    if (
+      selectedCrashpads.size > 0 &&
+      dateRange.startDate &&
+      dateRange.endDate
+    ) {
+      // Calculate number of days
+      const days = dateRange.endDate.diff(dateRange.startDate, 'days')
 
-        showElement(summary)
-        count.innerHTML = `
-            ${selectedCrashpads.size} crashpad${selectedCrashpads.size > 1 ? 's' : ''} selected
+      // Calculate total cost for all selected crashpads
+      let totalCost = 0
+      selectedCrashpads.forEach(crashpadId => {
+        const crashpadCard = document.querySelector(
+          `.crashpad-card[data-crashpad-id="${crashpadId}"]`
+        )
+        let dailyRate
+
+        // Determine which rate to use based on rental duration
+        if (days >= 14) {
+          dailyRate = parseFloat(
+            crashpadCard
+              .querySelector('.price td:nth-child(3)')
+              .textContent.replace('€', '')
+          )
+        } else if (days >= 7) {
+          dailyRate = parseFloat(
+            crashpadCard
+              .querySelector('.price td:nth-child(2)')
+              .textContent.replace('€', '')
+          )
+        } else {
+          dailyRate = parseFloat(
+            crashpadCard
+              .querySelector('.price td:first-child')
+              .textContent.replace('€', '')
+          )
+        }
+
+        totalCost += dailyRate * days
+      })
+
+      showElement(summary)
+      count.innerHTML = `
+            ${selectedCrashpads.size} crashpad${
+        selectedCrashpads.size > 1 ? 's' : ''
+      } selected
             <span class="ms-2">|</span>
             <span class="ms-2">${days} day${days > 1 ? 's' : ''}</span>
             <span class="ms-2">|</span>
             <span class="ms-2">Total: €${totalCost.toFixed(2)}</span>
         `
     } else {
-        hideElement(summary)
+      hideElement(summary)
     }
   }
 
