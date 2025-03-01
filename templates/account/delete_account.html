@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load static %}
+{% block extra_title %}
+  Delete Account
+{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/accounts.css' %}" />
+{% endblock %}
+
+{% block content %}
+  {% include 'partials/rock-background.html' %}
+  <div class="container">
+    <div class="auth-container">
+      <h1 class="text-danger">{% trans 'Delete Account' %}</h1>
+
+      <div class="warning-icon">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+      </div>
+
+      <div class="warning-message">
+        <p>
+          {% trans 'Are you sure you want to delete your account? This action cannot be undone and will result in the permanent loss of your account and all associated data.' %}
+        </p>
+
+        <p>
+          <strong>{% trans 'This includes:' %}</strong>
+        </p>
+        <ul class="text-start">
+          <li>
+            {% trans 'Your profile information' %}
+          </li>
+          <li>
+            {% trans 'Your order history' %}
+          </li>
+          <li>
+            {% trans 'Any saved preferences or settings' %}
+          </li>
+        </ul>
+      </div>
+
+      <form method="post">
+        {% csrf_token %}
+
+        <div class="form-group">
+          <label for="id_password">{% trans 'Please enter your password to confirm:' %}</label>
+          <input type="password" name="password" id="id_password" class="form-control" required />
+          {% if form.password.errors %}
+            <div class="text-danger">{{ form.password.errors }}</div>
+          {% endif %}
+        </div>
+
+        <div class="auth-buttons">
+          <a href="{% url 'account_email' %}" class="btn btn-cancel">{% trans 'Cancel' %}</a>
+          <button type="submit" class="button-very-small danger flex-grow-1">{% trans 'Delete Account' %}</button>
+        </div>
+      </form>
+    </div>
+  </div>
+{% endblock %}

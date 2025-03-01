@@ -60,6 +60,7 @@ INSTALLED_APPS = [
     "orders",
     "rentals",
     "accounts",
+    "newsletter",
 ]
 
 MIDDLEWARE = [
@@ -135,6 +136,9 @@ ACCOUNT_EMAIL_REQUIRED = True  # Email is required
 ACCOUNT_UNIQUE_EMAIL = True  # Email must be unique
 ACCOUNT_USERNAME_REQUIRED = False  # Username is not required
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'  # Options: 'none', 'optional', 'mandatory'
+ACCOUNT_MAX_EMAIL_ADDRESSES = 1  # Only one email address per user
+ACCOUNT_CONFIRM_EMAIL_ON_GET = True  # Confirm email on GET request
+ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True  # Login after email confirmation
 ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 3  # Email confirmation link expires after 3 days
 
 # Login/logout URLs
