@@ -72,7 +72,13 @@ def cart_add(request, item_type):
             messages.success(request,
                              "Crashpad(s) added to your cart.",
                              extra_tags="Cart updated")
-            return JsonResponse({'status': 'success'})
+
+            # Return JSON response with redirect URL
+            return JsonResponse({
+                'status': 'success',
+                'redirect_url':
+                '/rentals/book/'  # URL to the booking template
+            })
 
         else:
             raise ValueError(f"Invalid item type: {item_type}")

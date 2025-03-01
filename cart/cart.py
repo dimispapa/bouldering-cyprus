@@ -2,7 +2,6 @@ from decimal import Decimal
 from django.conf import settings
 from shop.models import Product
 from rentals.models import Crashpad
-import json
 import logging
 from datetime import datetime
 
@@ -13,12 +12,45 @@ class Cart:
 
     def __init__(self, request=None, cart_data=None):
         """Initialize the cart."""
+        # The cart is initialized from the session
         if request:
             self.session = request.session
             cart = self.session.get(settings.CART_SESSION_ID, {})
             self.cart = cart
+        # The cart is initialized from the payment intent
         elif cart_data:
-            self.cart = cart_data
+            # Initialize empty cart
+            self.cart = {}
+            print(f"Cart data: {cart_data}")
+
+            # Process product items
+            if 'cart_items' in cart_data:
+                for item in cart_data['cart_items']:
+                    id = item['id']
+                    key = f"product_{id}"
+                    self.cart[key] = {
+                        'quantity': item['quantity'],
+                        'price': item['price'],
+                        'type': 'product',
+                    }
+
+            # Process rental items
+            if 'rental_items' in cart_data:
+                for item in cart_data['rental_items']:
+                    id = item['id']
+                    key = f"rental_{id}"
+                    self.cart[key] = {
+                        'quantity': 1,  # Rentals always have quantity of 1
+                        'price': item['price'],
+                        'type': 'rental',
+                        'check_in': item['check_in'],
+                        'check_out': item['check_out'],
+                        'daily_rate': item['daily_rate'],
+                        'rental_days': item['rental_days'],
+                        'total_price': item['total_price'],
+                    }
+
+        logger.debug(f"Cart initialized with contents: {self.cart}")
 
     def add(self,
             item,
@@ -212,17 +244,66 @@ class Cart:
         }
 
     def to_json(self):
-        """Return a JSON string representation of the cart."""
-        return json.dumps(self.serialize())
+        """
+        Convert cart data to JSON format,
+        with minimized/split data to fit constraints
+        for a single Stripe metadata field
+        """
+        # Model objects should be excluded from the JSON output
+        excluded_fields = ['item']
+
+        # Initialize lists to store serialized items
+        cart_items = []
+        rental_items = []
+
+        for item in self:
+            # Create a new dictionary for the serialized item
+            serialized_item = {}
+
+            # Add the ID from the item object
+            serialized_item['id'] = str(item['item'].id)
+
+            # Dynamically add all other fields except excluded ones
+            for key, value in item.items():
+                if key not in excluded_fields and key != 'item':
+                    # Convert Decimal values to strings
+                    if isinstance(value, Decimal):
+                        serialized_item[key] = str(value)
+                    else:
+                        serialized_item[key] = value
+
+            # Add to the appropriate list based on type
+            if item['type'] == 'product':
+                cart_items.append(serialized_item)
+            elif item['type'] == 'rental':
+                rental_items.append(serialized_item)
+
+        return {
+            'cart_items': cart_items,
+            'rental_items': rental_items,
+        }
 
     def has_invalid_items(self):
         """Check if any items in cart have invalid quantities
-        or availability"""
+        or availability
+        Returns a tuple with a boolean and an error dictionary
+        """
         for item in self:
+            # Validate product stock
             if item['type'] == 'product':
                 product = item['item']
-                if not product.has_stock(item['quantity']):
-                    return True
+                quantity = item['quantity']
+                # Check if the product has enough stock
+                if not product.has_stock(quantity):
+                    error = {
+                        'error': 'insufficient_stock',
+                        'product': product,
+                        'requested': quantity
+                    }
+                    logger.error(
+                        f"Insufficient stock for product {product.id}")
+                    return (True, error)
+            # Validate rental items
             elif item['type'] == 'rental':
                 crashpad = item['item']
                 check_in = datetime.strptime(item['check_in'],
@@ -232,12 +313,25 @@ class Cart:
 
                 # Check if the dates are still available
                 if not crashpad.is_available(check_in, check_out):
-                    return True
-
+                    error = {
+                        'error': 'dates_unavailable',
+                        'crashpad': crashpad,
+                        'dates': f"{check_in} to {check_out}"
+                    }
+                    logger.error("Selected dates are no longer available for"
+                                 f" crashpad id {crashpad.id}")
+                    return (True, error)
                 # Check if dates are in the past
                 if check_in < datetime.now().date():
-                    return True
-        return False
+                    error = {
+                        'error': 'dates_in_past',
+                        'crashpad': crashpad,
+                        'dates': f"{check_in} to {check_out}"
+                    }
+                    logger.error(
+                        f"Selected dates are in the past for {crashpad.id}")
+                    return (True, error)
+        return (False, None)
 
     def validate_stock(self):
         """Return list of items with stock or availability issues"""
@@ -288,3 +382,15 @@ class Cart:
                         'Selected dates are no longer available'
                     })
         return invalid_items
+
+    def has_rentals(self):
+        """Check if the cart has any rental items."""
+        return any(item['type'] == 'rental' for item in self)
+
+    def has_products(self):
+        """Check if the cart has any product items."""
+        return any(item['type'] == 'product' for item in self)
+
+    def has_mixed_items(self):
+        """Check if the cart has both rental and product items."""
+        return self.has_rentals() and self.has_products()

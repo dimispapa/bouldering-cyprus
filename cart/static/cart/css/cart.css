@@ -41,6 +41,10 @@ h1, h2, h3 {
   }
 }
 
+.btn-checkout-text {
+  line-height: 1.2;
+}
+
 .checkout-subscript {
   font-size: 0.5em;
   font-style: italic;
