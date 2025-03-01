@@ -211,6 +211,36 @@ h4 {
   color: #000;
   font-weight: 600;
 }
+.navbar a.dropdown-item {
+  font-size: 1.2rem;
+  color: #000;
+  transition: color 0.3s ease;
+  text-align: right;
+  padding-right: 5px;
+}
+@media (max-width: 1600px) {
+  .navbar a.dropdown-item {
+    font-size: 1rem;
+  }
+}
+@media (max-width: 767px) {
+  .navbar a.dropdown-item {
+    font-size: 0.8rem;
+  }
+}
+@media (max-width: 991px) {
+  .navbar a.dropdown-item {
+    color: #ed6c2c;
+  }
+}
+.navbar a.dropdown-item:hover {
+  color: #ed6c2c;
+  font-weight: 600;
+}
+.navbar a.dropdown-item:active, .navbar a.dropdown-item:focus {
+  background-color: rgba(237, 108, 44, 0.1) !important;
+  color: #d45212 !important;
+}
 .navbar .badge {
   background-color: #000;
   color: #ffffff;
@@ -230,6 +260,12 @@ h4 {
 }
 .navbar-scrolled a.nav-link:hover,
 .navbar-scrolled a.navbar-brand:hover {
+  color: #000;
+}
+.navbar-scrolled a.dropdown-item {
+  color: #ed6c2c;
+}
+.navbar-scrolled a.dropdown-item:hover {
   color: #000;
 }
 .navbar-scrolled .badge {
@@ -354,6 +390,14 @@ h4 {
 .button-very-small.selected {
   background-color: #ed6c2c;
   color: #ffffff;
+}
+.button-very-small.danger {
+  background-color: #c25a46;
+  color: #ffffff;
+}
+.button-very-small.danger:hover {
+  background-color: #caa098;
+  color: #000;
 }
 
 footer {

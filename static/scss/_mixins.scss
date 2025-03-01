@@ -100,3 +100,15 @@ $breakpoints: (
   margin: 100px auto;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+
+@mixin auth-container-style {
+  position: relative; // Ensure it sits above the background
+  background-color: $white-semi-transparent;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  border-radius: 8px;
+  width: auto;
+  max-width: 60%;
+  height: fit-content;
+  margin: 100px auto;
+}
