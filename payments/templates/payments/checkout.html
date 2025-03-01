@@ -14,11 +14,11 @@
   <!-- Background Image -->
   <div class="background-wrapper">
     <picture>
-      <source media="(min-width: 1441px)" srcset="{% static 'images/checkout-bg-image/sandstone_rock_features_closeup_1920.webp' %}">
-      <source media="(min-width: 1025px)" srcset="{% static 'images/checkout-bg-image/sandstone_rock_features_closeup_1440.webp' %}">
-      <source media="(min-width: 641px)" srcset="{% static 'images/checkout-bg-image/sandstone_rock_features_closeup_1024.webp' %}">
-      <source media="(max-width: 640px)" srcset="{% static 'images/checkout-bg-image/sandstone_rock_features_closeup_640.webp' %}">
-      <img src="{% static 'images/checkout-bg-image/sandstone_rock_features_closeup_1920.webp' %}" alt="Sandstone rock features background">
+      <source media="(min-width: 1441px)" srcset="{% static 'images/checkout-bg-image/sandstone_rock_features_closeup_1920.webp' %}" />
+      <source media="(min-width: 1025px)" srcset="{% static 'images/checkout-bg-image/sandstone_rock_features_closeup_1440.webp' %}" />
+      <source media="(min-width: 641px)" srcset="{% static 'images/checkout-bg-image/sandstone_rock_features_closeup_1024.webp' %}" />
+      <source media="(max-width: 640px)" srcset="{% static 'images/checkout-bg-image/sandstone_rock_features_closeup_640.webp' %}" />
+      <img src="{% static 'images/checkout-bg-image/sandstone_rock_features_closeup_1920.webp' %}" alt="Sandstone rock features background" />
     </picture>
   </div>
 
@@ -63,17 +63,27 @@
               <p class="mb-1">
                 Subtotal: <span class="fw-bold">€{{ cart_total|floatformat:2 }}</span>
               </p>
-              {% if delivery_cost %}
-                <p class="mb-1">
-                  Delivery: <span class="fw-bold">€{{ delivery_cost|floatformat:2 }}</span>
-                </p>
-                <small class="text-muted d-block mb-2">Free delivery on orders over €{{ free_delivery_threshold|floatformat:2 }}</small>
-              {% else %}
-                <p class="mb-1 text-success">Free Delivery</p>
+
+              {% if has_products %}
+                {% if delivery_cost %}
+                  <p class="mb-1">
+                    Delivery: <span class="fw-bold">€{{ delivery_cost|floatformat:2 }}</span>
+                    <small class="text-muted d-block">* Free delivery on orders over €{{ free_delivery_threshold|floatformat:0 }}</small>
+                  </p>
+                {% else %}
+                  <p class="mb-1 text-success">Free delivery - order over €{{ free_delivery_threshold|floatformat:0 }}</p>
+                {% endif %}
               {% endif %}
-              <hr />
+
+              {% if has_rentals %}
+                <p class="mb-1">
+                  Handling Fee: <span class="fw-bold">€{{ handling_fee|floatformat:2 }}</span>
+                  <small class="text-muted d-block">* Processing fee for crashpad rentals</small>
+                </p>
+              {% endif %}
+              <hr class="my-2" />
               <p class="h5">
-                Total: <span class="fw-bold">€{{ grand_total|floatformat:2 }}</span>
+                Grand Total: <span class="fw-bold">€{{ grand_total|floatformat:2 }}</span>
               </p>
             </div>
           </div>
