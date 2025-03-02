@@ -1,19 +1,19 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.views.decorators.http import require_POST
+from django.views.decorators.http import require_GET
 from .models import NewsletterSubscriber, NewsletterMail
 import logging
 
 logger = logging.getLogger(__name__)
 
 
-@require_POST
+@require_GET
 @login_required
-def unsubscribe_view(request, email):
-    """View for unsubscribing from the newsletter."""
+def unsubscribe_view(request, user_id):
+    """View for unsubscribing from the newsletter via the unsubscribe link."""
     try:
-        subscriber = get_object_or_404(NewsletterSubscriber, email=email)
+        subscriber = get_object_or_404(NewsletterSubscriber, user_id=user_id)
         # Set the subscriber to inactive
         subscriber.is_active = False
         subscriber.save()
