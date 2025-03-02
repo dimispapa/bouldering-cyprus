@@ -224,6 +224,9 @@ STATICFILES_FINDERS = [
 ]
 
 # Static/Media files - AWS S3 settings in PRODUCTION
+AWS_CLOUDFRONT_DOMAIN = os.environ.get("AWS_CLOUDFRONT_DOMAIN")
+STATICFILES_LOCATION = "static"
+MEDIAFILES_LOCATION = "media"
 if PRODUCTION:
     # Cache control
     AWS_S3_OBJECT_PARAMETERS = {
@@ -238,11 +241,6 @@ if PRODUCTION:
     AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
     AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
     AWS_QUERYSTRING_AUTH = False  # Makes URLs cleaner and cacheable
-    STATICFILES_LOCATION = "static"
-    MEDIAFILES_LOCATION = "media"
-
-    # CloudFront Distribution
-    AWS_CLOUDFRONT_DOMAIN = os.environ.get("AWS_CLOUDFRONT_DOMAIN")
 
     # Ensure files are properly structured in S3
     # STATICFILES_STORAGE = "custom_storages.StaticStorage"
@@ -267,15 +265,18 @@ if PRODUCTION:
 
 # Static/Media files in Local Development
 else:
-    STATIC_URL = "/static/"
+    STATIC_URL = f"/{STATICFILES_LOCATION}/"
     STATICFILES_DIRS = [
         os.path.join(BASE_DIR, "static"),
     ]
     STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
     STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
-    MEDIA_URL = "/media/"
+    MEDIA_URL = f"/{MEDIAFILES_LOCATION}/"
     MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
+# Define static URL to use for newsletter emails
+EMAIL_STATIC_URL = f"https://{AWS_CLOUDFRONT_DOMAIN}/{STATICFILES_LOCATION}/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
