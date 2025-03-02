@@ -139,6 +139,9 @@
 
     <!-- Main Content -->
     <main>
+      <!-- Include Toast for messages -->
+      {% include 'partials/toasts.html' %}
+
       {% block content %}
         <!-- Content from child templates will be injected here -->
       {% endblock %}
@@ -172,6 +175,19 @@
               <a href="https://facebook.com" target="_blank" class="fs-2 social-icons"><i class="fa-brands fa-facebook"></i></a>
               <a href="https://instagram.com/bouldering_cyprus/" target="_blank" class="fs-2 social-icons"><i class="fa-brands fa-instagram"></i></a>
               <a href="https://www.youtube.com/@cyprusbouldering9957" target="_blank" class="fs-2 social-icons"><i class="fa-brands fa-youtube"></i></a>
+            </div>
+
+            <!-- Newsletter Signup -->
+            <div class="newsletter-signup mt-4">
+              <p class="mb-2">Subscribe to our newsletter</p>
+              <form id="footer-newsletter-form" method="post" action="{% url 'newsletter:ajax_subscribe' %}">
+                {% csrf_token %}
+                <div class="input-group">
+                  <input type="email" name="email" class="form-control" placeholder="Your email" required />
+                  <button class="button-very-small" type="submit">Subscribe</button>
+                </div>
+                <div id="newsletter-message" class="mt-2"></div>
+              </form>
             </div>
           </div>
         </div>
