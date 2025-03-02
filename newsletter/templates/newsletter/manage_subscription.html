@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load i18n %}
+{% load crispy_forms_tags %}
 
 {% block extra_title %}
   Manage Newsletter Subscription
@@ -43,23 +44,8 @@
     <div class="newsletter-container">
       <h1>{% trans 'Newsletter Preferences' %}</h1>
 
-      <div class="newsletter-icon {% if is_subscribed %}
-          
-          subscribed
-
-        {% else %}
-          
-          unsubscribed
-
-        {% endif %}">
-        <i class="{% if is_subscribed %}
-            fa-solid fa-envelope-circle-check
-          {% else %}
-            
-            fa-regular fa-envelope
-
-          {% endif %}">
-        </i>
+      <div class="newsletter-icon {% if is_subscribed %}subscribed{% else %}unsubscribed{% endif %}">
+        <i class="{% if is_subscribed %}fa-solid fa-envelope-circle-check{% else %}fa-regular fa-envelope{% endif %}"></i>
       </div>
 
       <div class="text-center mb-4">
@@ -70,6 +56,13 @@
           <p>
             {% trans 'You will receive updates about new bouldering spots, events, and special offers.' %}
           </p>
+
+          {% if form %}
+            <div class="mt-4 mb-4">
+              <h5>{% trans 'Update Your Information' %}</h5>
+              {% crispy form %}
+            </div>
+          {% endif %}
 
           <form method="post" action="{% url 'newsletter:manage_subscription' %}">
             {% csrf_token %}
