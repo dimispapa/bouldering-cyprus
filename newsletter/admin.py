@@ -61,7 +61,7 @@ class NewsletterMailAdmin(SummernoteModelAdmin):
         """Display help text for template variables."""
         return format_html("""
         <div class="help-block">
-            <h4>Available Template Variables:</h4>
+            <h4>Example Template Variables:</h4>
             <ul>
                 <li><code>{{ site_url }}</code> - The base URL of the site</li>
                 <li><code>{{ user.first_name }}</code> - Recipient's first name</li>
@@ -69,20 +69,11 @@ class NewsletterMailAdmin(SummernoteModelAdmin):
                 <li><code>{{ email }}</code> - Recipient's email address</li>
             </ul>
             <p>Example: <code>Hello {{ user.first_name }},</code></p>
-            <p>Links: <code>&lt;a href="{{ site_url }}/newsletter/unsubscribe/"&gt;Unsubscribe&lt;/a&gt;</code></p>
+            <p>Links: <code>&lt;a href="{{ site_url }}/newsletter/unsubscribe/user.id"&gt;Unsubscribe&lt;/a&gt;</code></p>
         </div>
         """)
 
     template_variables_help.short_description = "Template Variables"
-
-    def get_fieldsets(self, request, obj=None):
-        """Add the template variables help to the fieldsets."""
-        fieldsets = super().get_fieldsets(request, obj)
-        fieldsets = list(fieldsets)
-        fieldsets.append(('Template Help', {
-            'fields': ('template_variables_help', )
-        }))
-        return fieldsets
 
     def send_newsletter(self, request, queryset):
         if queryset.count() > 1:

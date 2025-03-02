@@ -39,7 +39,7 @@ def send_newsletter_email(newsletter,
         site_url = current_site.domain
 
     # Get the static URL from settings
-    static_url = settings.STATIC_URL
+    static_url = settings.EMAIL_STATIC_URL
     if static_url.endswith('/'):
         static_url = static_url[:-1]  # Remove trailing slash
 
@@ -78,13 +78,13 @@ def send_newsletter_email(newsletter,
                 recipient_context['last_name'] = subscriber.user.last_name
                 recipient_context['email'] = recipient_email
                 recipient_context['unsubscribe_url'] = \
-                    f"{site_url}/newsletter/unsubscribe/{recipient_email}/"
+                    f"{site_url}/newsletter/unsubscribe/{subscriber.user.id}/"
             else:
                 # It's just an email string e.g. from a test email
                 recipient_email = subscriber
                 recipient_context['email'] = recipient_email
                 recipient_context['unsubscribe_url'] = \
-                    f"{site_url}/newsletter/unsubscribe/{recipient_email}/"
+                    f"{site_url}/newsletter/manage/"
 
             logger.info(f"Processing subscriber: {recipient_email}")
             logger.info(f"Recipient context: {recipient_context}")
