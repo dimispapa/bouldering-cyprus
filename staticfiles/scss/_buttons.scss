@@ -1,0 +1,89 @@
+@use "variables" as *;
+@use "mixins" as *;
+
+/* Buttons */
+.button-large {
+    // Style mixin
+    @include button-style($beige, $orange);
+    // Margin
+    margin-top: 30px;
+    // Font sizes
+    font-size: $l-font;
+    @include for-size(tablet-lg, down) {
+        font-size: $m-font;
+    }
+    @include for-size(phone, down) {
+        font-size: $s-font;
+    }
+    @include for-size(phone-sm, down) {
+        font-size: $xs-font;
+    }
+    // Hover effect
+    @include for-size(tablet-lg, up) {
+        &:hover {
+            background-color: $orange;
+            color: $white;
+        }
+    }
+}
+
+.button-small {
+    @include button-style($beige, $orange);
+    // Padding
+    padding: 5px 10px;
+    // Hover effect
+    @include for-size(tablet-lg, up) {
+        &:hover {
+            background-color: $orange;
+            color: $white;
+        }
+    }
+    // Font sizes
+    font-size: $m-font;
+    @include for-size(tablet-lg, down) {
+        font-size: $s-font;
+    }
+    @include for-size(phone, down) {
+        font-size: $xs-font;
+    }
+    @include for-size(phone-sm, down) {
+        font-size: $xxs-font;
+    }
+}
+
+.button-very-small {
+    @include button-style($beige, $orange);
+    // Padding
+    padding: 5px 10px;
+    // Hover effect
+    @include for-size(tablet-lg, up) {
+        &:hover {
+            background-color: $orange;
+            color: $white;
+        }
+    }
+    // Font sizes
+    font-size: $s-font;
+    @include for-size(tablet-lg, down) {
+        font-size: $xs-font;
+    }
+    @include for-size(phone, down) {
+        font-size: $xxs-font;
+    }
+
+    // Selected state
+    &.selected {
+        background-color: $orange;
+        color: $white;
+    }
+
+    // Danger button
+    &.danger {
+        background-color: $dark-red;
+        color: $white;
+        &:hover {
+            background-color: $off-pink;
+            color: $black;
+        }
+    }
+}

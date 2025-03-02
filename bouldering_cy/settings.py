@@ -29,9 +29,17 @@ SECRET_KEY = os.environ.get("SECRET_KEY", "")
 PRODUCTION = os.environ.get("PRODUCTION", "False").lower() == "true"
 DEBUG = not PRODUCTION
 
+if PRODUCTION:
+    SITE_ID = 3
+    SITE_DOMAIN = "bouldering-cyprus-53e1273cde1e.herokuapp.com"
+    SITE_URL = f"https://{SITE_DOMAIN}"
+else:
+    SITE_ID = 2
+    SITE_DOMAIN = "127.0.0.1"
+    SITE_URL = f"http://{SITE_DOMAIN}:8000"
+
 ALLOWED_HOSTS = [
-    "bouldering-cyprus-53e1273cde1e.herokuapp.com",
-    "127.0.0.1",
+    SITE_DOMAIN,
     os.environ.get("NGROK_TUNNEL"),
 ]
 
@@ -90,6 +98,7 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "cart.contexts.cart_summary",
+                "newsletter.contexts.newsletter_form",
             ],
         },
     },
@@ -124,12 +133,6 @@ AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
-# Required site ID for django.contrib.sites
-if PRODUCTION:
-    SITE_ID = 3
-else:
-    SITE_ID = 2
-
 # Allauth settings for email authentication
 ACCOUNT_LOGIN_METHODS = {'email'}  # Use email for authentication
 ACCOUNT_EMAIL_REQUIRED = True  # Email is required
@@ -140,7 +143,9 @@ ACCOUNT_MAX_EMAIL_ADDRESSES = 1  # Only one email address per user
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True  # Confirm email on GET request
 ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True  # Login after email confirmation
 ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 3  # Email confirmation link expires after 3 days
-
+ACCOUNT_FORMS = {
+    'signup': 'accounts.forms.CustomSignupForm',
+}
 # Login/logout URLs
 LOGIN_REDIRECT_URL = '/'  # Redirect after login
 LOGOUT_REDIRECT_URL = '/'  # Redirect after logout
@@ -184,8 +189,8 @@ EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_KEY")
 DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_EMAIL")
 SERVER_EMAIL = os.environ.get("DEFAULT_EMAIL")
 
-if not PRODUCTION:
-    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# if not PRODUCTION:
+#     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # Contact numbers
 WHATSAPP_NUMBER = os.environ.get("WHATSAPP_NUMBER")

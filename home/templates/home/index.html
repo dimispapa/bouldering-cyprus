@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block extra_title %}Home{% endblock %}
+{% block extra_title %}
+  Home
+{% endblock %}
 
 {% block extra_css %}
   <link rel="stylesheet" href="{% static 'home/css/index.css' %}" />
@@ -34,7 +36,11 @@
     <div class="text-box-container">
       <div id="text-box-1" class="text-box roboto-condensed">
         <h1>Welcome to Bouldering in Cyprus</h1>
-        <p class="text-content">Discover the best bouldering spots Cyprus with our comprehensive guidebook. Featuring detailed maps, route descriptions, and stunning photography, it's the ultimate companion for your climbing adventures.</p>
+        <p class="text-content">
+          Discover the best bouldering spots on the island with the "Bouldering Cyprus Guide" book.<br />
+          Featuring detailed maps and directions, GPS locations, route descriptions and photos, as well as stunning photography, it's the ultimate companion for your climbing adventures.<br />
+          Years of exploration and dedication by the local bouldering community cultivated this guidebook to be the most comprehensive and up-to-date resource for bouldering in Cyprus.
+        </p>
         <p>
           <a href="{% url 'shop' %}" class="button-large">Buy the Guidebook</a>
         </p>
@@ -45,7 +51,12 @@
     <div class="text-box-container">
       <div id="text-box-2" class="text-box roboto-condensed">
         <h1>What is Bouldering?</h1>
-        <p class="text-content">Bouldering is a form of rock climbing that is performed without the use of ropes or harnesses. Instead, climbers use crash pads to protect themselves from falls. Bouldering is a great way to build strength, improve your climbing technique, and have fun with friends.</p>
+        <p class="text-content">
+          Bouldering can be regarded as still being relatively in its infancy in Cyprus, experiencing a boom over the past few years.<br />
+          For the sake of those who are not familiar with the sport, bouldering is a form of rock climbing that is performed without the use of ropes or harnesses. Instead, climbers use crash pads to protect themselves from falls.<br />
+          It is a great way to build strength, improve your climbing technique, test your limits and have fun with friends.<br />
+          All while spending time outdoors and enjoying the beautiful Cyprus landscape in and around the Akamas Peninsula.
+        </p>
       </div>
     </div>
 
@@ -53,15 +64,23 @@
     <div class="text-box-container">
       <div id="text-box-3" class="text-box roboto-condensed">
         <h1>Why Bouldering Cyprus?</h1>
-        <p class="text-content">With its stunning landscapes, warm climate, and friendly locals, Cyprus is the perfect destination for climbers of all levels. Whether you're looking for easy problems or hard projects, bouldering in Cyprus has something for everyone.</p>
+        <p class="text-content">
+          With its stunning landscapes, warm climate, and friendly locals, Cyprus is the perfect destination for climbers of all levels.<br />
+          Whether you're looking for easy problems or hard projects, bouldering in Cyprus has something for everyone, with around 700 bouldering problems ranging from f3 (V0) to f8A (V11).<br />
+          This area on the western coast of Cyprus offers a wide range of bouldering spots scattered across the hills and valleys, from small to huge boulders, offering various styles of climbing on quality sandstone rock.
+        </p>
       </div>
     </div>
 
     <!-- Weather and Winter Conditions -->
     <div class="text-box-container">
       <div id="text-box-4" class="text-box roboto-condensed">
-        <h1>Climb in Perfect Winter Conditions</h1>
-        <p class="text-content">Unlike many other climbing destinations in Europe, Cyprus offers ideal bouldering conditions during the winter months. With sunny weather and mild temperatures, you can enjoy your climbing sessions in comfortable conditions, making it a great sunny winter getaway for climbers.</p>
+        <h1>Ideal Winter Destination or Visiting with Family</h1>
+        <p class="text-content">
+          Unlike many other climbing destinations in Europe, Cyprus offers ideal climbing conditions during the winter months, when northern Europe is usually covered in snow, rain and freezing temperatures.<br />
+          With sunny weather and mild temperatures, you can enjoy your climbing sessions in comfortable conditions while even hitting the beach under the winter sun, making it a great sunny winter getaway for climbers.<br />
+          Cyprus is known for its hospitality, friendly locals, food, culture and history, making it a great destination for visiting with your family. Short distances and easy access means that you can easily combine climbing with other activities in the Paphos region or the even the rest of the island.
+        </p>
       </div>
     </div>
 
@@ -69,7 +88,11 @@
     <div class="text-box-container">
       <div id="text-box-5" class="text-box roboto-condensed">
         <h1>Crashpad Rentals Available</h1>
-        <p class="text-content">No need to bring your own crashpads; rentals are available on-site. Convenient, affordable, and high-quality crashpads to ensure a safe and enjoyable climbing experience.</p>
+        <p class="text-content">
+          No need to bring your own crashpads; rentals are available on-site in Droushia village at Sappho Manor House accommodation.<br />
+          Convenient, affordable, and high-quality crashpads to ensure a safe and enjoyable bouldering experience.<br />
+          Please book in advance to avoid disappointment.
+        </p>
         <p>
           <a href="{% url 'rentals:booking' %}" class="button-large">Check Availability &amp; Book</a>
         </p>
@@ -98,7 +121,7 @@
           <a href="javascript:void(0)" class="nav-link"><span>Why Bouldering Cyprus?</span></a>
         </li>
         <li class="nav-item" data-target="#text-box-4" title="Climb in Perfect Winter Conditions">
-          <a href="javascript:void(0)" class="nav-link">Climb in Perfect Winter Conditions</a>
+          <a href="javascript:void(0)" class="nav-link">Ideal Winter Destination or Visiting with Family</a>
         </li>
         <li class="nav-item" data-target="#text-box-5" title="Crashpad Rentals Available">
           <a href="javascript:void(0)" class="nav-link"><span>Crashpad Rentals Available</span></a>

@@ -1,4 +1,5 @@
 {% load static %}
+{% load crispy_forms_tags %}
 
 {% url 'home' as home_url %}
 {% url 'shop' as shop_url %}
@@ -139,6 +140,9 @@
 
     <!-- Main Content -->
     <main>
+      <!-- Include Toast for messages -->
+      {% include 'partials/toasts.html' %}
+
       {% block content %}
         <!-- Content from child templates will be injected here -->
       {% endblock %}
@@ -172,6 +176,11 @@
               <a href="https://facebook.com" target="_blank" class="fs-2 social-icons"><i class="fa-brands fa-facebook"></i></a>
               <a href="https://instagram.com/bouldering_cyprus/" target="_blank" class="fs-2 social-icons"><i class="fa-brands fa-instagram"></i></a>
               <a href="https://www.youtube.com/@cyprusbouldering9957" target="_blank" class="fs-2 social-icons"><i class="fa-brands fa-youtube"></i></a>
+            </div>
+
+            <!-- Newsletter Signup -->
+            <div class="footer-col">
+              {% include 'partials/footer_newsletter.html' %}
             </div>
           </div>
         </div>

@@ -1,0 +1,136 @@
+@use "variables" as *;
+@use "mixins" as *;
+
+/* Navbar */
+.navbar {
+    background-color: transparent;
+    text-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+    transition:
+        background-color $transition-fast,
+        box-shadow $transition-fast;
+
+    // Solid navbar when switching to burger menu @ < 991px
+    @include for-size(991px, down) {
+        background-color: $white !important;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    a.navbar-brand {
+        // Font sizes
+        font-size: $xxl-font;
+        @include for-size(desktop-lg, down) {
+            font-size: $xl-font;
+        }
+        @include for-size(tablet-lg, down) {
+            font-size: $l-font;
+        }
+        @include for-size(phone, down) {
+            font-size: $m-font;
+        }
+        @include for-size(phone-sm, down) {
+            font-size: $s-font;
+        }
+        // Colours
+        color: $white;
+        // Orange text when solid navbar
+        @include for-size(991px, down) {
+            color: $orange;
+        }
+        transition: color $transition-fast;
+        // Hover effects
+        &:hover {
+            color: $black;
+            font-weight: 600;
+        }
+    }
+
+    a.nav-link {
+        // Font sizes
+        font-size: $m-font;
+        @include for-size(desktop-lg, down) {
+            font-size: $s-font;
+        }
+        @include for-size(phone, down) {
+            font-size: $xs-font;
+        }
+        // Colours
+        color: $white;
+        // Orange text when solid navbar
+        @include for-size(991px, down) {
+            color: $orange;
+        }
+        transition: color $transition-fast;
+        // Hover effects
+        &:hover {
+            color: $black;
+            font-weight: 600;
+        }
+        // Text alignment
+        text-align: right;
+    }
+
+    a.dropdown-item {
+        // Font sizes
+        font-size: $s-font;
+        @include for-size(desktop-lg, down) {
+            font-size: $xs-font;
+        }
+        @include for-size(phone, down) {
+            font-size: $xxs-font;
+        }
+        // Colours
+        color: $black;
+        // Orange text when solid navbar
+        @include for-size(991px, down) {
+            color: $orange;
+        }
+        transition: color $transition-fast;
+        // Hover effects
+        &:hover {
+            color: $orange;
+            font-weight: 600;
+        }
+        // Active state
+        &:active,
+        &:focus {
+            background-color: $orange-transparent !important;
+            color: darken($orange, 10%) !important;
+        }
+        // Text alignment
+        text-align: right;
+        padding-right: 5px;
+    }
+
+    .badge {
+        background-color: $black;
+        color: $white;
+        font-size: $xxs-font;
+        padding: 0.12rem 0.25rem;
+        border-radius: 0.5rem;
+    }
+}
+
+/* Solid Navbar when scrolled */
+.navbar-scrolled {
+    background-color: $white !important;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+
+    a.nav-link,
+    a.navbar-brand {
+        color: $orange;
+        &:hover {
+            color: $black;
+        }
+    }
+
+    a.dropdown-item {
+        color: $orange;
+        &:hover {
+            color: $black;
+        }
+    }
+
+    .badge {
+        background-color: $orange;
+    }
+}

@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load i18n %}
 {% load static %}
+{% load crispy_forms_tags %}
 
 {% block extra_title %}
   Sign Up
@@ -16,42 +17,16 @@
     <div class="auth-container">
       <h1>{% trans 'Sign Up' %}</h1>
 
-      <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
-        {% csrf_token %}
-
-        {% if form.errors %}
-          <div class="alert alert-danger">
-            <p>
-              {% trans 'Please correct the errors below:' %}
-            </p>
-            {{ form.non_field_errors }}
-          </div>
-        {% endif %}
-
-        <div class="form-group">
-          <label for="id_email">{% trans 'Email' %}:</label>
-          <input type="email" name="email" placeholder="{% trans 'Email address' %}" autocomplete="email" required id="id_email" class="form-control" />
-          {{ form.email.errors }}
+      {% if form.errors %}
+        <div class="alert alert-danger">
+          <p>
+            {% trans 'Please correct the errors below:' %}
+          </p>
+          {{ form.non_field_errors }}
         </div>
+      {% endif %}
 
-        <div class="form-group">
-          <label for="id_password1">{% trans 'Password' %}:</label>
-          <input type="password" name="password1" placeholder="{% trans 'Password' %}" autocomplete="new-password" required id="id_password1" class="form-control" />
-          {{ form.password1.errors }}
-        </div>
-
-        <div class="form-group">
-          <label for="id_password2">{% trans 'Password (again)' %}:</label>
-          <input type="password" name="password2" placeholder="{% trans 'Password (again)' %}" autocomplete="new-password" required id="id_password2" class="form-control" />
-          {{ form.password2.errors }}
-        </div>
-
-        {% if redirect_field_value %}
-          <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
-        {% endif %}
-
-        <button class="button-very-small w-100" type="submit">{% trans 'Sign Up' %}</button>
-      </form>
+      {% crispy form %}
 
       <div class="auth-links">
         <p>

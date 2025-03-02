@@ -1,0 +1,315 @@
+/* Colors */
+/* Fonts */
+/* Font Sizes */
+/* Z-Index */
+/* Animation */
+/* Element First Media Queries
+========================================================= */
+/* Button Mixin
+========================================================= */
+/* Full page background wrapper */
+.background-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  overflow: hidden;
+}
+.background-wrapper picture, .background-wrapper img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/* Centered container with a slightly transparent background */
+/* Hero Section */
+.hero-section {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.hero-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #f4edd2;
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+.hero-image.visible {
+  opacity: 1;
+}
+
+/* Responsive Background Hero Images */
+#hero-image1 {
+  background-image: url(../images/hero_image1/climber_hanging_alikou_1920.webp);
+}
+@media (max-width: 1441px) {
+  #hero-image1 {
+    background-image: url(../images/hero_image1/climber_hanging_alikou_1440.webp);
+  }
+}
+@media (max-width: 1024px) {
+  #hero-image1 {
+    background-image: url(../images/hero_image1/climber_hanging_alikou_1024.webp);
+  }
+}
+@media (max-width: 640px) {
+  #hero-image1 {
+    background-position: 65% 50%;
+  }
+}
+
+#hero-image2 {
+  background-image: url(../images/hero_image2/female_climbers_kato_akamas_1920.webp);
+}
+@media (max-width: 1441px) {
+  #hero-image2 {
+    background-image: url(../images/hero_image2/female_climbers_kato_akamas_1440.webp);
+  }
+}
+@media (max-width: 1024px) {
+  #hero-image2 {
+    background-image: url(../images/hero_image2/female_climbers_kato_akamas_1024.webp);
+  }
+}
+
+#hero-image3 {
+  background-image: url(../images/hero_image3/climbers_walking_with_pads_kato_droushia_1920.webp);
+}
+@media (max-width: 1441px) {
+  #hero-image3 {
+    background-image: url(../images/hero_image3/climbers_walking_with_pads_kato_droushia_1440.webp);
+  }
+}
+@media (max-width: 1024px) {
+  #hero-image3 {
+    background-image: url(../images/hero_image3/climbers_walking_with_pads_kato_droushia_1024.webp);
+  }
+}
+
+#hero-image4 {
+  background-image: url(../images/hero_image4/climbing_secret_garden_1920.webp);
+}
+@media (max-width: 1441px) {
+  #hero-image4 {
+    background-image: url(../images/hero_image4/climbing_secret_garden_1440.webp);
+  }
+}
+@media (max-width: 1024px) {
+  #hero-image4 {
+    background-image: url(../images/hero_image4/climbing_secret_garden_1024.webp);
+  }
+}
+
+#hero-image5 {
+  background-image: url(../images/hero_image5/bouldering_group_sunset_1920.webp);
+}
+@media (max-width: 1441px) {
+  #hero-image5 {
+    background-image: url(../images/hero_image5/bouldering_group_sunset_1440.webp);
+  }
+}
+@media (max-width: 1024px) {
+  #hero-image5 {
+    background-image: url(../images/hero_image5/bouldering_group_sunset_1024.webp);
+  }
+}
+
+/* Content Section */
+.content-section {
+  position: relative;
+  z-index: 1;
+  margin-top: 100vh;
+}
+
+/* Scroll-Down Arrow */
+#scroll-down-arrow {
+  position: fixed;
+  bottom: 5%;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  cursor: pointer;
+  font-size: 3rem;
+  color: #caa098;
+  text-shadow: 2px 2px 1px #000;
+  animation: bounce 4s infinite;
+  z-index: 1000;
+  transition: color 0.3s ease, opacity 0.5s ease;
+}
+@media (max-width: 767px) {
+  #scroll-down-arrow {
+    font-size: 2rem;
+  }
+}
+@media (max-width: 420px) {
+  #scroll-down-arrow {
+    font-size: 1.5rem;
+  }
+}
+#scroll-down-arrow.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+@media (min-width: 1024px) {
+  #scroll-down-arrow:hover {
+    color: #ed6c2c;
+  }
+}
+#scroll-down-arrow p {
+  font-size: 1.2rem;
+}
+@media (max-width: 767px) {
+  #scroll-down-arrow p {
+    font-size: 1rem;
+  }
+}
+@media (max-width: 420px) {
+  #scroll-down-arrow p {
+    font-size: 0.8rem;
+  }
+}
+
+/* Scroll-to-Top Arrow */
+#scroll-to-top-arrow {
+  position: relative;
+  left: 50%;
+  bottom: 5%;
+  text-align: center;
+  cursor: pointer;
+  font-size: 3rem;
+  animation: bounce 4s infinite;
+  color: #caa098;
+  text-shadow: 2px 2px 1px #000;
+  transition: color 0.3s ease;
+}
+@media (max-width: 767px) {
+  #scroll-to-top-arrow {
+    font-size: 2rem;
+  }
+}
+@media (max-width: 420px) {
+  #scroll-to-top-arrow {
+    font-size: 1.5rem;
+  }
+}
+@media (min-width: 1024px) {
+  #scroll-to-top-arrow:hover {
+    color: #ed6c2c;
+  }
+}
+#scroll-to-top-arrow p {
+  font-size: 1.2rem;
+}
+@media (max-width: 767px) {
+  #scroll-to-top-arrow p {
+    font-size: 1rem;
+  }
+}
+@media (max-width: 420px) {
+  #scroll-to-top-arrow p {
+    font-size: 0.8rem;
+  }
+}
+
+/* Bounce Animation */
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateX(-50%) translateY(0);
+  }
+  40% {
+    transform: translateX(-50%) translateY(-10px);
+  }
+  60% {
+    transform: translateX(-50%) translateY(-5px);
+  }
+}
+/* Text Boxes */
+.text-box {
+  width: 100%;
+  margin: 500px auto;
+  padding: 30px;
+  line-height: 1.8;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  transform: translateY(50px);
+  transition: opacity 1s ease, transform 1s ease;
+}
+.text-box.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#text-box1 {
+  padding-bottom: 30px;
+}
+
+/* Sidebar */
+#side-nav-toggle {
+  top: 50%;
+  right: 0;
+  z-index: 1050;
+  animation: bounce 4s infinite;
+  background-color: rgba(202, 160, 152, 0.9);
+  box-shadow: 5px 5px 10px 1px rgba(0, 0, 0, 0.9);
+  color: #000;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+  box-sizing: border-box;
+  text-align: center;
+  max-width: -moz-fit-content;
+  max-width: fit-content;
+  padding: 5px 10px;
+}
+@media (min-width: 1024px) {
+  #side-nav-toggle:hover {
+    background-color: #ed6c2c;
+    color: #ffffff;
+  }
+}
+
+#offcanvasSidebar {
+  background-color: rgba(244, 237, 210, 0.9);
+  max-width: 50vw;
+}
+#offcanvasSidebar a.nav-link {
+  color: #000;
+}
+@media (min-width: 1024px) {
+  #offcanvasSidebar a.nav-link:hover {
+    color: #ed6c2c;
+  }
+}
+@media (min-width: 768px) {
+  #offcanvasSidebar li {
+    margin-bottom: 20px;
+  }
+}
+
+.offcanvas-title {
+  color: #ed6c2c;
+}/*# sourceMappingURL=index.css.map */
