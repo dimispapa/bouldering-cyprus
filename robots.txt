@@ -1,0 +1,9 @@
+User-agent: *
+Disallow: /accounts/
+Disallow: /cart/
+Disallow: /payments/
+Disallow: /newsletter/
+Disallow: /admin/
+Disallow: /api-auth/
+Disallow: /summernote/
+Sitemap: https://bouldering-cyprus-53e1273cde1e.herokuapp.com/sitemap.xml
