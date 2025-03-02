@@ -46,6 +46,12 @@
           {{ form.password2.errors }}
         </div>
 
+        <!-- Newsletter Opt-in -->
+        <div class="form-group form-check">
+          <input type="checkbox" name="newsletter_opt_in" id="id_newsletter_opt_in" class="form-check-input" checked />
+          <label class="form-check-label" for="id_newsletter_opt_in">{% trans 'Subscribe to our newsletter to receive updates about new bouldering spots and special offers.' %}</label>
+        </div>
+
         {% if redirect_field_value %}
           <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
         {% endif %}
