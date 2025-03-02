@@ -4,6 +4,7 @@ boto3==1.36.9
 botocore==1.36.9
 certifi==2025.1.31
 charset-normalizer==3.4.1
+coverage==7.6.12
 crispy-bootstrap5==2024.10
 dj-database-url==0.5.0
 Django==4.2.18
@@ -17,6 +18,7 @@ djangorestframework==3.15.2
 gunicorn==23.0.0
 idna==3.10
 jmespath==1.0.1
+model-bakery==1.20.4
 packaging==24.2
 pillow==11.1.0
 psycopg2-binary==2.9.10
