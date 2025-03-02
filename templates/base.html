@@ -1,4 +1,5 @@
 {% load static %}
+{% load crispy_forms_tags %}
 
 {% url 'home' as home_url %}
 {% url 'shop' as shop_url %}
@@ -178,16 +179,8 @@
             </div>
 
             <!-- Newsletter Signup -->
-            <div class="newsletter-signup mt-4">
-              <p class="mb-2">Subscribe to our newsletter</p>
-              <form id="footer-newsletter-form" method="post" action="{% url 'newsletter:ajax_subscribe' %}">
-                {% csrf_token %}
-                <div class="input-group">
-                  <input type="email" name="email" class="form-control" placeholder="Your email" required />
-                  <button class="button-very-small" type="submit">Subscribe</button>
-                </div>
-                <div id="newsletter-message" class="mt-2"></div>
-              </form>
+            <div class="footer-col">
+              {% include 'partials/footer_newsletter.html' %}
             </div>
           </div>
         </div>
