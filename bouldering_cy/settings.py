@@ -140,7 +140,9 @@ ACCOUNT_MAX_EMAIL_ADDRESSES = 1  # Only one email address per user
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True  # Confirm email on GET request
 ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True  # Login after email confirmation
 ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 3  # Email confirmation link expires after 3 days
-
+ACCOUNT_FORMS = {
+    'signup': 'accounts.forms.CustomSignupForm',
+}
 # Login/logout URLs
 LOGIN_REDIRECT_URL = '/'  # Redirect after login
 LOGOUT_REDIRECT_URL = '/'  # Redirect after logout
