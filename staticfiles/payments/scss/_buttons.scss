@@ -1,0 +1,44 @@
+@use "../../../../static/scss/variables" as *;
+@use "../../../../static/scss/mixins" as *;
+
+.button-update {
+    @include button-style($beige, $orange);
+    // Padding
+    padding: 2px 3px;
+    // Hover effect
+    @include for-size(tablet-lg, up) {
+        &:hover {
+            background-color: $orange;
+            color: $white;
+        }
+    }
+    // Font sizes
+    font-size: $xs-font;
+    @include for-size(tablet-lg, down) {
+        font-size: $xxs-font;
+    }
+}
+
+.button-payment {
+    @include button-style($light-green, $light-blue);
+    // Padding
+    padding: 5px 10px;
+    // Hover effect
+    @include for-size(tablet-lg, up) {
+        &:hover {
+            background-color: $light-blue;
+            // color: $white;
+        }
+    }
+    // Font sizes
+    font-size: $l-font;
+    @include for-size(tablet-lg, down) {
+        font-size: $m-font;
+    }
+    @include for-size(phone, down) {
+        font-size: $s-font;
+    }
+    @include for-size(phone-sm, down) {
+        font-size: $xs-font;
+    }
+}

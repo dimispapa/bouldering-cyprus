@@ -1,0 +1,37 @@
+.primary-email {
+    font-weight: bold;
+}
+
+.verified-badge {
+    color: green;
+    margin-left: 10px;
+}
+
+.unverified-badge {
+    color: orange;
+    margin-left: 10px;
+}
+
+.email-icon {
+    text-align: center;
+    font-size: 3rem;
+    color: #0d6efd;
+    margin-bottom: 20px;
+}
+
+.verification-message {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.warning-icon {
+    text-align: center;
+    font-size: 3rem;
+    color: #dc3545;
+    margin-bottom: 20px;
+}
+
+.warning-message {
+    text-align: center;
+    margin-bottom: 25px;
+}

@@ -1,0 +1,51 @@
+/* Colors */
+$orange: #ed6c2c;
+$orange-semi-transparent: rgba(237, 108, 44, 0.9);
+$orange-transparent: rgba(237, 108, 44, 0.1);
+
+$beige: #f4edd2;
+$beige-semi-transparent: rgba(244, 237, 210, 0.9);
+
+$black: #000;
+$black-semi-transparent: rgba(0, 0, 0, 0.9);
+$black-transparent: rgba(0, 0, 0, 0.1);
+
+$white: #ffffff;
+$white-semi-transparent: rgba(255, 255, 255, 0.9);
+
+$off-pink: #caa098;
+$off-pink-semi-transparent: rgba(202, 160, 152, 0.9);
+
+$dark-red: #c25a46;
+$dark-red-semi-transparent: rgba(194, 90, 70, 0.9);
+
+$light-blue: #cbdbe2;
+$light-blue-semi-transparent: rgba(203, 219, 226, 0.9);
+
+$light-green: #b5cbb2;
+$light-green-semi-transparent: rgba(181, 203, 178, 0.9);
+
+/* Fonts */
+$font-roboto-mono: "Roboto Mono", serif;
+$font-roboto-condensed: "Roboto Condensed", serif;
+
+/* Font Sizes */
+$xxl-font: 2rem;
+$xl-font: 1.8rem;
+$l-font: 1.6rem;
+$m-font: 1.4rem;
+$s-font: 1.2rem;
+$xs-font: 1rem;
+$xxs-font: 0.8rem;
+
+/* Z-Index */
+$z-index-hero: -1;
+$z-index-content: 1;
+$z-index-scroll-arrow: 1000;
+
+/* Animation */
+$transition-very-fast: 0.1s ease-in-out;
+$transition-fast: 0.3s ease;
+$transition-medium: 0.5s ease;
+$transition-slow: 1s ease;
+$bounce-infinite: bounce 4s infinite;

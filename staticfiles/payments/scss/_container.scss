@@ -1,0 +1,16 @@
+@use "../../../../static/scss/mixins" as *;
+
+/* Full page background wrapper */
+body {
+    @include body-checkout-style;
+}
+
+/* Centered container with a slightly transparent background */
+#checkout-container {
+    @include checkout-container-style;
+}
+
+/* Hidden class */
+.hidden {
+    display: none;
+}

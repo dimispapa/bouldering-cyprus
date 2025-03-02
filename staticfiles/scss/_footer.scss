@@ -1,0 +1,28 @@
+@use "variables" as *;
+@use "mixins" as *;
+
+footer {
+    color: $black;
+    background-color: $white-semi-transparent;
+    // Font sizes
+    font-size: $m-font;
+    @include for-size(desktop-lg, down) {
+        font-size: $s-font;
+    }
+    @include for-size(phone, down) {
+        font-size: $xs-font;
+    }
+    padding: 10px 5px;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    z-index: 1;
+
+    a {
+        text-decoration: none;
+        color: $black;
+        &:hover {
+            color: $orange;
+        }
+    }
+}

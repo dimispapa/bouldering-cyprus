@@ -1,0 +1,46 @@
+/* Colors */
+/* Fonts */
+/* Font Sizes */
+/* Z-Index */
+/* Animation */
+/* Element First Media Queries
+========================================================= */
+/* Button Mixin
+========================================================= */
+/* Full page background wrapper */
+.background-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  overflow: hidden;
+}
+.background-wrapper picture, .background-wrapper img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/* Centered container with a slightly transparent background */
+/* Hero Images */
+.hero-wrapper {
+  width: 100%;
+  height: 50vh;
+  overflow: hidden;
+  position: relative;
+}
+.hero-wrapper picture, .hero-wrapper img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+}/*# sourceMappingURL=checkout-success.css.map */

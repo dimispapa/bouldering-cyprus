@@ -1,0 +1,171 @@
+/* Colors */
+/* Fonts */
+/* Font Sizes */
+/* Z-Index */
+/* Animation */
+/* Element First Media Queries
+========================================================= */
+/* Button Mixin
+========================================================= */
+/* Full page background wrapper */
+.background-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  overflow: hidden;
+}
+.background-wrapper picture, .background-wrapper img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/* Centered container with a slightly transparent background */
+/* Full page background wrapper */
+body {
+  position: relative;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+/* Centered container with a slightly transparent background */
+.auth-container {
+  position: relative;
+  background-color: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  border-radius: 8px;
+  width: auto;
+  max-width: 60%;
+  height: -moz-fit-content;
+  height: fit-content;
+  margin: 100px auto;
+}
+@media (max-width: 768px) {
+  .auth-container {
+    max-width: 80%;
+    font-size: smaller;
+  }
+}
+@media (max-width: 767px) {
+  .auth-container {
+    max-width: 90%;
+    font-size: smaller;
+  }
+}
+.auth-container h1 {
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.account-section {
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #eee;
+}
+.account-section:last-child {
+  border-bottom: none;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.auth-links {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.email-item {
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 500px;
+}
+
+.email-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.auth-buttons {
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.btn-cancel {
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  color: #212529;
+}
+
+.btn-cancel:hover {
+  background-color: #e9ecef;
+}
+
+.btn-sm {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  border-color: #dc3545;
+  color: white;
+}
+
+.btn-danger:hover {
+  background-color: #bb2d3b;
+  border-color: #b02a37;
+}
+
+.primary-email {
+  font-weight: bold;
+}
+
+.verified-badge {
+  color: green;
+  margin-left: 10px;
+}
+
+.unverified-badge {
+  color: orange;
+  margin-left: 10px;
+}
+
+.email-icon {
+  text-align: center;
+  font-size: 3rem;
+  color: #0d6efd;
+  margin-bottom: 20px;
+}
+
+.verification-message {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.warning-icon {
+  text-align: center;
+  font-size: 3rem;
+  color: #dc3545;
+  margin-bottom: 20px;
+}
+
+.warning-message {
+  text-align: center;
+  margin-bottom: 25px;
+}/*# sourceMappingURL=accounts.css.map */
