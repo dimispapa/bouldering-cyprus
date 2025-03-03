@@ -1,131 +1,253 @@
-![CI logo](https://codeinstitute.s3.amazonaws.com/fullstack/ci_logo_small.png)
+<h1 align="center">BOULDERING CYPRUS - Your Ultimate Guide to Bouldering in Cyprus</h1>
 
-Welcome Demetris Papakyriacou,
+"Bouldering Cyprus" is a Django-based e-commerce web application designed to promote and support the bouldering community in Cyprus. The platform offers an online shop selling the comprehensive guidebook (physical book) for bouldering spots across the island, crashpad rentals. This application aims to make bouldering in Cyprus more accessible to both locals and tourists by providing essential information, equipment, and services. It is designed to be scalable and has the potential to easily host other related climbing products as the offering expands.
 
-This is the Code Institute student template for Gitpod. We have preinstalled all of the tools you need to get started. It's perfectly ok to use this template as the basis for your project submissions.
+<div style="text-align:center">
+<a href="https://bouldering-cyprus-53e1273cde1e.herokuapp.com/">ACCESS THE APPLICATION</a></div>
 
-You can safely delete this README.md file or change it for your own project. Please do read it at least once, though! It contains some important information about Gitpod and the extensions we use. Some of this information has been updated since the video content was created. The last update to this file was: **June 18, 2024**
+# App Overview
 
-## Gitpod Reminders
+## App Purpose / User Goals
+The Bouldering Cyprus app aims to serve as a central hub for the bouldering community in Cyprus by offering:
 
-To run a frontend (HTML, CSS, Javascript only) application in Gitpod, in the terminal, type:
+- **Guidebook Sales:** The main purpose is to market and sell the Bouldering Cyprus Guidebook, a physical book containing detailed information about bouldering spots across Cyprus, including maps, route descriptions, and difficulty ratings.
 
-`python3 -m http.server`
+- **Equipment Rental:** Offering crashpad rentals to visitors who don't want to travel with their own equipment.
 
-A blue button should appear to click: _Make Public_,
+- **E-commerce Platform:** Capacity to sell guidebooks and other bouldering-related products as the offering expands.
 
-Another blue button should appear to click: _Open Browser_.
+- **Community Building:** Creating a platform for the local bouldering community to connect and share information via the social media pages and the newsletter.
 
-To run a backend Python file, type `python3 app.py` if your Python file is named `app.py`, of course.
+- **Newsletter Subscription:** Keeping users updated with the latest bouldering news, spot discoveries, and events in Cyprus.
 
-A blue button should appear to click: _Make Public_,
+## Key Features
 
-Another blue button should appear to click: _Open Browser_.
+- **Responsive Design:** Fully responsive website that works seamlessly across desktop, tablet, and mobile devices.
 
-By Default, Gitpod gives you superuser security privileges. Therefore, you do not need to use the `sudo` (superuser do) command in the bash terminal in any of the lessons.
+- **User Authentication:** Secure user registration and authentication system using Django Allauth.
 
-To log into the Heroku toolbelt CLI:
+- **Product Management:** Comprehensive product catalog with detailed descriptions, images, and pricing.
 
-1. Log in to your Heroku account and go to *Account Settings* in the menu under your avatar.
-2. Scroll down to the *API Key* and click *Reveal*
-3. Copy the key
-4. In Gitpod, from the terminal, run `heroku_config`
-5. Paste in your API key when asked
+- **Shopping Cart:** Intuitive shopping cart functionality allowing users to add, update, and remove items.
 
-You can now use the `heroku` CLI program - try running `heroku apps` to confirm it works. This API key is unique and private to you, so do not share it. If you accidentally make it public, you can create a new one with _Regenerate API Key_.
+- **Secure Checkout:** Integration with Stripe for secure payment processing.
 
-### Connecting your Mongo database
+- **Crashpad Rental System:** Dedicated rental system for crashpads with date selection and availability checking.
 
-- **Connect to Mongo CLI on a IDE**
-- navigate to your MongoDB Clusters Sandbox
-- click **"Connect"** button
-- select **"Connect with the MongoDB shell"**
-- select **"I have the mongo shell installed"**
-- choose **mongosh (2.0 or later)** for : **"Select your mongo shell version"**
-- choose option: **"Run your connection string in your command line"**
-- in the terminal, paste the copied code `mongo "mongodb+srv://<CLUSTER-NAME>.mongodb.net/<DBname>" --apiVersion 1 --username <USERNAME>`
-  - replace all `<angle-bracket>` keys with your own data
-- enter password _(will not echo **\*\*\*\*** on screen)_
+- **Order Management:** Complete order tracking and management system for both users and administrators.
 
-------
+- **Newsletter Subscription:** Email newsletter subscription system to keep users informed about updates.
 
-## Release History
+- **Admin Dashboard:** Comprehensive admin interface for managing products, orders, rentals, and users.
 
-We continually tweak and adjust this template to help give you the best experience. Here is the version history:
+- **Error Monitoring:** Integration with Sentry for real-time error tracking and monitoring.
 
-**June 18, 2024,** Add Mongo back into template
+# App Design & Planning
 
-**June 14, 2024,** Temporarily remove Mongo until the key issue is resolved
+## User Stories
+### Must have
 
-**May 28 2024:** Fix Mongo and Links installs
+| Title | User Story | Acceptance Criteria |
+| ----------- | ----------- | ----------- |
+User Registration and Authentication | As a user, I can register for an account and log in so that I can access personalized features | <ul><li>User can register with email verification</li><li>User can log in and log out</li><li>User can reset password</li></ul> |
+Browse Products | As a user, I can view all available products so that I can select items to purchase | <ul><li>Products are displayed with images, titles, and prices</li><li>Products can be sorted and filtered</li><li>Product details are accessible</li></ul> |
+Shopping Cart | As a user, I can add products to a cart so that I can purchase multiple items at once | <ul><li>Items can be added to cart</li><li>Cart quantities can be updated</li><li>Items can be removed from cart</li></ul> |
+Checkout Process | As a user, I can securely checkout and pay for my items so that I can complete my purchase | <ul><li>Secure payment processing with Stripe</li><li>Order confirmation is displayed</li><li>Confirmation email is sent</li></ul> |
+Crashpad Rental | As a user, I can rent crashpads for specific dates so that I can go bouldering without bringing my own equipment | <ul><li>Available crashpads can be viewed</li><li>Rental dates can be selected</li><li>Rental can be added to cart</li></ul> |
+View Order History | As a user, I can view my order history so that I can keep track of my purchases | <ul><li>List of past orders is displayed</li><li>Order details can be viewed</li><li>Order status is shown</li></ul> |
+Newsletter Subscription | As a user, I can subscribe to the newsletter so that I can stay updated with bouldering news in Cyprus | <ul><li>Newsletter subscription form is available</li><li>Confirmation email is sent</li><li>Unsubscribe option is provided</li></ul> |
 
-**April 26 2024:** Update node version to 16
+### Should have
+| Title | User Story | Acceptance Criteria |
+| ----------- | ----------- | ----------- |
+Product Reviews | As a user, I can leave reviews on products so that I can share my experience with others | <ul><li>Reviews can be submitted with ratings</li><li>Reviews are displayed on product pages</li><li>Average rating is calculated</li></ul> |
+User Profile | As a user, I can manage my profile information so that I can update my details and preferences | <ul><li>User can edit personal information</li><li>User can view order history</li><li>User can manage payment methods</li></ul> |
+Admin Product Management | As an admin, I can add, edit, and delete products so that I can manage the store inventory | <ul><li>Products can be added through admin interface</li><li>Product details can be edited</li><li>Products can be removed</li></ul> |
+Admin Order Management | As an admin, I can view and manage orders so that I can process customer purchases | <ul><li>Orders can be viewed in admin interface</li><li>Order status can be updated</li><li>Order details can be accessed</li></ul> |
 
-**September 20 2023:** Update Python version to 3.9.17.
+### Could have
+| Title | User Story | Acceptance Criteria |
+| ----------- | ----------- | ----------- |
+Bouldering Spot Information | As a user, I can view information about bouldering spots in Cyprus so that I can plan my climbing trips | <ul><li>Spot locations are displayed on a map</li><li>Spot details include difficulty levels and access information</li><li>Photos of spots are available</li></ul> |
+Wishlist | As a user, I can save products to a wishlist so that I can purchase them later | <ul><li>Products can be added to wishlist</li><li>Wishlist items can be viewed</li><li>Items can be moved from wishlist to cart</li></ul> |
+Social Media Integration | As a user, I can share products on social media so that I can recommend them to friends | <ul><li>Social sharing buttons are available</li><li>Shared links include product images and descriptions</li><li>Sharing analytics are tracked</li></ul> |
 
-**September 1 2021:** Remove `PGHOSTADDR` environment variable.
+### Won't have
+| Title | User Story | Acceptance Criteria |
+| ----------- | ----------- | ----------- |
+Live Chat Support | As a user, I can chat with customer support in real-time so that I can get immediate assistance | <ul><li>Chat widget is available on all pages</li><li>Support agents can respond in real-time</li><li>Chat history is saved</li></ul> |
+Mobile App | As a user, I can use a dedicated mobile app so that I can access the platform more conveniently on my phone | <ul><li>App is available on iOS and Android</li><li>App has same functionality as website</li><li>App sends push notifications</li></ul> |
+Loyalty Program | As a user, I can earn points for purchases so that I can get discounts on future orders | <ul><li>Points are awarded for purchases</li><li>Points can be redeemed for discounts</li><li>Point balance is displayed in user profile</li></ul> |
 
-**July 19 2021:** Remove `font_fix` script now that the terminal font issue is fixed.
+## Typography & Colours
+### Fonts
+The application uses a combination of modern, readable fonts to enhance user experience:
 
-**July 2 2021:** Remove extensions that are not available in Open VSX.
+- **Primary Font:** The main content uses a clean, sans-serif font for optimal readability across devices.
+- **Accent Font:** "Roboto Condensed" is used for headings and important text elements to create visual hierarchy.
 
-**June 30 2021:** Combined the P4 and P5 templates into one file, added the uptime script. See the FAQ at the end of this file.
+### Colour palette
+The color palette is inspired by the natural landscapes of Cyprus and bouldering environments:
 
-**June 10 2021:** Added: `font_fix` script and alias to fix the Terminal font issue
+- **Primary Colors:** Earth tones and rock-inspired colors that reflect the natural bouldering environment.
+- **Accent Colors:** Vibrant highlights to draw attention to important elements like calls-to-action.
+- **Background:** Light, neutral backgrounds to ensure content readability and reduce eye strain.
 
-**May 10 2021:** Added `heroku_config` script to allow Heroku API key to be stored as an environment variable.
+The application uses Bootstrap 5 background colors for consistency, with bg-primary and bg-light being the dominant colors across the app.
 
-**April 7 2021:** Upgraded the template for VS Code instead of Theia.
+## Database
+### Design
+The database design focuses on efficiently managing products, orders, rentals, and user data. The main models include:
 
-**October 21 2020:** Versions of the HTMLHint, Prettier, Bootstrap4 CDN and Auto Close extensions updated. The Python extension needs to stay the same version for now.
+- **User Model:** Extended Django user model with additional profile information.
+- **Product Model:** Stores information about guidebooks and other products available for purchase.
+- **Order Model:** Tracks customer orders, payment status, and delivery information.
+- **OrderItem Model:** Links products to orders with quantity and price information.
+- **Rental Model:** Manages crashpad rentals with date ranges and availability.
+- **Newsletter Model:** Stores subscriber information for the newsletter system.
 
-**October 08 2020:** Additional large Gitpod files (`core.mongo*` and `core.python*`) are now hidden in the Explorer, and have been added to the `.gitignore` by default.
+### Implementation
+The database is implemented using PostgreSQL in production and SQLite for development/testing. Django ORM is used for database operations, providing a clean abstraction layer for data management.
 
-**September 22 2020:** Gitpod occasionally creates large `core.Microsoft` files. These are now hidden in the Explorer. A `.gitignore` file has been created to make sure these files will not be committed, along with other common files.
+## Technologies & Tools Stack
 
-**April 16 2020:** The template now automatically installs MySQL instead of relying on the Gitpod MySQL image. The message about a Python linter not being installed has been dealt with, and the set-up files are now hidden in the Gitpod file explorer.
+This project utilizes a robust stack of technologies and tools to deliver a seamless experience in development and functionality:
 
-**April 13 2020:** Added the _Prettier_ code beautifier extension instead of the code formatter built-in to Gitpod.
+### Programming Languages
+- **[Python](https://www.python.org/)**: The core programming language used for backend logic and full-stack application development.
+- **[JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript)**: For dynamic front-end functionality and interactive features.
+- **[HTML5](https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5)**: Structuring web pages with semantic markup.
+- **[CSS3](https://developer.mozilla.org/en-US/docs/Web/CSS)**: For styling the front-end and ensuring a responsive design.
 
-**February 2020:** The initialisation files now _do not_ auto-delete. They will remain in your project. You can safely ignore them. They just make sure that your workspace is configured correctly each time you open it. It will also prevent the Gitpod configuration popup from appearing.
+### Frameworks
+- **[Django](https://www.djangoproject.com/)**: A high-level Python web framework that enables rapid development and clean, pragmatic design.
+- **[Bootstrap 5](https://getbootstrap.com/)**: For responsive design and pre-styled components.
 
-**December 2019:** Added Eventyret's Bootstrap 4 extension. Type `!bscdn` in a HTML file to add the Bootstrap boilerplate. Check out the <a href="https://github.com/Eventyret/vscode-bcdn" target="_blank">README.md file at the official repo</a> for more options.
+### Libraries & Packages
+- **[Django Allauth](https://django-allauth.readthedocs.io/)**: For user authentication, registration, and account management.
+- **[Django Crispy Forms](https://django-crispy-forms.readthedocs.io/)**: For rendering beautiful and customizable forms.
+- **[Django Summernote](https://github.com/summernote/django-summernote)**: For rich text editing in the admin interface.
+- **[Django Storages](https://django-storages.readthedocs.io/)**: For handling file storage with AWS S3.
+- **[Django REST Framework](https://www.django-rest-framework.org/)**: For building APIs.
+- **[Stripe](https://stripe.com/)**: For secure payment processing.
+- **[AWS S3](https://aws.amazon.com/s3/)**: For storing static and media files.
+- **[Sentry](https://sentry.io/)**: For error tracking and monitoring.
 
-------
+### Development Tools
+- **[Git](https://git-scm.com/)**: For version control.
+- **[GitHub](https://github.com/)**: For source code management.
+- **[VS Code](https://code.visualstudio.com/)**: As the primary code editor.
+- **[Chrome DevTools](https://developers.google.com/web/tools/chrome-devtools)**: For debugging and testing.
 
-## FAQ about the uptime script
+### Deployment & Hosting
+- **[Heroku](https://www.heroku.com/)**: For application hosting.
+- **[AWS CloudFront](https://aws.amazon.com/cloudfront/)**: For content delivery network services.
+- **[PostgreSQL](https://www.postgresql.org/)**: As the production database.
 
-**Why have you added this script?**
+# Testing
 
-It will help us to calculate how many running workspaces there are at any one time, which greatly helps us with cost and capacity planning. It will help us decide on the future direction of our cloud-based IDE strategy.
+## Automated Testing
+The application includes a comprehensive suite of automated tests to ensure functionality and reliability:
 
-**How will this affect me?**
+- **Unit Tests:** Testing individual components and functions in isolation.
+- **Integration Tests:** Testing the interaction between different parts of the application.
+- **View Tests:** Ensuring views return the correct responses and templates.
+- **Form Tests:** Validating form functionality and validation.
+- **Model Tests:** Testing model methods and relationships.
 
-For everyday usage of Gitpod, it doesn’t have any effect at all. The script only captures the following data:
+## Manual Testing
+Manual testing was conducted to verify user experience and functionality:
 
-- An ID that is randomly generated each time the workspace is started.
-- The current date and time
-- The workspace status of “started” or “running”, which is sent every 5 minutes.
+- **Responsive Design:** Tested across multiple devices and screen sizes.
+- **Browser Compatibility:** Tested on Chrome, Firefox, Safari, and Edge.
+- **User Flows:** Walked through common user journeys from browsing to checkout.
+- **Payment Processing:** Verified Stripe integration and payment flows.
+- **Error Handling:** Tested application behavior with invalid inputs and edge cases.
 
-It is not possible for us or anyone else to trace the random ID back to an individual, and no personal data is being captured. It will not slow down the workspace or affect your work.
+## Code Validation
+All code was validated using industry-standard tools:
 
-**So….?**
+- **HTML:** Validated using the W3C HTML Validator.
+- **CSS:** Validated using the W3C CSS Validator.
+- **JavaScript:** Validated using JSHint.
+- **Python:** Validated using PEP8 standards and Flake8.
 
-We want to tell you this so that we are being completely transparent about the data we collect and what we do with it.
+## Lighthouse Audit
+Performance, accessibility, best practices, and SEO were tested using Lighthouse:
 
-**Can I opt out?**
+- **Performance:** Optimized for fast loading times.
+- **Accessibility:** Ensured the application is accessible to all users.
+- **Best Practices:** Followed web development best practices.
+- **SEO:** Optimized for search engine visibility.
 
-Yes, you can. Since no personally identifiable information is being captured, we'd appreciate it if you let the script run; however if you are unhappy with the idea, simply run the following commands from the terminal window after creating the workspace, and this will remove the uptime script:
+## Error Monitoring with Sentry
+The application uses Sentry for comprehensive error monitoring and tracking:
 
-```
-pkill uptime.sh
-rm .vscode/uptime.sh
-```
+- **Real-Time Error Tracking:** Captures and displays errors as they occur.
+- **Contextual Information:** Includes stack traces and request context in error reports.
+- **JavaScript Error Tracking:** Logs frontend issues for seamless debugging.
+- **Alerts and Notifications:** Sends alerts for critical issues.
 
-**Anything more?**
+# Deployment
 
-Yes! We'd strongly encourage you to look at the source code of the `uptime.sh` file so that you know what it's doing. As future software developers, it will be great practice to see how these shell scripts work.
+## Deployment to Heroku
+The application is deployed on Heroku with the following configuration:
 
----
+1. **Create a Heroku App:** Set up a new app on Heroku.
+2. **Configure Environment Variables:** Set up all necessary environment variables in Heroku settings.
+3. **Database Setup:** Provision a PostgreSQL database.
+4. **Static Files:** Configure AWS S3 for static and media file storage.
+5. **Deploy:** Connect GitHub repository and enable automatic deployments.
 
-Happy coding!
+## Environment Variables
+The following environment variables are required:
+
+- `SECRET_KEY`: Django secret key
+- `DATABASE_URL`: PostgreSQL database URL
+- `AWS_ACCESS_KEY_ID`: AWS access key
+- `AWS_SECRET_ACCESS_KEY`: AWS secret key
+- `AWS_STORAGE_BUCKET_NAME`: S3 bucket name
+- `STRIPE_PUBLIC_KEY`: Stripe public key
+- `STRIPE_SECRET_KEY`: Stripe secret key
+- `STRIPE_WEBHOOK_SECRET`: Stripe webhook secret
+- `EMAIL_HOST_KEY`: SendGrid API key
+- `DEFAULT_EMAIL`: Default sender email
+
+## Local Development
+To run the project locally:
+
+1. Clone the repository: `git clone https://github.com/yourusername/bouldering-cyprus.git`
+2. Install dependencies: `pip install -r requirements.txt`
+3. Set up environment variables in an `env.py` file
+4. Run migrations: `python manage.py migrate`
+5. Create a superuser: `python manage.py createsuperuser`
+6. Run the server: `python manage.py runserver`
+
+# Credits
+
+## Technical
+| Source | Use | Notes |
+| ------ | --- | ----- |
+| [Django Documentation](https://docs.djangoproject.com/) | Framework reference | Extensive research on Django concepts |
+| [Stripe Documentation](https://stripe.com/docs) | Payment integration | Implementation of secure checkout |
+| [Bootstrap Documentation](https://getbootstrap.com/docs/) | Frontend framework | Responsive design implementation |
+| [AWS S3 Documentation](https://docs.aws.amazon.com/s3/) | File storage | Static and media file management |
+| [Sentry Documentation](https://docs.sentry.io/) | Error monitoring | Implementation of error tracking |
+
+## Content
+| Source | Use | Notes |
+| ------ | --- | ----- |
+| [FontAwesome](https://fontawesome.com/) | Icons | Used throughout the site |
+| Original Content | Product descriptions | Written specifically for this application |
+| Original Content | Bouldering information | Based on local knowledge and research |
+
+## Media
+| Source | Use | Notes |
+| ------ | --- | ----- |
+| Original Photography | Product images | Taken specifically for this application |
+| Original Photography | Bouldering spot images | Captured at various locations in Cyprus |
+
+# Acknowledgements
+* I would like to thank my Code Institute mentor for their guidance and support throughout this project.
+* Special thanks to the bouldering community in Cyprus for their input and feedback during the development process.
+* I would also like to acknowledge the Code Institute for providing the knowledge and resources needed to create this application.
