@@ -153,13 +153,25 @@ LOGOUT_REDIRECT_URL = '/'  # Redirect after logout
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {
-    "default": dj_database_url.parse(os.environ.get("DATABASE_URL", ""))
-}
+# Database configuration
+DATABASE_URL = os.environ.get("DATABASE_URL", "")
 
-# Testing database
+if DATABASE_URL:
+    # Use the DATABASE_URL if provided
+    DATABASES = {"default": dj_database_url.parse(DATABASE_URL)}
+else:
+    # Fallback to a default SQLite database if no DATABASE_URL is provided
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
+    }
+
+# Override for testing
 if 'test' in sys.argv:
     DATABASES['default']['ENGINE'] = 'django.db.backends.sqlite3'
+    DATABASES['default']['NAME'] = BASE_DIR / "test_db.sqlite3"
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
