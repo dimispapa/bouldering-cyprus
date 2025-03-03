@@ -97,7 +97,8 @@ class Cart:
                     check_in = datetime.strptime(dates['check_in'], '%Y-%m-%d')
                     check_out = datetime.strptime(dates['check_out'],
                                                   '%Y-%m-%d')
-                    rental_days = (check_out - check_in).days
+                    # Add 1 day to include the checkout day
+                    rental_days = (check_out - check_in).days + 1
 
                     logger.debug(
                         f"Rental details - Days: {rental_days}, "
@@ -218,6 +219,7 @@ class Cart:
     def clear(self):
         """Remove the bag from the session."""
         del self.session[settings.CART_SESSION_ID]
+        self.cart = {}  # Also reset the in-memory cart
         self.session.modified = True
 
     def get_items(self):
