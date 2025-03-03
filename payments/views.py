@@ -44,21 +44,42 @@ def create_payment_intent(cart):
 @require_GET
 def checkout(request):
     """Endpoint to handle the checkout process."""
+    logger.info("Checkout view called")
+
     # Check if the cart is empty
     cart = Cart(request)
+    logger.info(f"Cart items: {list(cart)}")
+    logger.info(f"Cart length: {len(cart)}")
+
     if not len(cart):
+        logger.info("Cart is empty, redirecting to cart_detail")
         messages.error(request, "Your cart is empty.")
         return redirect("cart_detail")
 
     # Validate stock and availability before proceeding
-    valid_stock, error_message = validate_stock(cart)
-    if not valid_stock:
-        logger.error(f"Stock validation failed: {error_message}")
-        raise ValueError(error_message)
+    try:
+        logger.info("About to validate stock")
+        valid_stock, error_message = validate_stock(cart)
+        logger.info(f"Stock validation result: {valid_stock}, {error_message}")
+
+        if not valid_stock:
+            logger.error(f"Stock validation failed: {error_message}")
+            messages.error(request, error_message)
+            return redirect("cart_detail")
+    except ValueError as e:
+        logger.error(f"ValueError in validate_stock: {str(e)}")
+        messages.error(request, str(e))
+        return redirect("cart_detail")
+    except Exception as e:
+        logger.error(f"Unexpected error in validate_stock: {str(e)}")
+        messages.error(request, f"An error occurred: {str(e)}")
+        return redirect("cart_detail")
 
     try:
         # Proceed with checkout
+        logger.info("Creating payment intent")
         intent = create_payment_intent(cart)
+        logger.info(f"Payment intent created: {intent.id}")
 
         # Render the checkout page with cart and order form objects
         context = {
@@ -70,10 +91,14 @@ def checkout(request):
                 stripe_client_secret=intent.client_secret,
             ),
         }
-        return render(request, "payments/checkout.html", context)
+
+        # Render the checkout template
+        logger.info("Rendering checkout template")
+        return render(request, 'payments/checkout.html', context)
     except Exception as e:
-        messages.error(request, str(e))
-        return redirect('cart_detail')
+        logger.error(f"Error in checkout view: {str(e)}")
+        messages.error(request, f"An error occurred: {str(e)}")
+        return redirect("cart_detail")
 
 
 @require_POST
