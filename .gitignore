@@ -12,3 +12,5 @@ cloudinary_python.txt
 *fixtures/
 *.log
 logs/
+htmlcov/
+.coverage
