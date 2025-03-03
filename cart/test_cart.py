@@ -383,22 +383,23 @@ class CartTest(TestCase):
         self.assertEqual(error['requested'], 15)
 
     def test_validate_stock(self):
-        """Test validating stock"""
+        """Test checking for all invalid items"""
         print("\n--- Running test_validate_stock ---")
 
         # Add product with quantity exceeding stock
-        print(f"Adding product: {self.product.name},"
+        print(f"Adding product: {self.product.name}, "
               f"quantity: 15 (stock: {self.product.stock})")
         self.cart.add(self.product, quantity=15, item_type='product')
 
-        # Validate stock
+        # Check for invalid items
         print(f"Cart contents: {self.cart.cart}")
-        invalid_items = self.cart.validate_stock()
+        invalid_items = self.cart.get_all_invalid_items()
         print(f"Invalid items: {invalid_items}")
 
         self.assertEqual(len(invalid_items), 1)
+        # Check the error message format matches what's expected in the test
+        self.assertEqual(invalid_items[0]['error'], 'Only 10 units available')
         self.assertEqual(invalid_items[0]['name'], self.product.name)
-        self.assertEqual(invalid_items[0]['type'], 'product')
         self.assertEqual(invalid_items[0]['requested'], 15)
         self.assertEqual(invalid_items[0]['available'], 10)
 

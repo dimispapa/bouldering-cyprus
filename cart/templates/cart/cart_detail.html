@@ -99,31 +99,29 @@
                   <span>Cart Total:</span>
                   <span>€{{ cart_total|floatformat:2 }}</span>
                 </div>
-                
+
                 {% if has_products %}
                   <div class="summary-line">
                     {% if delivery_cost > 0 %}
                       <span>Delivery:</span>
                       <span>€{{ delivery_cost|floatformat:2 }}</span>
-                      <small class="d-block text-muted">
-                        * Free delivery on orders over €{{ free_delivery_threshold|floatformat:0 }}
-                      </small>
+                      <small class="d-block text-muted">* Free delivery on orders over €{{ free_delivery_threshold|floatformat:0 }}</small>
                     {% else %}
                       <span class="text-success">Free delivery - order over €{{ free_delivery_threshold|floatformat:0 }}</span>
                     {% endif %}
                   </div>
-                  <hr>
+                  <hr />
                 {% endif %}
-                
+
                 {% if has_rentals %}
                   <div class="summary-line">
                     <span>Handling Fee:</span>
                     <span>€{{ handling_fee|floatformat:2 }}</span>
                     <small class="d-block text-muted">* Processing fee for crashpad rentals</small>
                   </div>
-                  <hr>
+                  <hr />
                 {% endif %}
-                
+
                 <div class="summary-line total mb-2">
                   <span>Grand Total:</span>
                   <span>€{{ grand_total|floatformat:2 }}</span>
@@ -133,7 +131,7 @@
                 <div class="alert alert-danger" role="alert">
                   <h5>Please update your cart before proceeding:</h5>
                   <ul>
-                    {% for item in cart.validate_stock %}
+                    {% for item in cart.get_all_invalid_items %}
                       <li>
                         <strong>{{ item.name }}</strong>:{% if item.type == 'product' %}
                           Requested: {{ item.requested }}, {{ item.error }}
