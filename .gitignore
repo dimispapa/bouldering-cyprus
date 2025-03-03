@@ -14,5 +14,5 @@ cloudinary_python.txt
 logs/
 htmlcov/
 .coverage
-/test_image*
-/screenshots*
+*/test_image*
+*/screenshots*
