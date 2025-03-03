@@ -6,6 +6,7 @@ import uuid
 import logging
 from decimal import Decimal
 from datetime import datetime
+from django.contrib.auth.models import User
 
 logger = logging.getLogger(__name__)
 
@@ -22,6 +23,13 @@ class Order(models.Model):
                                     null=False,
                                     editable=False,
                                     unique=True)
+    user = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='orders'
+    )
     first_name = models.CharField(max_length=50, null=False, blank=False)
     last_name = models.CharField(max_length=50, null=False, blank=False)
     email = models.EmailField(max_length=250, null=False, blank=False)
@@ -94,9 +102,9 @@ class Order(models.Model):
             self.order_number = self._generate_order_number()
             logger.info(f"Generated order number: {self.order_number}")
 
-            # Save again with the updated fields
-            logger.info("Saving again with updated fields")
-            super().save(*args, **kwargs)
+        # Call super().save() to actually save the object
+        logger.info("Saving with updated fields")
+        super().save(*args, **kwargs)
 
         logger.info(f"Order saved with PK: {self.pk}")
 

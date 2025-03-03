@@ -97,7 +97,8 @@ class Cart:
                     check_in = datetime.strptime(dates['check_in'], '%Y-%m-%d')
                     check_out = datetime.strptime(dates['check_out'],
                                                   '%Y-%m-%d')
-                    rental_days = (check_out - check_in).days
+                    # Add 1 day to include the checkout day
+                    rental_days = (check_out - check_in).days + 1
 
                     logger.debug(
                         f"Rental details - Days: {rental_days}, "
@@ -218,6 +219,7 @@ class Cart:
     def clear(self):
         """Remove the bag from the session."""
         del self.session[settings.CART_SESSION_ID]
+        self.cart = {}  # Also reset the in-memory cart
         self.session.modified = True
 
     def get_items(self):
@@ -284,9 +286,14 @@ class Cart:
         }
 
     def has_invalid_items(self):
-        """Check if any items in cart have invalid quantities
-        or availability
-        Returns a tuple with a boolean and an error dictionary
+        """
+        Check if any items in cart have invalid quantities or availability.
+        Returns a tuple with a boolean and an error dictionary for
+        the first error found.
+
+        This is a fast check that stops at the first error.
+        Used by utils.validate_stock() and in templates to determine
+        if checkout should be enabled.
         """
         for item in self:
             # Validate product stock
@@ -333,8 +340,13 @@ class Cart:
                     return (True, error)
         return (False, None)
 
-    def validate_stock(self):
-        """Return list of items with stock or availability issues"""
+    def get_all_invalid_items(self):
+        """
+        Return a list of all items with stock or availability issues.
+        This checks all items and returns comprehensive error information.
+
+        Used for displaying detailed error messages to the user in templates.
+        """
         invalid_items = []
         for item in self:
             if item['type'] == 'product':
@@ -382,6 +394,14 @@ class Cart:
                         'Selected dates are no longer available'
                     })
         return invalid_items
+
+    # For backward compatibility, keep the old method name as an alias
+    def validate_stock(self):
+        """
+        DEPRECATED: Use get_all_invalid_items() instead.
+        Kept for backward compatibility.
+        """
+        return self.get_all_invalid_items()
 
     def has_rentals(self):
         """Check if the cart has any rental items."""
