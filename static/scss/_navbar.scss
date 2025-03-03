@@ -44,7 +44,8 @@
         }
     }
 
-    a.nav-link {
+    a.nav-link,
+    i.nav-icon {
         // Font sizes
         font-size: $m-font;
         @include for-size(desktop-lg, down) {
@@ -67,6 +68,20 @@
         }
         // Text alignment
         text-align: right;
+    }
+
+    i.nav-icon {
+        font-size: $l-font;
+        @include for-size(desktop-lg, down) {
+            font-size: $m-font;
+        }
+        @include for-size(phone, down) {
+            font-size: $s-font;
+        }
+        // Active state
+        &.active {
+            color: $black;
+        }
     }
 
     a.dropdown-item {
@@ -116,7 +131,8 @@
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 
     a.nav-link,
-    a.navbar-brand {
+    a.navbar-brand,
+    i.nav-icon {
         color: $orange;
         &:hover {
             color: $black;
