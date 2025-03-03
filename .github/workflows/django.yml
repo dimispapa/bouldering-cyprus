@@ -10,55 +10,52 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-    strategy:
-      max-parallel: 4
-      matrix:
-        python-version: [3.13]
 
     steps:
-    - uses: actions/checkout@v4
-
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v3
-      with:
-        python-version: ${{ matrix.python-version }}
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        # This is the version of the action for setting up Python, not the Python version.
+        uses: actions/setup-python@v5
+        with:
+          # Semantic version range syntax or exact version of a Python version
+          python-version: '3.x'
   
-    # Use a dedicated action for setting up Chrome and ChromeDriver
-    - name: Setup Chrome
-      uses: browser-actions/setup-chrome@v1
+      # Use a dedicated action for setting up Chrome and ChromeDriver
+      - name: Setup Chrome
+        uses: browser-actions/setup-chrome@v1
     
-    # Use a dedicated action for setting up ChromeDriver
-    - name: Setup ChromeDriver
-      uses: nanasess/setup-chromedriver@v2
+      # Use a dedicated action for setting up ChromeDriver
+      - name: Setup ChromeDriver
+        uses: nanasess/setup-chromedriver@v2
+      
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
     
-    - name: Install Dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-  
-    - name: Prepare Django Environment
-      env:
-        DATABASE_URL: "sqlite:///test_db.sqlite3"
-      run: |
-        # Fix settings.py path issue
-        sed -i "s/BASE_DIR \/ \"test_db.sqlite3\"/os.path.join(BASE_DIR, \"test_db.sqlite3\")/g" bouldering_cy/settings.py
-        
-        # Collect static files
-        python manage.py collectstatic --noinput
-        
-        # Create media directory if it doesn't exist
-        mkdir -p media
-        
-        # Run migrations
-        python manage.py migrate
-    
-    - name: Run Tests
-      env:
-        DATABASE_URL: "sqlite:///test_db.sqlite3"
-        # Add any other environment variables your tests might need
-        DJANGO_SETTINGS_MODULE: "bouldering_cy.settings"
-        # Skip browser tests if they're causing issues
-        SKIP_BROWSER_TESTS: "True"
-      run: |
-        # Run tests with more verbose output
-        python manage.py test -v 2
+      - name: Prepare Django Environment
+        env:
+          DATABASE_URL: "sqlite:///test_db.sqlite3"
+        run: |
+          # Fix settings.py path issue
+          sed -i "s/BASE_DIR \/ \"test_db.sqlite3\"/os.path.join(BASE_DIR, \"test_db.sqlite3\")/g" bouldering_cy/settings.py
+          
+          # Collect static files
+          python manage.py collectstatic --noinput
+          
+          # Create media directory if it doesn't exist
+          mkdir -p media
+          
+          # Run migrations
+          python manage.py migrate
+      
+      - name: Run Tests
+        env:
+          DATABASE_URL: "sqlite:///test_db.sqlite3"
+          # Add any other environment variables your tests might need
+          DJANGO_SETTINGS_MODULE: "bouldering_cy.settings"
+          # Skip browser tests if they're causing issues
+          SKIP_BROWSER_TESTS: "True"
+        run: |
+          # Run tests with more verbose output
+          python manage.py test -v 2
