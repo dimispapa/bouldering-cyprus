@@ -16,6 +16,8 @@ from django.db import IntegrityError
 from payments.utils import (validate_stock, check_existing_order,
                             create_order_items, send_confirmation_email,
                             send_rental_confirmation_email)
+from shop.models import Product
+from rentals.models import Crashpad
 
 # Configure logging
 logger = logging.getLogger(__name__)
@@ -188,6 +190,43 @@ def store_order_metadata(request):
                     receipt_email=form_data.get('email'))
 
                 logger.info("Successfully stored metadata in PaymentIntent")
+
+                # For shop products - prefetch in a single query
+                product_ids = []
+                crashpad_ids = []
+
+                # Extract IDs from cart items
+                for item in cart_items:
+                    if hasattr(item, 'product') and item.product:
+                        product_ids.append(item.product.id)
+                    if hasattr(item, 'crashpad') and item.crashpad:
+                        crashpad_ids.append(item.crashpad.id)
+
+                # Fetch all products in a single query
+                if product_ids:
+                    products = {
+                        p.id: p
+                        for p in Product.objects.filter(id__in=product_ids)
+                    }
+
+                # Fetch all crashpads in a single query
+                if crashpad_ids:
+                    crashpads = {
+                        cp.id: cp
+                        for cp in Crashpad.objects.filter(id__in=crashpad_ids)
+                    }
+
+                # Use the prefetched objects when processing cart items
+                for item in cart_items:
+                    if hasattr(
+                            item, 'product'
+                    ) and item.product and item.product.id in products:
+                        item.product = products[item.product.id]
+                    if hasattr(
+                            item, 'crashpad'
+                    ) and item.crashpad and item.crashpad.id in crashpads:
+                        item.crashpad = crashpads[item.crashpad.id]
+
                 return JsonResponse({'status': 'success'})
 
             except stripe.error.StripeError as e:

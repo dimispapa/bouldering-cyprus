@@ -76,8 +76,7 @@ def cart_add(request, item_type):
             # Return JSON response with redirect URL
             return JsonResponse({
                 'status': 'success',
-                'redirect_url':
-                '/rentals/book/'  # URL to the booking template
+                'redirect_url': '/rentals/book/'  # URL to the booking template
             })
 
         else:
@@ -117,6 +116,22 @@ def cart_remove(request, item_type, item_id):
 def cart_detail(request):
     """Display the cart's contents."""
     cart = Cart(request)
+
+    # Prefetch CrashPad objects in a single query
+    crashpad_ids = [
+        item['crashpad_id'] for item in cart if 'crashpad_id' in item
+    ]
+    if crashpad_ids:
+        crashpads = {
+            cp.id: cp
+            for cp in Crashpad.objects.filter(id__in=crashpad_ids)
+        }
+
+        # Update cart items with the prefetched objects
+        for item in cart:
+            if 'crashpad_id' in item and item['crashpad_id'] in crashpads:
+                item['crashpad'] = crashpads[item['crashpad_id']]
+
     return render(request, "cart/cart_detail.html", {"cart": cart})
 
 
