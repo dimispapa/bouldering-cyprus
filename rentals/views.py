@@ -19,18 +19,20 @@ def validate_dates(check_in, check_out):
     now = datetime.now().date()
 
     if check_in >= check_out:
-        return Response(
-            {'error': 'Check-out date must be after check-in date'},
-            status=status.HTTP_400_BAD_REQUEST)
+        Response({'error': 'Check-out date must be after check-in date'},
+                 status=status.HTTP_400_BAD_REQUEST)
+        return False
 
     if check_in < now:
-        return Response(
+        Response(
             {
                 'error':
                 'Check-in date cannot be in the past. '
                 f'Please select a date from {now} onwards.'
             },
             status=status.HTTP_400_BAD_REQUEST)
+        return False
+
     return True
 
 
