@@ -40,7 +40,7 @@ class CrashpadViewSet(viewsets.ReadOnlyModelViewSet):
     """
     API ViewSet for listing and retrieving crashpads.
     """
-    queryset = Crashpad.objects.all()
+    queryset = Crashpad.objects.all().prefetch_related('gallery_images')
     serializer_class = CrashpadSerializer
     permission_classes = [AllowAny]  # Allow public access to crashpad data
 
@@ -89,6 +89,7 @@ class CrashpadViewSet(viewsets.ReadOnlyModelViewSet):
                     check_in_date, check_out_date)
 
             # Get available crashpads by excluding booked crashpad IDs
+            # Use prefetch_related to avoid N+1 queries for gallery images
             available_crashpads = self.get_queryset().exclude(
                 id__in=unavailable_crashpad_ids)
             logger.info(f'Available crashpads: {available_crashpads}')
@@ -123,7 +124,8 @@ class BookingViewSet(viewsets.ModelViewSet):
         """
         Users can only see their own bookings
         """
-        return CrashpadBooking.objects.filter(user=self.request.user)
+        return CrashpadBooking.objects.filter(
+            user=self.request.user).select_related('crashpad', 'order')
 
     def perform_create(self, serializer):
         """
@@ -155,11 +157,28 @@ class BookingView(TemplateView):
                 if validate_dates(check_in_date, check_out_date):
                     context['check_in'] = check_in
                     context['check_out'] = check_out
+
+                    # Get available crashpads with prefetched gallery images
+                    unavailable_crashpad_ids = \
+                        CrashpadBooking.get_unavailable_crashpads_ids(
+                                check_in_date, check_out_date)
+
+                    # Prefetch related gallery images to avoid N+1 queries
+                    available_crashpads = Crashpad.objects.exclude(
+                        id__in=unavailable_crashpad_ids).prefetch_related(
+                            'gallery_images')
+
+                    context['available_crashpads'] = available_crashpads
                 else:
                     raise ValueError('Invalid dates')
             except (ValueError, TypeError) as e:
                 # If dates are invalid, don't add them to context
                 logger.error(f'Invalid dates: {e}')
                 pass
+        else:
+            # If no dates provided,
+            # show all crashpads with prefetched gallery images
+            context['all_crashpads'] = Crashpad.objects.all().prefetch_related(
+                'gallery_images')
 
         return context

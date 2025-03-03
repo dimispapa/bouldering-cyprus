@@ -13,7 +13,10 @@ logger = logging.getLogger(__name__)
 def unsubscribe_view(request, user_id):
     """View for unsubscribing from the newsletter via the unsubscribe link."""
     try:
-        subscriber = get_object_or_404(NewsletterSubscriber, user_id=user_id)
+        # Use select_related to fetch user data in the same query
+        subscriber = get_object_or_404(
+            NewsletterSubscriber.objects.select_related('user'),
+            user_id=user_id)
         # Set the subscriber to inactive
         subscriber.is_active = False
         subscriber.save()
@@ -36,7 +39,9 @@ def manage_subscription(request):
 
     # Try to get the subscriber
     try:
-        subscriber = NewsletterSubscriber.objects.get(user=user)
+        # Use select_related to fetch user data in the same query
+        subscriber = NewsletterSubscriber.objects.select_related('user').get(
+            user=user)
         is_subscribed = subscriber.is_active
         logger.info(f"Subscriber found: {subscriber.email}")
     # If the subscriber does not exist, set the subscriber to None
@@ -68,20 +73,18 @@ def manage_subscription(request):
                     # Send the welcome email
                     from .sendgrid_utils import send_newsletter_email
                     logger.info(f"Sending welcome email to {subscriber.email}")
-                    success = send_newsletter_email(newsletter=welcome_email,
-                                                    recipient_list=[
-                                                        subscriber.email])
+                    success = send_newsletter_email(
+                        newsletter=welcome_email,
+                        recipient_list=[subscriber.email])
                     if success:
                         messages.success(
                             request,
                             "Thank you for subscribing to our newsletter!")
                     else:
-                        logger.error(
-                            f"Error sending welcome email for "
-                            f"{subscriber.email}")
+                        logger.error(f"Error sending welcome email for "
+                                     f"{subscriber.email}")
                         messages.error(
-                            request,
-                            "An error occurred while processing your "
+                            request, "An error occurred while processing your "
                             "subscribe request. Please try again later.")
 
                 except Exception as e:

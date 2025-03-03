@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 import os
 import dj_database_url
 import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
 import sys
 if os.path.isfile("env.py"):
     import env
@@ -23,7 +24,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get("SECRET_KEY", "")
+SECRET_KEY = os.environ.get("SECRET_KEY", "FALLBACK_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 PRODUCTION = os.environ.get("PRODUCTION", "False").lower() == "true"
@@ -331,14 +332,16 @@ LOW_STOCK_THRESHOLD = 10
 
 # Sentry settings
 sentry_sdk.init(
-    dsn=
-    "https://0581bd20fe579142f1b0058684ccad93@o4508116014989312.ingest.de.sentry.io/4508805680070736",
+    dsn="https://0581bd20fe579142f1b0058684ccad93@o4508116014989312.ingest.de.sentry.io/4508805680070736",
+    integrations=[DjangoIntegration()],
     # Add data like request headers and IP for users,
     # see https://docs.sentry.io/platforms/python/data-management/data-collected/ for more info
     send_default_pii=True,
     # Set traces_sample_rate to 1.0 to capture 100%
     # of transactions for tracing.
     traces_sample_rate=1.0,
+    # Disable Sentry during tests
+    transport=None if 'test' in sys.argv else None,
     _experiments={
         # Set continuous_profiling_auto_start to True
         # to automatically start the profiler on when
