@@ -141,22 +141,32 @@ def store_order_metadata(request):
             try:
                 payment_intent_id = client_secret.split('_secret_')[0]
 
+                # Prepare metadata
+                metadata = {
+                    'cart_items': json.dumps(cart_items),
+                    'rental_items': json.dumps(rental_items),
+                    'cart_total': cart_total,
+                    'delivery_cost': delivery_cost,
+                    'handling_fee': handling_fee,
+                    'grand_total': grand_total,
+                    'order_type': order_type,
+                    'comments': form_data.get('comments', ''),
+                    'order_form_data': json.dumps(form_data),
+                    'session_id': request.session.session_key
+                }
+
+                # Add user ID to metadata if user is authenticated
+                if request.user.is_authenticated:
+                    metadata['user_id'] = request.user.id
+                    logger.info(
+                        f"Adding user ID {request.user.id} to payment intent "
+                        "metadata")
+
                 # Update PaymentIntent with metadata
                 stripe.PaymentIntent.modify(
                     payment_intent_id,
                     amount=int(cart_context['grand_total'] * 100),
-                    metadata={
-                        'cart_items': json.dumps(cart_items),
-                        'rental_items': json.dumps(rental_items),
-                        'cart_total': cart_total,
-                        'delivery_cost': delivery_cost,
-                        'handling_fee': handling_fee,
-                        'grand_total': grand_total,
-                        'order_type': order_type,
-                        'comments': form_data.get('comments', ''),
-                        'order_form_data': json.dumps(form_data),
-                        'session_id': request.session.session_key
-                    },
+                    metadata=metadata,
                     # Shipping details
                     shipping={
                         'name':
@@ -277,27 +287,35 @@ def create_or_return_order(request, payment_intent):
         logger.info(f"Cart total: {cart_total}, Delivery: {delivery_cost}, "
                     f"Handling: {handling_fee}, Grand total: {grand_total}")
 
+        # Prepare order data
+        order_data = {
+            'first_name': form_data.get('first_name'),
+            'last_name': form_data.get('last_name'),
+            'email': form_data.get('email'),
+            'phone': form_data.get('phone'),
+            'country': form_data.get('country'),
+            'postal_code': form_data.get('postal_code'),
+            'town_or_city': form_data.get('town_or_city'),
+            'address_line1': form_data.get('address_line1'),
+            'address_line2': form_data.get('address_line2', ''),
+            'order_total': cart_total,
+            'delivery_cost': delivery_cost,
+            'handling_fee': handling_fee,
+            'grand_total': grand_total,
+            'comments': form_data.get('comments', ''),
+            'order_type': order_type,
+        }
+
+        # Associate order with user if authenticated
+        if request.user.is_authenticated:
+            order_data['user'] = request.user
+            logger.info(f"Associating order with authenticated user: "
+                        f"{request.user.username}")
+
         # Get or create the order object
         logger.info("Attempting to get or create order")
         order, created = Order.objects.get_or_create(
-            stripe_piid=payment_intent.id,
-            defaults={
-                'first_name': form_data.get('first_name'),
-                'last_name': form_data.get('last_name'),
-                'email': form_data.get('email'),
-                'phone': form_data.get('phone'),
-                'country': form_data.get('country'),
-                'postal_code': form_data.get('postal_code'),
-                'town_or_city': form_data.get('town_or_city'),
-                'address_line1': form_data.get('address_line1'),
-                'address_line2': form_data.get('address_line2', ''),
-                'order_total': cart_total,
-                'delivery_cost': delivery_cost,
-                'handling_fee': handling_fee,
-                'grand_total': grand_total,
-                'comments': form_data.get('comments', ''),
-                'order_type': order_type,
-            })
+            stripe_piid=payment_intent.id, defaults=order_data)
 
         logger.info(f"Order {'created' if created else 'retrieved'}")
         logger.info(f"Order: {order}")

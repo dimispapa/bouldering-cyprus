@@ -6,11 +6,13 @@ from django.template.loader import render_to_string
 import json
 from django.http import JsonResponse
 from orders.models import Order
+from django.contrib.auth.models import User
 from payments.utils import (validate_stock, create_order_items,
                             send_confirmation_email,
                             send_rental_confirmation_email)
 from cart.cart import Cart
 from decimal import Decimal
+
 # Configure logging
 logger = logging.getLogger(__name__)
 
@@ -72,41 +74,42 @@ class StripeWH_Handler:
                 logger.error(f"Stock validation failed: {error_message}")
                 return JsonResponse({'error': error_message}, status=400)
 
+            # Prepare order data
+            order_data = {
+                'first_name': intent.shipping.name.split()[0],
+                'last_name': intent.shipping.name.split()[-1],
+                'email': intent.receipt_email,
+                'phone': intent.shipping.phone,
+                'country': intent.shipping.address.country,
+                'postal_code': intent.shipping.address.postal_code,
+                'town_or_city': intent.shipping.address.city,
+                'address_line1': intent.shipping.address.line1,
+                'address_line2': intent.shipping.address.line2,
+                'order_total': Decimal(str(intent.metadata.get('cart_total'))),
+                'delivery_cost':
+                Decimal(str(intent.metadata.get('delivery_cost'))),
+                'handling_fee':
+                Decimal(str(intent.metadata.get('handling_fee'))),
+                'grand_total':
+                Decimal(str(intent.metadata.get('grand_total'))),
+                'order_type': intent.metadata.get('order_type'),
+                'comments': intent.metadata.get('comments'),
+            }
+
+            # Try to associate with a user if user_id is in metadata
+            user_id = intent.metadata.get('user_id')
+            if user_id:
+                try:
+                    user = User.objects.get(id=user_id)
+                    order_data['user'] = user
+                    logger.info(
+                        f"Webhook associating order with user ID: {user_id}")
+                except User.DoesNotExist:
+                    logger.warning(f"User with ID {user_id} not found")
+
             # Create or get order
-            order, created = Order.objects.get_or_create(
-                stripe_piid=intent.id,
-                defaults={
-                    'first_name':
-                    intent.shipping.name.split()[0],
-                    'last_name':
-                    intent.shipping.name.split()[-1],
-                    'email':
-                    intent.receipt_email,
-                    'phone':
-                    intent.shipping.phone,
-                    'country':
-                    intent.shipping.address.country,
-                    'postal_code':
-                    intent.shipping.address.postal_code,
-                    'town_or_city':
-                    intent.shipping.address.city,
-                    'address_line1':
-                    intent.shipping.address.line1,
-                    'address_line2':
-                    intent.shipping.address.line2,
-                    'order_total':
-                    Decimal(str(intent.metadata.get('cart_total'))),
-                    'delivery_cost':
-                    Decimal(str(intent.metadata.get('delivery_cost'))),
-                    'handling_fee':
-                    Decimal(str(intent.metadata.get('handling_fee'))),
-                    'grand_total':
-                    Decimal(str(intent.metadata.get('grand_total'))),
-                    'order_type':
-                    intent.metadata.get('order_type'),
-                    'comments':
-                    intent.metadata.get('comments'),
-                })
+            order, created = Order.objects.get_or_create(stripe_piid=intent.id,
+                                                         defaults=order_data)
 
             # If the order was created, we need to create the order items
             # and update the stock
