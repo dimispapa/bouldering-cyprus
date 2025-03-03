@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 import os
 import dj_database_url
 import sentry_sdk
-
+import sys
 if os.path.isfile("env.py"):
     import env
 
@@ -156,6 +156,10 @@ LOGOUT_REDIRECT_URL = '/'  # Redirect after logout
 DATABASES = {
     "default": dj_database_url.parse(os.environ.get("DATABASE_URL", ""))
 }
+
+# Testing database
+if 'test' in sys.argv:
+    DATABASES['default']['ENGINE'] = 'django.db.backends.sqlite3'
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
