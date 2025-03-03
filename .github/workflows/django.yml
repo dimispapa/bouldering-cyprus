@@ -37,5 +37,8 @@ jobs:
         pip install -r requirements.txt
   
     - name: Run Tests
+      env:
+        # This is the key fix - provide a valid SQLite URL
+        DATABASE_URL: "sqlite:///test_db.sqlite3"
       run: |
         python manage.py test
