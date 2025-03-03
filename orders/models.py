@@ -94,7 +94,7 @@ class Order(models.Model):
             self.order_number = self._generate_order_number()
             logger.info(f"Generated order number: {self.order_number}")
 
-        # Always call super().save() to actually save the object
+        # Call super().save() to actually save the object
         logger.info("Saving with updated fields")
         super().save(*args, **kwargs)
 
