@@ -65,7 +65,8 @@ class RentalsViewsTest(TestCase):
 
     def test_booking_view_with_valid_dates(self):
         """Test booking view with valid dates"""
-        url = f"{reverse('rentals:booking')}?check_in={self.tomorrow_str}&check_out={self.next_week_str}"
+        url = f"{reverse('rentals:booking')}?" \
+            f"check_in={self.tomorrow_str}&check_out={self.next_week_str}"
         response = self.client.get(url)
 
         # Should return 200 OK
@@ -84,26 +85,30 @@ class RentalsViewsTest(TestCase):
         past_date = (datetime.now().date() -
                      timedelta(days=1)).strftime('%Y-%m-%d')
 
-        url = f"{reverse('rentals:booking')}?check_in={past_date}&check_out={self.next_week_str}"
+        url = f"{reverse('rentals:booking')}?" \
+            f"check_in={past_date}&check_out={self.next_week_str}"
         response = self.client.get(url)
 
         # Should return 200 OK
         self.assertEqual(response.status_code, 200)
 
-        # Your implementation has a try/except block that catches the ValueError
-        # and doesn't add the dates to the context when validation fails
+        # Your implementation has a try/except block that catches
+        # the ValueError and doesn't add the dates to the context
+        # when validation fails
         self.assertNotIn('check_in', response.context)
         self.assertNotIn('check_out', response.context)
 
         # Check-out before check-in
-        url = f"{reverse('rentals:booking')}?check_in={self.next_week_str}&check_out={self.tomorrow_str}"
+        url = f"{reverse('rentals:booking')}?" \
+            f"check_in={self.next_week_str}&check_out={self.tomorrow_str}"
         response = self.client.get(url)
 
         # Should return 200 OK
         self.assertEqual(response.status_code, 200)
 
-        # Your implementation has a try/except block that catches the ValueError
-        # and doesn't add the dates to the context when validation fails
+        # Your implementation has a try/except block that
+        # catches the ValueError and doesn't add the dates to the context
+        # when validation fails
         self.assertNotIn('check_in', response.context)
         self.assertNotIn('check_out', response.context)
 
@@ -170,7 +175,10 @@ class RentalsViewsTest(TestCase):
 
     def test_api_crashpad_detail_with_dates(self):
         """Test the API endpoint for a single crashpad with dates"""
-        url = f"{reverse('rentals:crashpad-detail', args=[self.crashpad1.id])}?check_in={self.tomorrow_str}&check_out={self.next_week_str}"
+        url = \
+            f"{reverse('rentals:crashpad-detail',
+                       args=[self.crashpad1.id])}?" \
+            f"check_in={self.tomorrow_str}&check_out={self.next_week_str}"
         response = self.client.get(url)
 
         # Should return 200 OK
@@ -207,7 +215,9 @@ class RentalsViewsTest(TestCase):
 
     def test_api_available_crashpads_with_dates(self):
         """Test the API endpoint for available crashpads with dates"""
-        url = f"{reverse('rentals:crashpad-available')}?check_in={self.tomorrow_str}&check_out={self.next_week_str}"
+        url = \
+            f"{reverse('rentals:crashpad-available')}?" \
+            f"check_in={self.tomorrow_str}&check_out={self.next_week_str}"
         response = self.client.get(url)
 
         # Should return 200 OK
@@ -244,7 +254,9 @@ class RentalsViewsTest(TestCase):
         past_date = (datetime.now().date() -
                      timedelta(days=1)).strftime('%Y-%m-%d')
 
-        url = f"{reverse('rentals:crashpad-available')}?check_in={past_date}&check_out={self.next_week_str}"
+        url = \
+            f"{reverse('rentals:crashpad-available')}?" \
+            f"check_in={past_date}&check_out={self.next_week_str}"
         response = self.client.get(url)
 
         # With your updated validate_dates function, the view should now
@@ -260,7 +272,9 @@ class RentalsViewsTest(TestCase):
         self.assertIn('error', data)
 
         # Check-out before check-in
-        url = f"{reverse('rentals:crashpad-available')}?check_in={self.next_week_str}&check_out={self.tomorrow_str}"
+        url = \
+            f"{reverse('rentals:crashpad-available')}?" \
+            f"check_in={self.next_week_str}&check_out={self.tomorrow_str}"
         response = self.client.get(url)
 
         # With your updated validate_dates function, the view should now
