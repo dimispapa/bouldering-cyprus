@@ -38,10 +38,10 @@
     <link rel="icon" type="image/png" sizes="64x64" href="{% static 'images/favicon/favicon-rocks-64.png' %}" />
     <link rel="icon" type="image/png" sizes="128x128" href="{% static 'images/favicon/favicon-rocks-128.png' %}" />
     <link rel="icon" type="image/png" sizes="256x256" href="{% static 'images/favicon/favicon-rocks-256.png' %}" />
-    
+
     <!-- Apple Touch Icon (using 128px as it's closest to recommended 180px) -->
     <link rel="apple-touch-icon" href="{% static 'images/favicon/favicon-rocks-128.png' %}" />
-    
+
     <!-- Browser Theme -->
     <meta name="theme-color" content="#ffffff" />
 
@@ -190,11 +190,14 @@
               <a href="https://instagram.com/bouldering_cyprus/" target="_blank" class="fs-2 social-icons"><i class="fa-brands fa-instagram"></i></a>
               <a href="https://www.youtube.com/@cyprusbouldering9957" target="_blank" class="fs-2 social-icons"><i class="fa-brands fa-youtube"></i></a>
             </div>
+          </div>
+        </div>
 
+        <!-- Newsletter Signup -->
+        <div class="row">
+          <div class="col-12 footer-col">
             <!-- Newsletter Signup -->
-            <div class="footer-col">
-              {% include 'partials/footer_newsletter.html' %}
-            </div>
+            {% include 'partials/footer_newsletter.html' %}
           </div>
         </div>
       </div>
