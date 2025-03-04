@@ -12,8 +12,13 @@
 {% endblock %}
 
 {% block extra_js %}
+<!-- jQuery script -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<!-- Moment.js script -->
 <script src="https://cdn.jsdelivr.net/npm/moment@2.30.1/min/moment.min.js"></script>
+<!-- Moment-timezone.js script -->
 <script src="https://cdn.jsdelivr.net/npm/moment-timezone@0.5.43/builds/moment-timezone-with-data.min.js"></script>
+<!-- Daterangepicker script -->
 <script src="https://cdn.jsdelivr.net/npm/daterangepicker@3.1.0/daterangepicker.min.js"></script>
 {% endblock %}
 
@@ -89,7 +94,8 @@
       <div class="card-img-wrapper">
         <img src="" class="card-img-top img-fluid" alt="Crashpad Image">
         <button class="btn btn-sm btn-light gallery-btn" data-bs-toggle="modal" aria-label="View Crashpad Gallery">
-          <i class="fas fa-images"></i> Gallery
+          <i class="fas fa-images"></i>
+          Gallery
         </button>
       </div>
       <div class="card-body">
