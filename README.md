@@ -2,6 +2,8 @@
 
 "Bouldering Cyprus" is a Django-based e-commerce web application designed to promote and support the bouldering community in Cyprus. The platform offers an online shop selling the comprehensive guidebook (physical book) for bouldering spots across the island, crashpad rentals. This application aims to make bouldering in Cyprus more accessible to both locals and tourists by providing essential information, equipment, and services. It is designed to be scalable and has the potential to easily host other related climbing products as the offering expands.
 
+This is a real personal project that I aspire to progress further, refine and publish on the cyprusbouldering.com domain, following the completion of the Code Institute course.
+
 <div style="text-align:center">
 <a href="https://bouldering-cyprus-53e1273cde1e.herokuapp.com/">ACCESS THE APPLICATION</a></div>
 
@@ -10,11 +12,11 @@
 ## App Purpose / User Goals
 The Bouldering Cyprus app aims to serve as a central hub for the bouldering community in Cyprus by offering:
 
-- **Guidebook Sales:** The main purpose is to market and sell the Bouldering Cyprus Guidebook, a physical book containing detailed information about bouldering spots across Cyprus, including maps, route descriptions, and difficulty ratings.
+- **Guidebook:** The main purpose is to market and sell the Bouldering Cyprus Guidebook, a physical book containing detailed information about bouldering spots across Cyprus, including maps, route descriptions, and difficulty ratings.
 
-- **Equipment Rental:** Offering crashpad rentals to visitors who don't want to travel with their own equipment.
+- **Equipment Rental:** Offering crashpad rentals to visitors who don't want to travel with their own equipment or locals that do no yet own their own equipment.
 
-- **E-commerce Platform:** Capacity to sell guidebooks and other bouldering-related products as the offering expands.
+- **E-commerce Platform:** Capacity to sell other guidebooks and bouldering-related products as the offering expands.
 
 - **Community Building:** Creating a platform for the local bouldering community to connect and share information via the social media pages and the newsletter.
 
@@ -26,74 +28,135 @@ The Bouldering Cyprus app aims to serve as a central hub for the bouldering comm
 
 - **User Authentication:** Secure user registration and authentication system using Django Allauth.
 
-- **Product Management:** Comprehensive product catalog with detailed descriptions, images, and pricing.
+- **Product Management:** Flexible product catalog with descriptions, images, and pricing.
 
 - **Shopping Cart:** Intuitive shopping cart functionality allowing users to add, update, and remove items.
 
 - **Secure Checkout:** Integration with Stripe for secure payment processing.
 
-- **Crashpad Rental System:** Dedicated rental system for crashpads with date selection and availability checking.
+- **Crashpad Rental System:** Dedicated rental system for crashpads with date selection, availability checking and flexible pricing.
 
 - **Order Management:** Complete order tracking and management system for both users and administrators.
 
-- **Newsletter Subscription:** Email newsletter subscription system to keep users informed about updates.
+- **Newsletter Subscription:** Email newsletter subscription system to keep users informed about bouldering news, new products, and potential offers.
 
-- **Admin Dashboard:** Comprehensive admin interface for managing products, orders, rentals, and users.
+- **Admin Dashboard:** Comprehensive admin interface for managing products, crashpads, orders, rentals, and users.
 
-- **Error Monitoring:** Integration with Sentry for real-time error tracking and monitoring.
+- **Error Monitoring:** Integration with Sentry for real-time error tracking and monitoring to prevent lingering bugs and issues that may affect the user experience.
 
 # App Design & Planning
 
 ## User Stories
-### Must have
+I followed the Agile methodology to plan and design the app, and made use of Github's project management features to issue and track epics, user stories, tasks and bugs. Detailed user stories are available in the [Github Project](https://github.com/users/dimispapa/projects/3/views/1).
 
-| Title | User Story | Acceptance Criteria |
-| ----------- | ----------- | ----------- |
-User Registration and Authentication | As a user, I can register for an account and log in so that I can access personalized features | <ul><li>User can register with email verification</li><li>User can log in and log out</li><li>User can reset password</li></ul> |
-Browse Products | As a user, I can view all available products so that I can select items to purchase | <ul><li>Products are displayed with images, titles, and prices</li><li>Products can be sorted and filtered</li><li>Product details are accessible</li></ul> |
-Shopping Cart | As a user, I can add products to a cart so that I can purchase multiple items at once | <ul><li>Items can be added to cart</li><li>Cart quantities can be updated</li><li>Items can be removed from cart</li></ul> |
-Checkout Process | As a user, I can securely checkout and pay for my items so that I can complete my purchase | <ul><li>Secure payment processing with Stripe</li><li>Order confirmation is displayed</li><li>Confirmation email is sent</li></ul> |
-Crashpad Rental | As a user, I can rent crashpads for specific dates so that I can go bouldering without bringing my own equipment | <ul><li>Available crashpads can be viewed</li><li>Rental dates can be selected</li><li>Rental can be added to cart</li></ul> |
-View Order History | As a user, I can view my order history so that I can keep track of my purchases | <ul><li>List of past orders is displayed</li><li>Order details can be viewed</li><li>Order status is shown</li></ul> |
-Newsletter Subscription | As a user, I can subscribe to the newsletter so that I can stay updated with bouldering news in Cyprus | <ul><li>Newsletter subscription form is available</li><li>Confirmation email is sent</li><li>Unsubscribe option is provided</li></ul> |
+Below are the epic stories and their relevant user stories:
 
-### Should have
-| Title | User Story | Acceptance Criteria |
-| ----------- | ----------- | ----------- |
-Product Reviews | As a user, I can leave reviews on products so that I can share my experience with others | <ul><li>Reviews can be submitted with ratings</li><li>Reviews are displayed on product pages</li><li>Average rating is calculated</li></ul> |
-User Profile | As a user, I can manage my profile information so that I can update my details and preferences | <ul><li>User can edit personal information</li><li>User can view order history</li><li>User can manage payment methods</li></ul> |
-Admin Product Management | As an admin, I can add, edit, and delete products so that I can manage the store inventory | <ul><li>Products can be added through admin interface</li><li>Product details can be edited</li><li>Products can be removed</li></ul> |
-Admin Order Management | As an admin, I can view and manage orders so that I can process customer purchases | <ul><li>Orders can be viewed in admin interface</li><li>Order status can be updated</li><li>Order details can be accessed</li></ul> |
+### Epic Stories
 
-### Could have
-| Title | User Story | Acceptance Criteria |
-| ----------- | ----------- | ----------- |
-Bouldering Spot Information | As a user, I can view information about bouldering spots in Cyprus so that I can plan my climbing trips | <ul><li>Spot locations are displayed on a map</li><li>Spot details include difficulty levels and access information</li><li>Photos of spots are available</li></ul> |
-Wishlist | As a user, I can save products to a wishlist so that I can purchase them later | <ul><li>Products can be added to wishlist</li><li>Wishlist items can be viewed</li><li>Items can be moved from wishlist to cart</li></ul> |
-Social Media Integration | As a user, I can share products on social media so that I can recommend them to friends | <ul><li>Social sharing buttons are available</li><li>Shared links include product images and descriptions</li><li>Sharing analytics are tracked</li></ul> |
+#### E1: Selling the Cyprus Bouldering Guide Book
+An e-commerce feature that enables the sale of the Cyprus Bouldering Guide Book
 
-### Won't have
-| Title | User Story | Acceptance Criteria |
-| ----------- | ----------- | ----------- |
-Live Chat Support | As a user, I can chat with customer support in real-time so that I can get immediate assistance | <ul><li>Chat widget is available on all pages</li><li>Support agents can respond in real-time</li><li>Chat history is saved</li></ul> |
-Mobile App | As a user, I can use a dedicated mobile app so that I can access the platform more conveniently on my phone | <ul><li>App is available on iOS and Android</li><li>App has same functionality as website</li><li>App sends push notifications</li></ul> |
-Loyalty Program | As a user, I can earn points for purchases so that I can get discounts on future orders | <ul><li>Points are awarded for purchases</li><li>Points can be redeemed for discounts</li><li>Point balance is displayed in user profile</li></ul> |
+**User Stories:**
+- ✅ S1.1: As a user, I want to browse the guide book product details and price, so I can decide to purchase it
+- ✅ S1.2: As a user, I want to add the guide book to my cart, so I can review my order before checkout
+- ✅ S1.3: As a user, I want to receive a confirmation email after purchasing, so I know my order was successful
 
-## Typography & Colours
-### Fonts
-The application uses a combination of modern, readable fonts to enhance user experience:
+#### E2: Crashpad Booking System
+A Crashpad Booking System to allow viewing availability and booking crashpads, by paying online.
 
-- **Primary Font:** The main content uses a clean, sans-serif font for optimal readability across devices.
-- **Accent Font:** "Roboto Condensed" is used for headings and important text elements to create visual hierarchy.
+**User Stories:**
+- ✅ S2.1: As a user, I want to check crashpad availability for specific dates, so I can plan my trip
+- ✅ S2.2: As a user, I want to book a crashpad and pay online, so I can secure my rental
+- ✅ S2.3: As an admin, I want to manage crashpad bookings, so I can track rentals and adjust availability
 
-### Colour palette
-The color palette is inspired by the natural landscapes of Cyprus and bouldering environments:
+#### E3: Bouldering Info and Community Engagement
+An page/area dedicated to providing key high-level information about the bouldering area. This should also include some references/links/embedded links to social media accounts (youtube videos, instagram/facebook posts). Provide links to newsletter subscription for community engagement.
 
-- **Primary Colors:** Earth tones and rock-inspired colors that reflect the natural bouldering environment.
-- **Accent Colors:** Vibrant highlights to draw attention to important elements like calls-to-action.
-- **Background:** Light, neutral backgrounds to ensure content readability and reduce eye strain.
+**User Stories:**
+- ✅ S3.1: As a user, I want to read an introduction to bouldering in Cyprus, so I can learn about the area
+- ✅ S3.2: As a user, I want to follow Bouldering Cyprus on social media, so I can stay updated
+- ✅ S3.3: As a user, I want to subscribe to the newsletter, so I can receive updates about new bouldering spots and events
 
-The application uses Bootstrap 5 background colors for consistency, with bg-primary and bg-light being the dominant colors across the app.
+#### E4: Front-End Design and User Experience
+Front-End Design and User Experience. Ensure a visually appealing, interactive and seamless website.
+
+**User Stories:**
+- ✅ S4.1: As a user, I want a visually appealing and easy-to-use website, so I enjoy browsing and shopping
+- ✅ S4.2: As a user, I want the website to load quickly and work smoothly, so I can have a good experience
+- ✅ S4.3: As a user, I want a homepage that instantly gives me a quick view of the options to browse through with a quick summary
+
+#### E5: Technical Setup and Integrations
+Technical Setup and Integrations
+
+**User Stories:**
+- ✅ S5.1: As a developer, I want the website to be deployable, so I can make it available online
+- ✅ S5.2: As a developer, I want a secure website, so users' data is protected
+
+# Styles
+The styles are based on the following design principles:
+
+- **Responsive Design:** The website is designed to be responsive and work on all devices.
+- **Element-First Approach:** The website is designed to follow an [element-first approach](https://cheewebdevelopment.com/element-first-scss-media-queries/), with a focus on designing media queries appropriate for each feature.
+- **Consistency:** The website is designed to be consistent in its design and layout, with a focus on providing a great user experience. The styles are aligned with the fonts and colors chosen by the designer of the guidebook.
+
+## Typography
+The application uses a carefully selected combination of Google Fonts to create a clear visual hierarchy and ensure optimal readability:
+
+#### Font Families
+- **Primary Font (Body):** ["Roboto Mono"](https://fonts.google.com/specimen/Roboto+Mono) - Used for body text (except homepage) and general content including the navbar and footer
+- **Secondary Font (Headings):** ["Roboto Condensed"](https://fonts.google.com/specimen/Roboto+Condensed) - Used for all heading levels (h1-h6) and homepage text content
+
+#### Font Sizes
+The application uses a responsive font sizing system:
+- XXL: 2rem (32px) - Main headings
+- XL: 1.8rem (28.8px)
+- Large: 1.6rem (25.6px)
+- Medium: 1.4rem (22.4px)
+- Small: 1.2rem (19.2px)
+- XS: 1rem (16px)
+- XXS: 0.8rem (12.8px)
+
+Font sizes are responsive and scale down through different breakpoints:
+- Tablet Large: h1 → xl, h2 → large, h3 → medium
+- Tablet: h1 → large, h2 → medium, h3/h4 → small
+- Phone: h1 → medium, h2 → small, h3/h4 → xs
+- Small Phone: h1 → small, h2 → xs
+
+#### Content Sections
+- Headings (h1, h2) in content sections use the brand orange color (#ed6c2c)
+- Body text uses black (#000) for maximum readability
+- Text content is responsive, scaling from medium size on desktop to xxs on small phones
+
+## Colour Palette
+The color palette is inspired by the fonts and colour [palette](./docs/images/colours/book_designer_palette.png) used by the book designer for the Cyprus Bouldering Guidebook:
+
+| Color | Hex/RGBA |
+|-------|----------|
+| Orange | `#ed6c2c` / `rgba(237,108,44,0.9)` / `rgba(237,108,44,0.1)` |
+| Black | `#000000` / `rgba(0,0,0,0.9)` / `rgba(0,0,0,0.1)` |
+| White | `#ffffff` / `rgba(255,255,255,0.9)` |
+| Beige | `#f4edd2` / `rgba(244,237,210,0.9)` |
+| Dark Red | `#c25a46` / `rgba(194,90,70,0.9)` |
+| Off Pink | `#caa098` / `rgba(202,160,152,0.9)` |
+| Light Blue | `#cbdbe2` / `rgba(203,219,226,0.9)` |
+| Light Green | `#b5cbb2` / `rgba(181,203,178,0.9)` |
+
+The colour palette images below were created using the [coolors](https://coolors.co/) online tool.
+### Primary Colours
+![Primary Colours](./docs/images/colours/bouldering_cy_primary_colours.png)
+
+### Secondary Colours
+![Secondary Colours](./docs/images/colours/bouldering_cy_secondary_colours.png)
+
+### Color Usage
+- **Primary Brand Color:** Orange (`#ed6c2c`) - Used for headings and call-to-action elements
+- **Background Colors:** Beige (`#f4edd2`) and White (`#ffffff`) - Used for different sections and content areas
+- **Accent Colors:** Off Pink (`#caa098`), Dark Red (`#c25a46`), Light Blue (`#cbdbe2`), Light Green (`#b5cbb2`) - Used for various UI elements and highlights
+- **Text Colors:** Black (`#000000`) for main content, White (`#ffffff`) for contrast on dark backgrounds
+
+### Transparency Variants
+- Semi-transparent variants (0.9 opacity) are used for overlay effects and hover states
+- Transparent variants (0.1 opacity) are used for subtle backgrounds and transitions
 
 ## Database
 ### Design
@@ -109,18 +172,20 @@ The database design focuses on efficiently managing products, orders, rentals, a
 ### Implementation
 The database is implemented using PostgreSQL in production and SQLite for development/testing. Django ORM is used for database operations, providing a clean abstraction layer for data management.
 
+Queries have been optimised for performance were possible, making use of Django ORM's `select_related` and `prefetch_related` methods to reduce the number of database queries for related objects, effectively minimising the number of N+1 query issues.
+
 ## Technologies & Tools Stack
 
 This project utilizes a robust stack of technologies and tools to deliver a seamless experience in development and functionality:
 
 ### Programming Languages
-- **[Python](https://www.python.org/)**: The core programming language used for backend logic and full-stack application development.
-- **[JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript)**: For dynamic front-end functionality and interactive features.
-- **[HTML5](https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5)**: Structuring web pages with semantic markup.
-- **[CSS3](https://developer.mozilla.org/en-US/docs/Web/CSS)**: For styling the front-end and ensuring a responsive design.
+- **[Python](https://www.python.org/)**: The core programming language used for backend logic and full-stack application development. Followed the [PEP8](https://pep8.org/) style guide for Python code by using the [Flake8](https://flake8.pycqa.org/) linter.
+- **[JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript)**: For dynamic front-end functionality and interactive features. Some backend functionality was implemented in JavaScript, such as initiating the payment process with Stripe and making API calls to store order metadata.
+- **[HTML5](https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5)**: Structuring web pages, holding static content and placing placeholders for dynamic content with semantic markup. Made use of Bootstrap 5 classes for quick responsive styling as well as Django Template Language for dynamic content based on context data.
+- **[CSS3](https://developer.mozilla.org/en-US/docs/Web/CSS)**: For styling the front-end and ensuring a responsive design. CSS was written in SCSS and compiled to CSS using the [live SASS compiler](https://marketplace.visualstudio.com/items?itemName=glenn2223.live-sass).
 
 ### Frameworks
-- **[Django](https://www.djangoproject.com/)**: A high-level Python web framework that enables rapid development and clean, pragmatic design.
+- **[Django 4.2 LTS](https://docs.djangoproject.com/en/4.2/)**: A high-level Python web framework that enables rapid development and clean, pragmatic design. Followed the [Model-View-Template](https://docs.djangoproject.com/en/4.2/topics/class-based-views/intro/) approach for the templates.
 - **[Bootstrap 5](https://getbootstrap.com/)**: For responsive design and pre-styled components.
 
 ### Libraries & Packages
@@ -128,7 +193,19 @@ This project utilizes a robust stack of technologies and tools to deliver a seam
 - **[Django Crispy Forms](https://django-crispy-forms.readthedocs.io/)**: For rendering beautiful and customizable forms.
 - **[Django Summernote](https://github.com/summernote/django-summernote)**: For rich text editing in the admin interface.
 - **[Django Storages](https://django-storages.readthedocs.io/)**: For handling file storage with AWS S3.
-- **[Django REST Framework](https://www.django-rest-framework.org/)**: For building APIs.
+- **[Django REST Framework](https://www.django-rest-framework.org/)**: For building robust APIs for the rentals booking system.
+
+#### Testing Libraries & Tools
+- **[Selenium](https://www.selenium.dev/)**: For automated browser testing and frontend integration tests
+- **[Django Test Client](https://docs.djangoproject.com/en/4.2/topics/testing/tools/#the-test-client)**: For testing Django views and request handling
+- **[Coverage.py](https://coverage.readthedocs.io/)**: For measuring code coverage of Python tests
+- **[unittest](https://docs.python.org/3/library/unittest.html)**: Python's built-in testing framework used with Django's test suite
+- **[ChromeDriver](https://chromedriver.chromium.org/)**: WebDriver for Chrome used with Selenium tests
+- **[django.test.TestCase](https://docs.djangoproject.com/en/4.2/topics/testing/tools/#testcase)**: Django's base test class with additional test functionality
+- **[StaticLiveServerTestCase](https://docs.djangoproject.com/en/4.2/topics/testing/tools/#django.test.LiveServerTestCase)**: For testing with a live server instance, used with Selenium
+- **[model_bakery](https://model-bakery.readthedocs.io/)**: For easily generating test data based on models.
+
+### Third Party Services
 - **[Stripe](https://stripe.com/)**: For secure payment processing.
 - **[AWS S3](https://aws.amazon.com/s3/)**: For storing static and media files.
 - **[Sentry](https://sentry.io/)**: For error tracking and monitoring.
@@ -136,41 +213,122 @@ This project utilizes a robust stack of technologies and tools to deliver a seam
 ### Development Tools
 - **[Git](https://git-scm.com/)**: For version control.
 - **[GitHub](https://github.com/)**: For source code management.
+- **[GitHub Projects](https://github.com/features/projects)**: For project management.
 - **[VS Code](https://code.visualstudio.com/)**: As the primary code editor.
-- **[Chrome DevTools](https://developers.google.com/web/tools/chrome-devtools)**: For debugging and testing.
+- **[Chrome DevTools](https://developers.google.com/web/tools/chrome-devtools)**: For inspecting, debugging and testing.
 
 ### Deployment & Hosting
 - **[Heroku](https://www.heroku.com/)**: For application hosting.
-- **[AWS CloudFront](https://aws.amazon.com/cloudfront/)**: For content delivery network services.
+- **[AWS CloudFront](https://aws.amazon.com/cloudfront/)**: For content delivery network services to cache static files and improve performance.
 - **[PostgreSQL](https://www.postgresql.org/)**: As the production database.
 
-# Testing
+# Testing & Monitoring
 
 ## Automated Testing
-The application includes a comprehensive suite of automated tests to ensure functionality and reliability:
 
-- **Unit Tests:** Testing individual components and functions in isolation.
-- **Integration Tests:** Testing the interaction between different parts of the application.
-- **View Tests:** Ensuring views return the correct responses and templates.
-- **Form Tests:** Validating form functionality and validation.
-- **Model Tests:** Testing model methods and relationships.
+### Test Modules
+
+#### Cart Tests
+- **Cart Class Tests (`cart/test_cart_class.py`):**
+  - Tests basic cart operations (add, update, remove)
+  - Validates cart calculations and totals
+  - Tests cart validation (stock, dates)
+  - Verifies cart serialization
+
+- **Context Processor Tests (`cart/test_cart_context.py`):**
+  - Tests cart summary contexts
+  - Validates price calculations
+  - Tests context data structure
+
+- **View Tests (`cart/test_cart_views.py`):**
+  - Tests cart operations and display
+  - Validates error handling
+  - Tests cart updates and checkout flow
+
+#### Orders Tests (`orders/test_orders_models.py`)
+- **Order Model Tests:**
+  - Tests order creation and validation
+  - Validates order calculations
+  - Tests order type determination
+  - Verifies stock management
+
+- **Order Item Tests:**
+  - Tests item creation and relationships
+  - Validates calculations
+  - Tests string representations
+
+#### Newsletter Tests (`newsletter/test_newsletter.py`)
+- **Subscription Tests:**
+  - Tests subscription/unsubscription flows
+  - Validates email sending
+  - Tests subscription management
+
+- **Newsletter Sending Tests:**
+  - Tests SendGrid integration
+  - Validates management commands
+  - Tests tracking and monitoring
+
+### Test Configuration
+- **Test Data Generation:**
+  - Uses `model_bakery` for test data
+  - Creates realistic model instances
+  - Handles complex data scenarios
+
+- **Test Case Setup:**
+  - Uses `TestCase` for Django views
+  - Uses `StaticLiveServerTestCase` for live testing
+  - Implements `RequestFactory` for isolated testing
+
+- **Mock Configurations:**
+  - Implements mock objects for external services
+  - Simulates payment flows
+  - Handles test sessions and authentication
 
 ## Manual Testing
-Manual testing was conducted to verify user experience and functionality:
+- **Responsive Design:** Tested across multiple devices and screen sizes
+- **Browser Compatibility:** Tested on Chrome, Firefox, Safari, and Edge
+- **User Flows:** Tested complete user journeys:
+  - Product browsing and cart management
+  - Rental date selection and booking
+  - Checkout process and payment
+  - Account management and newsletter subscription
+- **Payment Processing:** Verified Stripe integration:
+  - Tested successful/failed payments
+  - Validated webhook handling
+  - Tested order confirmation flow
+- **Error Handling:** Tested form validation and edge cases
 
-- **Responsive Design:** Tested across multiple devices and screen sizes.
-- **Browser Compatibility:** Tested on Chrome, Firefox, Safari, and Edge.
-- **User Flows:** Walked through common user journeys from browsing to checkout.
-- **Payment Processing:** Verified Stripe integration and payment flows.
-- **Error Handling:** Tested application behavior with invalid inputs and edge cases.
+## Error Monitoring
+- **Sentry Integration:**
+  - Real-time error tracking
+  - Contextual error information
+  - Frontend/backend error logging
+  - Alert configuration for critical issues
 
 ## Code Validation
-All code was validated using industry-standard tools:
 
-- **HTML:** Validated using the W3C HTML Validator.
-- **CSS:** Validated using the W3C CSS Validator.
-- **JavaScript:** Validated using JSHint.
-- **Python:** Validated using PEP8 standards and Flake8.
+### HTML Validation
+All pages were validated using the [W3C HTML Validator](https://validator.w3.org/).
+
+| Page | Result | Notes |
+|------|---------|-------|
+| Home | Pass | No errors |
+| Shop | Pass | No errors |
+| Cart | Pass | No errors |
+| Checkout | Pass | No errors |
+| Profile | Pass | No errors |
+| Rentals | Pass | No errors |
+
+### CSS Validation
+All CSS files were validated using the [W3C CSS Validator](https://jigsaw.w3.org/css-validator/).
+
+| File | Result | Notes |
+|------|---------|-------|
+| base.css | Pass | No errors |
+| checkout.css | Pass | No errors |
+| home.css | Pass | No errors |
+| shop.css | Pass | No errors |
+| rentals.css | Pass | No errors |
 
 ## Lighthouse Audit
 Performance, accessibility, best practices, and SEO were tested using Lighthouse:
@@ -179,14 +337,6 @@ Performance, accessibility, best practices, and SEO were tested using Lighthouse
 - **Accessibility:** Ensured the application is accessible to all users.
 - **Best Practices:** Followed web development best practices.
 - **SEO:** Optimized for search engine visibility.
-
-## Error Monitoring with Sentry
-The application uses Sentry for comprehensive error monitoring and tracking:
-
-- **Real-Time Error Tracking:** Captures and displays errors as they occur.
-- **Contextual Information:** Includes stack traces and request context in error reports.
-- **JavaScript Error Tracking:** Logs frontend issues for seamless debugging.
-- **Alerts and Notifications:** Sends alerts for critical issues.
 
 # Deployment
 
@@ -216,7 +366,7 @@ The following environment variables are required:
 ## Local Development
 To run the project locally:
 
-1. Clone the repository: `git clone https://github.com/yourusername/bouldering-cyprus.git`
+1. Clone the repository: `git clone https://github.com/dimispapa/bouldering-cyprus.git`
 2. Install dependencies: `pip install -r requirements.txt`
 3. Set up environment variables in an `env.py` file
 4. Run migrations: `python manage.py migrate`
