@@ -34,7 +34,7 @@
   <!-- Date Selection -->
   <div class="card mb-4" id="booking-container">
     <div class="card-body">
-      <h5 class="card-title">Select your dates to see available crashpads</h5>
+      <h2 class="card-title text-content">Select your dates to see available crashpads</h2>
       <div class="row">
         <div class="col-md-6">
           <div class="form-group">
@@ -76,7 +76,7 @@
           <span id="selected-count">0 crashpads selected</span>
         </div>
         <div class="col text-end">
-          <button id="add-to-cart" class="button-small">Add to Cart</button>
+          <button id="add-to-cart" class="button-small" aria-label="Add to Cart">Add to Cart</button>
         </div>
       </div>
     </div>
@@ -88,20 +88,20 @@
     <div class="card h-100 crashpad-card">
       <div class="card-img-wrapper">
         <img src="" class="card-img-top img-fluid" alt="Crashpad Image">
-        <button class="btn btn-sm btn-light gallery-btn" data-bs-toggle="modal">
+        <button class="btn btn-sm btn-light gallery-btn" data-bs-toggle="modal" aria-label="View Crashpad Gallery">
           <i class="fas fa-images"></i> Gallery
         </button>
       </div>
       <div class="card-body">
-        <h5 class="card-title"></h5>
+        <h3 class="card-title"></h3>
         <!-- Description -->
         <div class="description-container">
           <p class="card-text description truncated"></p>
-          <button class="btn btn-link p-0 show-more-btn">Show more</button>
+          <button class="btn btn-link p-0 show-more-btn" aria-label="Show more">Show more</button>
         </div>
         <hr>
         <!-- Price Table -->
-        <h6 class="card-subtitle mb-2 mt-2 text-muted">Daily Rates</h6>
+        <h4 class="card-subtitle mb-2 mt-2 text-content text-muted">Daily Rates</h4>
         <table class="table table-sm price-table mb-3">
           <thead>
             <tr>
@@ -120,7 +120,7 @@
         </table>
         <!-- Select Button -->
         <div class="d-flex justify-content-end">
-          <button class="button-very-small select-crashpad">Select</button>
+          <button class="button-very-small select-crashpad" aria-label="Select Crashpad">Select</button>
         </div>
       </div>
     </div>
@@ -163,6 +163,7 @@
             type="button"
             data-bs-target="#galleryCarousel"
             data-bs-slide="prev"
+            aria-label="Previous"
           >
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
             <span class="visually-hidden">Previous</span>
@@ -172,6 +173,7 @@
             type="button"
             data-bs-target="#galleryCarousel"
             data-bs-slide="next"
+            aria-label="Next"
           >
             <span class="carousel-control-next-icon" aria-hidden="true"></span>
             <span class="visually-hidden">Next</span>
