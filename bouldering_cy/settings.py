@@ -100,6 +100,7 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
                 "cart.contexts.cart_summary",
                 "newsletter.contexts.newsletter_form",
+                "bouldering_cy.context_processor.sentry_settings",
             ],
         },
     },

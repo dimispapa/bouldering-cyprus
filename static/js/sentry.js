@@ -1,6 +1,6 @@
 Sentry.onLoad(function() {
     // Check if Sentry should be enabled
-    if (window.SENTRY_ENABLED === false) {
+    if (!window.SENTRY_ENABLED) {
         console.log('Sentry is disabled');
         return;
     }
