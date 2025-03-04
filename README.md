@@ -359,24 +359,40 @@ All CSS files were validated using the [W3C CSS Validator](https://jigsaw.w3.org
 | shop.css | Pass | No errors | ![Validate](./docs/images/css_validation/w3-css-validation-shop.png) |
 | rentals.css | Pass | No errors | ![Validate](./docs/images/css_validation/w3-css-validation-rentals.png) |
 
+### JavaScript Validation
+All JavaScript files were validated using the [JSHint](https://jshint.com/) validator.
+
+| File | Result | Notes | Screenshot |
+|------|---------|-------|------------|
+| booking.js | Pass | No errors | ![Validate](./docs/images/jshint_validation/jshint_val_booking.png) |
+| index.js | Pass | No errors | ![Validate](./docs/images/jshint_validation/jshint_val_index.png) |
+| navbar.js | Pass | No errors | ![Validate](./docs/images/jshint_validation/jshint_val_navbar.png) |
+| shop.js | Pass | No errors | ![Validate](./docs/images/jshint_validation/jshint_val_shop.png) |
+| toasts.js | Pass | No errors | ![Validate](./docs/images/jshint_validation/jshint_val_toasts.png) |
+| sentry.js | Pass | No errors | ![Validate](./docs/images/jshint_validation/jshint_val_sentry.png) |
+| checkout.js | Pass | No errors | ![Validate](./docs/images/jshint_validation/jshint_val_checkout.png) |
+
+
 ## Lighthouse Audit
 
-A test was carried out on the deployed website using the Lighthouse Audit tool within Chrome Dev Tools:
+A test was carried out on the deployed website using the Lighthouse Audit tool within Chrome Dev Tools. There is some room for improvement, but overall the site is performant and accessible:
 
 | Page | Size | Screenshot | Notes |
 |------|------|------------|-------|
-| Home | Mobile | ![Lighthouse Audit](./docs/images/lighthouse_audit/lighthouse-audit-home-mobile.png) | No major problems |
-| Home | Desktop | ![Lighthouse Audit](./docs/images/lighthouse_audit/lighthouse-audit-home-desktop.png) | No major problems |
-| Shop | Mobile | ![Lighthouse Audit](./docs/images/lighthouse_audit/lighthouse-audit-shop-mobile.png) | No major problems |
-| Shop | Desktop | ![Lighthouse Audit](./docs/images/lighthouse_audit/lighthouse-audit-shop-desktop.png) | No major problems |
-| Cart | Mobile | ![Lighthouse Audit](./docs/images/lighthouse_audit/lighthouse-audit-cart-mobile.png) | No major problems |
-| Cart | Desktop | ![Lighthouse Audit](./docs/images/lighthouse_audit/lighthouse-audit-cart-desktop.png) | No major problems |
-| Checkout | Mobile | ![Lighthouse Audit](./docs/images/lighthouse_audit/lighthouse-audit-checkout-mobile.png) | No major problems |
-| Checkout | Desktop | ![Lighthouse Audit](./docs/images/lighthouse_audit/lighthouse-audit-checkout-desktop.png) | No major problems |
-| Rentals | Mobile | ![Lighthouse Audit](./docs/images/lighthouse_audit/lighthouse-audit-rentals-mobile.png) | No major problems |
-| Rentals | Desktop | ![Lighthouse Audit](./docs/images/lighthouse_audit/lighthouse-audit-rentals-desktop.png) | No major problems |
-| Account | Mobile | ![Lighthouse Audit](./docs/images/lighthouse_audit/lighthouse-audit-account-mobile.png) | No major problems |
-| Account | Desktop | ![Lighthouse Audit](./docs/images/lighthouse_audit/lighthouse-audit-account-desktop.png) | No major problems |
+| Home | Mobile | ![Lighthouse Audit](./docs/images/lighthouse/lighthouse-home-mobile.png) | No major problems |
+| Home | Desktop | ![Lighthouse Audit](./docs/images/lighthouse/lighthouse-home-desktop.png) | No major problems |
+| Shop | Mobile | ![Lighthouse Audit](./docs/images/lighthouse/lighthouse-shop-mobile.png) | No major problems |
+| Shop | Desktop | ![Lighthouse Audit](./docs/images/lighthouse/lighthouse-shop-desktop.png) | No major problems |
+| Cart | Mobile | ![Lighthouse Audit](./docs/images/lighthouse/lighthouse-cart-mobile.png) | No major problems |
+| Cart | Desktop | ![Lighthouse Audit](./docs/images/lighthouse/lighthouse-cart-desktop.png) | No major problems |
+| Checkout | Mobile | ![Lighthouse Audit](./docs/images/lighthouse/lighthouse-checkout-mobile.png) | No major problems |
+| Checkout | Desktop | ![Lighthouse Audit](./docs/images/lighthouse/lighthouse-checkout-desktop.png) | No major problems |
+| Rentals | Mobile | ![Lighthouse Audit](./docs/images/lighthouse/lighthouse-rentals-mobile.png) | No major problems |
+| Rentals | Desktop | ![Lighthouse Audit](./docs/images/lighthouse/lighthouse-rentals-desktop.png) | No major problems |
+| Account | Mobile | ![Lighthouse Audit](./docs/images/lighthouse/lighthouse-account-mobile.png) | No major problems |
+| Account | Desktop | ![Lighthouse Audit](./docs/images/lighthouse/lighthouse-account-desktop.png) | No major problems |
+
+## Java
 
 # Deployment
 
