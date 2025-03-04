@@ -272,6 +272,20 @@ h4 {
   background-color: #ed6c2c;
 }
 
+.nav-icon {
+  font-size: 1.6rem;
+}
+@media (max-width: 1600px) {
+  .nav-icon {
+    font-size: 1.4rem;
+  }
+}
+@media (max-width: 767px) {
+  .nav-icon {
+    font-size: 1.2rem;
+  }
+}
+
 /* Buttons */
 .button-large {
   background-color: #f4edd2;
@@ -549,28 +563,10 @@ main {
 }
 
 /* Input group styling for the newsletter form */
+.footer-newsletter-form {
+  display: flex;
+  justify-content: center;
+}
 .footer-newsletter-form .input-group {
-  display: flex;
-  flex-wrap: nowrap;
-}
-
-.footer-newsletter-form .input-group-append {
-  display: flex;
-}
-
-.footer-newsletter-form .button-very-small {
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-  margin-left: -1px;
-  height: 100%;
-  padding: 0.375rem 0.75rem;
-}
-
-.footer-newsletter-form .form-control {
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
-}
-
-#newsletter-message {
-  min-height: 24px;
+  max-width: 60%;
 }/*# sourceMappingURL=base.css.map */
