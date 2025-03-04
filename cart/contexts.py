@@ -6,6 +6,11 @@ from rentals.models import Crashpad
 
 
 def cart_summary(request):
+    # Skip cart processing for static files and admin pages
+    if request.path.startswith('/static/') or request.path.startswith(
+            '/admin/'):
+        return {}
+
     cart = Cart(request)
 
     # Prefetch product and crashpad objects to avoid N+1 queries

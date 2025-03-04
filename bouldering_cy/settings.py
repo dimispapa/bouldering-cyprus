@@ -159,9 +159,7 @@ DATABASE_URL = os.environ.get("DATABASE_URL", "")
 
 if DATABASE_URL:
     # Use the DATABASE_URL if provided
-    DATABASES = {
-        "default": dj_database_url.parse(DATABASE_URL)
-    }
+    DATABASES = {"default": dj_database_url.parse(DATABASE_URL)}
 else:
     # Fallback to a default SQLite database if no DATABASE_URL is provided
     DATABASES = {
@@ -328,24 +326,31 @@ RENTAL_HANDLING_FEE = 2.00  # euros
 LOW_STOCK_THRESHOLD = 10
 
 # Sentry settings
-sentry_sdk.init(
-    dsn="https://0581bd20fe579142f1b0058684ccad93@o4508116014989312.ingest.de.sentry.io/4508805680070736",
-    integrations=[DjangoIntegration()],
-    # Add data like request headers and IP for users,
-    # see https://docs.sentry.io/platforms/python/data-management/data-collected/ for more info
-    send_default_pii=True,
-    # Set traces_sample_rate to 1.0 to capture 100%
-    # of transactions for tracing.
-    traces_sample_rate=1.0,
-    # Disable Sentry during tests
-    transport=None if 'test' in sys.argv else None,
-    _experiments={
-        # Set continuous_profiling_auto_start to True
-        # to automatically start the profiler on when
-        # possible.
-        "continuous_profiling_auto_start": True,
-    },
-)
+
+SENTRY_ENABLED = not ('test' in sys.argv)
+print(f"SENTRY_ENABLED setting is: {SENTRY_ENABLED}")
+if SENTRY_ENABLED:
+    sentry_sdk.init(
+        dsn="https://0581bd20fe579142f1b0058684ccad93@o4508116014989312.ingest.de.sentry.io/4508805680070736",
+        integrations=[DjangoIntegration()],
+        # Add data like request headers and IP for users,
+        # see https://docs.sentry.io/platforms/python/data-management/data-collected/ for more info
+        send_default_pii=True,
+        # Set traces_sample_rate to 1.0 to capture 100%
+        # of transactions for tracing.
+        traces_sample_rate=1.0,
+        # Disable Sentry during tests
+        transport=None if 'test' in sys.argv else None,
+        _experiments={
+            # Set continuous_profiling_auto_start to True
+            # to automatically start the profiler on when
+            # possible.
+            "continuous_profiling_auto_start": True,
+        },
+    )
+    print("Sentry is initialized")
+else:
+    print("Sentry is disabled")
 
 # LOGGING CONFIGURATION
 ADMINS = [
