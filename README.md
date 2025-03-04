@@ -319,33 +319,64 @@ This project utilizes a robust stack of technologies and tools to deliver a seam
 ### HTML Validation
 All pages were validated using the [W3C HTML Validator](https://validator.w3.org/).
 
-| Page | Result | Notes |
-|------|---------|-------|
-| Home | Pass | No errors |
-| Shop | Pass | No errors |
-| Cart | Pass | No errors |
-| Checkout | Pass | No errors |
-| Profile | Pass | No errors |
-| Rentals | Pass | No errors |
+| Page | Result | Notes | Screenshot |
+|------|---------|-------|------------|
+| Home | Pass | No errors | ![Validate](./docs/images/html_validation/w3-html-validation-home.png) |
+| Shop | Pass | No errors | ![Validate](./docs/images/html_validation/w3-html-validation-shop.png) |
+| Cart | Pass | No errors | ![Validate](./docs/images/html_validation/w3-html-validation-cart.png) |
+| Checkout | Pass | No errors | ![Validate](./docs/images/html_validation/w3-html-validation-checkout.png) |
+| Checkout Success | Pass | No errors | ![Validate](./docs/images/html_validation/w3-html-validation-checkout-success.png) |
+| Account | Pass | No errors | ![Validate](./docs/images/html_validation/w3-html-validation-account.png) |
+| Manage Newsletter | Pass | No errors | ![Validate](./docs/images/html_validation/w3-html-validation-newsletter.png) |
+| Password Reset | Pass | No errors | ![Validate](./docs/images/html_validation/w3-html-validation-password-reset.png) |
+| Password Change | Pass | No errors | ![Validate](./docs/images/html_validation/w3-html-validation-password-change.png) |
+| Signup | Pass | No errors | ![Validate](./docs/images/html_validation/w3-html-validation-signup.png) |
+| Sign In | Pass | No errors | ![Validate](./docs/images/html_validation/w3-html-validation-signin.png) |
+| Sign Out | Pass | No errors | ![Validate](./docs/images/html_validation/w3-html-validation-signout.png) |
+| Verification Sent | Pass | No errors | ![Validate](./docs/images/html_validation/w3-html-validation-verification-sent.png) |
+| Verify Email | Pass | No errors | ![Validate](./docs/images/html_validation/w3-html-validation-verify-email.png) |
+| Delete Account | Pass | No errors | ![Validate](./docs/images/html_validation/w3-html-validation-delete-account.png) |
+| Rentals | Pass | No errors | ![Validate](./docs/images/html_validation/w3-html-validation-rentals.png) |
+| 404 | Pass | No errors | ![Validate](./docs/images/html_validation/w3-html-validation-404.png) |
+| 403 | Pass | No errors | ![Validate](./docs/images/html_validation/w3-html-validation-403.png) |
+| 500 | Pass | No errors | ![Validate](./docs/images/html_validation/w3-html-validation-500.png) |
+
 
 ### CSS Validation
 All CSS files were validated using the [W3C CSS Validator](https://jigsaw.w3.org/css-validator/).
 
-| File | Result | Notes |
-|------|---------|-------|
-| base.css | Pass | No errors |
-| checkout.css | Pass | No errors |
-| home.css | Pass | No errors |
-| shop.css | Pass | No errors |
-| rentals.css | Pass | No errors |
+| File | Result | Notes | Screenshot |
+|------|---------|-------|------------|
+| base.css | Pass | No errors | ![Validate](./docs/images/css_validation/w3-css-validation-base.png) |
+| index.css | Pass | No errors | ![Validate](./docs/images/css_validation/w3-css-validation-index.png) |
+| accounts.css | Pass | No errors | ![Validate](./docs/images/css_validation/w3-css-validation-accounts.png) |
+| error-pages.css | Pass | No errors | ![Validate](./docs/images/css_validation/w3-css-validation-error-pages.png) |
+| cart.css | Pass | No errors | ![Validate](./docs/images/css_validation/w3-css-validation-cart.png) |
+| bookings.css | Pass | No errors | ![Validate](./docs/images/css_validation/w3-css-validation-bookings.png) |
+| checkout.css | Pass | No errors | ![Validate](./docs/images/css_validation/w3-css-validation-checkout.png) |
+| checkout-success.css | Pass | No errors | ![Validate](./docs/images/css_validation/w3-css-validation-checkout-success.png) |
+| home.css | Pass | No errors | ![Validate](./docs/images/css_validation/w3-css-validation-home.png) |
+| shop.css | Pass | No errors | ![Validate](./docs/images/css_validation/w3-css-validation-shop.png) |
+| rentals.css | Pass | No errors | ![Validate](./docs/images/css_validation/w3-css-validation-rentals.png) |
 
 ## Lighthouse Audit
-Performance, accessibility, best practices, and SEO were tested using Lighthouse:
 
-- **Performance:** Optimized for fast loading times.
-- **Accessibility:** Ensured the application is accessible to all users.
-- **Best Practices:** Followed web development best practices.
-- **SEO:** Optimized for search engine visibility.
+A test was carried out on the deployed website using the Lighthouse Audit tool within Chrome Dev Tools:
+
+| Page | Size | Screenshot | Notes |
+|------|------|------------|-------|
+| Home | Mobile | ![Lighthouse Audit](./docs/images/lighthouse_audit/lighthouse-audit-home-mobile.png) | No major problems |
+| Home | Desktop | ![Lighthouse Audit](./docs/images/lighthouse_audit/lighthouse-audit-home-desktop.png) | No major problems |
+| Shop | Mobile | ![Lighthouse Audit](./docs/images/lighthouse_audit/lighthouse-audit-shop-mobile.png) | No major problems |
+| Shop | Desktop | ![Lighthouse Audit](./docs/images/lighthouse_audit/lighthouse-audit-shop-desktop.png) | No major problems |
+| Cart | Mobile | ![Lighthouse Audit](./docs/images/lighthouse_audit/lighthouse-audit-cart-mobile.png) | No major problems |
+| Cart | Desktop | ![Lighthouse Audit](./docs/images/lighthouse_audit/lighthouse-audit-cart-desktop.png) | No major problems |
+| Checkout | Mobile | ![Lighthouse Audit](./docs/images/lighthouse_audit/lighthouse-audit-checkout-mobile.png) | No major problems |
+| Checkout | Desktop | ![Lighthouse Audit](./docs/images/lighthouse_audit/lighthouse-audit-checkout-desktop.png) | No major problems |
+| Rentals | Mobile | ![Lighthouse Audit](./docs/images/lighthouse_audit/lighthouse-audit-rentals-mobile.png) | No major problems |
+| Rentals | Desktop | ![Lighthouse Audit](./docs/images/lighthouse_audit/lighthouse-audit-rentals-desktop.png) | No major problems |
+| Account | Mobile | ![Lighthouse Audit](./docs/images/lighthouse_audit/lighthouse-audit-account-mobile.png) | No major problems |
+| Account | Desktop | ![Lighthouse Audit](./docs/images/lighthouse_audit/lighthouse-audit-account-desktop.png) | No major problems |
 
 # Deployment
 
