@@ -158,33 +158,98 @@ The colour palette images below were created using the [coolors](https://coolors
 - Semi-transparent variants (0.9 opacity) are used for overlay effects and hover states
 - Transparent variants (0.1 opacity) are used for subtle backgrounds and transitions
 
-## Database
-### Design
+# Data Architecture
+
+## Database & ORM
+- **[PostgreSQL](https://www.postgresql.org/)**: Production database
+- **[SQLite](https://www.sqlite.org/)**: Development/testing database
+- **[Django ORM](https://docs.djangoproject.com/en/4.2/topics/db/)**: Database abstraction layer
+
+## Database Design
 The database design focuses on efficiently managing products, orders, rentals, and user data. The main models include:
 
-- **User Model:** Extended Django user model with additional profile information.
-- **Product Model:** Stores information about guidebooks and other products available for purchase.
-- **Order Model:** Tracks customer orders, payment status, and delivery information.
-- **OrderItem Model:** Links products to orders with quantity and price information.
-- **Rental Model:** Manages crashpad rentals with date ranges and availability.
-- **Newsletter Model:** Stores subscriber information for the newsletter system.
+- **User Model:** Extended Django user model with additional profile information
+- **Product Model:** Stores information about guidebooks and other products available for purchase
+- **Order Model:** Tracks customer orders, payment status, and delivery information
+- **OrderItem Model:** Links products to orders with quantity and price information
+- **Rental Model:** Manages crashpad rentals with date ranges and availability
+- **Newsletter Model:** Stores subscriber information for the newsletter system
 
-### Implementation
+### Entity Relationship Diagram
+The following diagram illustrates the relationships between the database models. This was generated using the [pydot](https://django-extensions.readthedocs.io/en/latest/graph_models.html) django extension which created a .dot file (see [erd_diagram.dot](./docs/erd_diagram.dot)) which was then used by the [dreampuf](https://dreampuf.github.io/GraphvizOnline/) GraphViz generator to generate this diagram.
+
+![Entity Relationship Diagram](./docs/images/erd/bouldering-cy-erd.png)
+
+## Data Models Schema
+
+| Model | Fields | Field Types | Field Options | Related Model | Description |
+|-------|---------|-------------|---------------|---------------|-------------|
+| Product | name | CharField | max_length=255 | - | Product name |
+| | description | TextField | blank=True, null=True | - | Product description |
+| | price | DecimalField | max_digits=10, decimal_places=2 | - | Product price |
+| | stock | PositiveIntegerField | default=0 | - | Available stock |
+| | image | ImageField | upload_to="products/", blank=True, null=True | - | Product image |
+| | created_at | DateTimeField | auto_now_add=True | - | Creation timestamp |
+| | updated_at | DateTimeField | auto_now=True | - | Last update timestamp |
+| | is_active | BooleanField | default=True | - | Product availability status |
+| GalleryImage | product | ForeignKey | on_delete=CASCADE | Product | Related product |
+| | image | ImageField | upload_to=product_gallery_upload_path | - | Gallery image |
+| Order | order_number | CharField | max_length=32, unique=True | - | Unique order identifier |
+| | user | ForeignKey | on_delete=SET_NULL, null=True | User | Customer who placed order |
+| | first_name | CharField | max_length=50 | - | Customer first name |
+| | last_name | CharField | max_length=50 | - | Customer last name |
+| | email | EmailField | max_length=250 | - | Customer email |
+| | phone | CharField | max_length=20 | - | Customer phone |
+| | address_line1 | CharField | max_length=250 | - | Shipping address line 1 |
+| | address_line2 | CharField | max_length=250, null=True | - | Shipping address line 2 |
+| | town_or_city | CharField | max_length=100 | - | Shipping city |
+| | postal_code | CharField | max_length=20 | - | Shipping postal code |
+| | country | CountryField | - | - | Shipping country |
+| | date_created | DateTimeField | auto_now_add=True | - | Order creation date |
+| | date_updated | DateTimeField | auto_now=True | - | Order last update |
+| OrderItem | order | ForeignKey | on_delete=CASCADE | Order | Related order |
+| | product | ForeignKey | on_delete=CASCADE | Product | Ordered product |
+| | quantity | IntegerField | default=1 | - | Quantity ordered |
+| | item_total | DecimalField | max_digits=10, decimal_places=2 | - | Total for line item |
+| Crashpad | name | CharField | max_length=100 | - | Crashpad name |
+| | brand | CharField | max_length=100 | - | Crashpad brand |
+| | model | CharField | max_length=100 | - | Crashpad model |
+| | dimensions | CharField | max_length=100 | - | Crashpad dimensions |
+| | description | TextField | - | - | Crashpad description |
+| | day_rate | DecimalField | max_digits=10, decimal_places=2 | - | Daily rental rate |
+| | seven_day_rate | DecimalField | max_digits=10, decimal_places=2 | - | Weekly rental rate |
+| | fourteen_day_rate | DecimalField | max_digits=10, decimal_places=2 | - | Fortnightly rental rate |
+| | image | ImageField | upload_to='crashpads/' | - | Crashpad image |
+| CrashpadBooking | crashpad | ForeignKey | on_delete=CASCADE | Crashpad | Booked crashpad |
+| | order | ForeignKey | on_delete=CASCADE | Order | Related order |
+| | check_in | DateField | - | - | Rental start date |
+| | check_out | DateField | - | - | Rental end date |
+| | rental_days | IntegerField | editable=False | - | Total rental days |
+| | daily_rate | DecimalField | max_digits=10, decimal_places=2 | - | Applied daily rate |
+| | total_price | DecimalField | max_digits=10, decimal_places=2 | - | Total rental price |
+| | status | CharField | max_length=10, choices | - | Booking status |
+| | created_at | DateTimeField | auto_now_add=True | - | Booking creation date |
+| | updated_at | DateTimeField | auto_now=True | - | Booking last update |
+| | customer_name | CharField | max_length=255 | - | Customer full name |
+| | customer_email | EmailField | - | - | Customer email |
+| | customer_phone | CharField | max_length=20 | - | Customer phone |
+
+## Implementation
 The database is implemented using PostgreSQL in production and SQLite for development/testing. Django ORM is used for database operations, providing a clean abstraction layer for data management.
 
-Queries have been optimised for performance were possible, making use of Django ORM's `select_related` and `prefetch_related` methods to reduce the number of database queries for related objects, effectively minimising the number of N+1 query issues.
+Queries have been optimised for performance where possible, making use of Django ORM's `select_related` and `prefetch_related` methods to reduce the number of database queries for related objects.
 
-## Technologies & Tools Stack
+# Technologies & Tools Stack
 
 This project utilizes a robust stack of technologies and tools to deliver a seamless experience in development and functionality:
 
-### Programming Languages
+## Programming Languages
 - **[Python](https://www.python.org/)**: The core programming language used for backend logic and full-stack application development. Followed the [PEP8](https://pep8.org/) style guide for Python code by using the [Flake8](https://flake8.pycqa.org/) linter.
 - **[JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript)**: For dynamic front-end functionality and interactive features. Some backend functionality was implemented in JavaScript, such as initiating the payment process with Stripe and making API calls to store order metadata.
 - **[HTML5](https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5)**: Structuring web pages, holding static content and placing placeholders for dynamic content with semantic markup. Made use of Bootstrap 5 classes for quick responsive styling as well as Django Template Language for dynamic content based on context data.
 - **[CSS3](https://developer.mozilla.org/en-US/docs/Web/CSS)**: For styling the front-end and ensuring a responsive design. CSS was written in SCSS and compiled to CSS using the [live SASS compiler](https://marketplace.visualstudio.com/items?itemName=glenn2223.live-sass).
 
-### Frameworks
+## Frameworks
 - **[Django 4.2 LTS](https://docs.djangoproject.com/en/4.2/)**: A high-level Python web framework that enables rapid development and clean, pragmatic design. Followed the [Model-View-Template](https://docs.djangoproject.com/en/4.2/topics/class-based-views/intro/) approach for the templates.
 - **[Bootstrap 5](https://getbootstrap.com/)**: For responsive design and pre-styled components.
 
@@ -201,7 +266,9 @@ This project utilizes a robust stack of technologies and tools to deliver a seam
 | [jQuery](https://jquery.com/) | 3.7.1 | DOM manipulation, AJAX requests |
 | [Stripe.js](https://stripe.com/docs/js) | Latest | Payment form handling |
 | [Bootstrap JS](https://getbootstrap.com/) | 5.3.2 | UI components, modals, tooltips |
-| [Flatpickr](https://flatpickr.js.org/) | 4.6.13 | Date picker for rental bookings |
+| [Daterangepicker](https://www.daterangepicker.com/) | 3.1.0 | Date picker for rental bookings |
+| [Moment.js](https://momentjs.com/) | 2.30.1 | Date and time parsing and formatting |
+| [Moment-timezone.js](https://momentjs.com/timezone/) | 0.5.43 | Timezone support |
 
 #### Testing Libraries & Tools
 - **[Selenium](https://www.selenium.dev/)**: For automated browser testing and frontend integration tests
@@ -228,8 +295,6 @@ This project utilizes a robust stack of technologies and tools to deliver a seam
 ### Deployment & Hosting
 - **[Heroku](https://www.heroku.com/)**: For application hosting.
 - **[AWS CloudFront](https://aws.amazon.com/cloudfront/)**: For content delivery network services to cache static files and improve performance.
-- **[PostgreSQL](https://www.postgresql.org/)**: As the production database.
-
 
 # Testing & Monitoring
 
