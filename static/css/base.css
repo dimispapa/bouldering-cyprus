@@ -186,30 +186,51 @@ h4 {
   color: #000;
   font-weight: 600;
 }
-.navbar a.nav-link {
+.navbar a.nav-link,
+.navbar i.nav-icon {
   font-size: 1.4rem;
   color: #ffffff;
   transition: color 0.3s ease;
   text-align: right;
 }
 @media (max-width: 1600px) {
-  .navbar a.nav-link {
+  .navbar a.nav-link,
+  .navbar i.nav-icon {
     font-size: 1.2rem;
   }
 }
 @media (max-width: 767px) {
-  .navbar a.nav-link {
+  .navbar a.nav-link,
+  .navbar i.nav-icon {
     font-size: 1rem;
   }
 }
 @media (max-width: 991px) {
-  .navbar a.nav-link {
+  .navbar a.nav-link,
+  .navbar i.nav-icon {
     color: #ed6c2c;
   }
 }
-.navbar a.nav-link:hover {
+.navbar a.nav-link:hover,
+.navbar i.nav-icon:hover {
   color: #000;
   font-weight: 600;
+}
+.navbar i.nav-icon {
+  font-size: 1.6rem;
+}
+@media (max-width: 1600px) {
+  .navbar i.nav-icon {
+    font-size: 1.4rem;
+  }
+}
+@media (max-width: 767px) {
+  .navbar i.nav-icon {
+    font-size: 1.2rem;
+  }
+}
+.navbar i.nav-icon.active {
+  color: #000;
 }
 .navbar a.dropdown-item {
   font-size: 1.2rem;
@@ -255,11 +276,13 @@ h4 {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 .navbar-scrolled a.nav-link,
-.navbar-scrolled a.navbar-brand {
+.navbar-scrolled a.navbar-brand,
+.navbar-scrolled i.nav-icon {
   color: #ed6c2c;
 }
 .navbar-scrolled a.nav-link:hover,
-.navbar-scrolled a.navbar-brand:hover {
+.navbar-scrolled a.navbar-brand:hover,
+.navbar-scrolled i.nav-icon:hover {
   color: #000;
 }
 .navbar-scrolled a.dropdown-item {

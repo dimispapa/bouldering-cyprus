@@ -206,9 +206,6 @@ EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_KEY")
 DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_EMAIL")
 SERVER_EMAIL = os.environ.get("DEFAULT_EMAIL")
 
-# if not PRODUCTION:
-#     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
 # Contact numbers
 WHATSAPP_NUMBER = os.environ.get("WHATSAPP_NUMBER")
 
