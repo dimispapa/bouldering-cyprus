@@ -41,7 +41,7 @@
       <!-- Order Summary -->
       <div class="row">
         <div class="col-md-8">
-          <h4>Order Details</h4>
+          <h3>Order Details</h4>
           <p>
             <em>Order Number:</em>
             {{ order.order_number }}
@@ -51,7 +51,7 @@
             {{ order.date_created }}
           </p>
           {% if order.items.all %}
-          <h5 class="mt-4">Products</h5>
+          <h4 class="mt-4">Products</h4>
           {% for item in order.items.all %}
           <div class="d-flex justify-content-between align-items-center mb-2">
             <div class="d-flex align-items-center">
@@ -68,7 +68,7 @@
             <span>€{{ item.item_total|floatformat:2 }}</span>
           </div>
           {% endfor %}
-          <h5 class="mt-4">Delivery Details</h5>
+          <h4 class="mt-4">Delivery Details</h4>
           <p>
             <em>Full Name:</em>
             {{ order.first_name }} {{ order.last_name }}
@@ -100,7 +100,7 @@
 
             {% if order.crashpads.all %}
           <hr>
-          <h5 class="mt-4">Rentals</h5>
+          <h4 class="mt-4">Rentals</h4>
           {% for booking in order.crashpads.all %}
           <div class="d-flex justify-content-between align-items-center mb-2">
             <div class="d-flex align-items-center">
@@ -119,7 +119,7 @@
             <span>€{{ booking.total_price|floatformat:2 }}</span>
           </div>
           {% endfor %}
-          <h5 class="mt-4">Crashpad Pickup Details</h5>
+          <h4 class="mt-4">Crashpad Pickup Details</h4>
           <p>Please pickup your crashpads from the following address on the first day of your booking:</p>
           <p>
             <em>Address:</em>
@@ -181,7 +181,7 @@
           .
         </p>
         <p class="h5 mb-3">Have you booked your crashpads for your bouldering adventure in Cyprus?</p>
-        <a href="{% url 'rentals:booking' %}" class="button-small">
+        <a href="{% url 'rentals:booking' %}" class="button-small" aria-label="Rent your pads now">
           <i class="fa-solid fa-book"></i> Rent your pads now
         </a>
       </div>
