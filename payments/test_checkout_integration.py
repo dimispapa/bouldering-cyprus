@@ -200,7 +200,7 @@ class CheckoutSeleniumTests(StaticLiveServerTestCase):
 
             # 2. Order summary section
             order_summary = self.browser.find_element(
-                By.XPATH, "//h4[contains(text(), 'Order Summary')]")
+                By.XPATH, "//h1[contains(text(), 'Order Summary')]")
             self.assertIsNotNone(order_summary)
 
             # 3. Progress bar
