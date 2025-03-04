@@ -6,15 +6,13 @@
   Checkout
 {% endblock %}
 
-{% block extra_js % }
-<!-- Stripe script -->
-<script src="https://js.stripe.com/v3/"></script>
-<!-- jQuery script -->
-<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-{% endblock %}
-
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'payments/css/checkout.css' %}">
+{% endblock %}
+
+{% block extra_js %}
+<!-- Stripe script -->
+<script src="https://js.stripe.com/v3/"></script>
 {% endblock %}
 
 {% block content %}
