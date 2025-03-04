@@ -107,7 +107,7 @@
                     page
                   {% endif %}" href="{% url 'cart_detail' %}">
                   <div class="position-relative">
-                    <i class="fa-solid fa-cart-shopping"></i> <span>Cart</span>
+                    <i class="fa-solid fa-cart-shopping nav-icon"></i>
                     {% if cart_item_count > 0 %}
                       <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill">
                         {{ cart_item_count }}
@@ -120,27 +120,32 @@
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle {% if request.path == account_url %}
                           active {% endif %}" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  <i class="fa-solid fa-user"></i>
                   {% if user.is_authenticated %}
-                    Account
+                    <i class="fa-solid fa-user nav-icon {% if request.path == account_url %}
+                          active {% endif %}"></i>
                   {% else %}
-                    Sign In
+                    <i class="fa-solid fa-right-to-bracket nav-icon {% if request.path == account_url %}
+                          active {% endif %}"></i>
                   {% endif %}
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end">
                   {% if user.is_authenticated %}
                     <li>
-                      <a class="dropdown-item" href="{% url 'account_email' %}">My Account</a>
+                      <a class="dropdown-item" href="{% url 'account_email' %}"><i class="fa-solid fa-user nav-icon {% if request.path == account_url %}
+                        active {% endif %}"></i> My Account</a>
                     </li>
                     <li>
-                      <a class="dropdown-item" href="{% url 'account_logout' %}">Sign Out</a>
+                      <a class="dropdown-item" href="{% url 'account_logout' %}"><i class="fa-solid fa-right-to-bracket nav-icon {% if request.path == account_url %}
+                        active {% endif %}"></i> Sign Out</a>
                     </li>
                   {% else %}
                     <li>
-                      <a class="dropdown-item" href="{% url 'account_login' %}">Sign In</a>
+                      <a class="dropdown-item" href="{% url 'account_login' %}"><i class="fa-solid fa-right-to-bracket nav-icon {% if request.path == account_url %}
+                        active {% endif %}"></i> Sign In</a>
                     </li>
                     <li>
-                      <a class="dropdown-item" href="{% url 'account_signup' %}">Sign Up</a>
+                      <a class="dropdown-item" href="{% url 'account_signup' %}"><i class="fa-solid fa-user-plus nav-icon {% if request.path == account_url %}
+                        active {% endif %}"></i> Sign Up</a>
                     </li>
                   {% endif %}
                 </ul>

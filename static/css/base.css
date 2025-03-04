@@ -272,6 +272,20 @@ h4 {
   background-color: #ed6c2c;
 }
 
+.nav-icon {
+  font-size: 1.6rem;
+}
+@media (max-width: 1600px) {
+  .nav-icon {
+    font-size: 1.4rem;
+  }
+}
+@media (max-width: 767px) {
+  .nav-icon {
+    font-size: 1.2rem;
+  }
+}
+
 /* Buttons */
 .button-large {
   background-color: #f4edd2;

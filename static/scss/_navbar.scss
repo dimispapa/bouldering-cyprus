@@ -134,3 +134,13 @@
         background-color: $orange;
     }
 }
+
+.nav-icon {
+    font-size: $l-font;
+    @include for-size(desktop-lg, down) {
+        font-size: $m-font;
+    }
+    @include for-size(phone, down) {
+        font-size: $s-font;
+    }
+}
