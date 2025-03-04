@@ -78,25 +78,37 @@ def checkout(request):
         return redirect("cart_detail")
 
     try:
-        # Proceed with checkout
+        # Proceed with checkout and create payment intent
         logger.info("Creating payment intent")
         intent = create_payment_intent(cart)
         logger.info(f"Payment intent created: {intent.id}")
 
-        # Render the checkout page with cart and order form objects
+        # Get initial data for authenticated users
+        initial_data = {}
+        if request.user.is_authenticated:
+            initial_data = {
+                'first_name': request.user.first_name,
+                'last_name': request.user.last_name,
+                'email': request.user.email,
+            }
+            logger.info(f"Pre-populating form with user data: {initial_data}")
+
+        # Create the order form with initial data
+        order_form = OrderForm(
+            initial=initial_data,
+            stripe_public_key=settings.STRIPE_PUBLIC_KEY,
+            stripe_client_secret=intent.client_secret,
+        )
+
         context = {
-            "cart":
-            cart,
-            "order_form":
-            OrderForm(
-                stripe_public_key=settings.STRIPE_PUBLIC_KEY,
-                stripe_client_secret=intent.client_secret,
-            ),
+            "cart": cart,
+            "order_form": order_form,
         }
 
         # Render the checkout template
         logger.info("Rendering checkout template")
         return render(request, 'payments/checkout.html', context)
+
     except Exception as e:
         logger.error(f"Error in checkout view: {str(e)}")
         messages.error(request, f"An error occurred: {str(e)}")
