@@ -8,31 +8,30 @@
 {% endblock %}
 
 {% block extra_css %}
-  <link rel="stylesheet" href="{% static 'css/accounts.css' %}" />
+<link rel="stylesheet" href="{% static 'css/accounts.css' %}">
 {% endblock %}
 
 {% block content %}
   {% include 'partials/rock-background.html' %}
-  <div class="container">
-    <div class="auth-container">
-      <h1>{% trans 'Sign Up' %}</h1>
-
-      {% if form.errors %}
-        <div class="alert alert-danger">
-          <p>
-            {% trans 'Please correct the errors below:' %}
-          </p>
-          {{ form.non_field_errors }}
-        </div>
-      {% endif %}
+<div class="container">
+  <div class="auth-container">
+    <h1>{% trans 'Sign Up' %}</h1>
+    {% if form.errors %}
+    <div class="alert alert-danger">
+      <p>
+        {% trans 'Please correct the errors below:' %}
+      </p>
+      {{ form.non_field_errors }}
+    </div>
+    {% endif %}
 
       {% crispy form %}
-
-      <div class="auth-links">
-        <p>
-          {% trans 'Already have an account?' %} <a href="{% url 'account_login' %}">{% trans 'Sign In' %}</a>
-        </p>
-      </div>
+    <div class="auth-links">
+      <p>
+        {% trans 'Already have an account?' %}
+        <a href="{% url 'account_login' %}">{% trans 'Sign In' %}</a>
+      </p>
     </div>
   </div>
+</div>
 {% endblock %}

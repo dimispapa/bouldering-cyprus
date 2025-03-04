@@ -6,182 +6,196 @@
 {% endblock %}
 
 {% block extra_css %}
-  <link rel="stylesheet" href="{% static 'payments/css/checkout-success.css' %}" />
+<link rel="stylesheet" href="{% static 'payments/css/checkout-success.css' %}">
 {% endblock %}
 
 {% block content %}
-
-  <!-- Hero Image -->
-  <div class="hero-wrapper mb-5">
-    <picture>
-      <source media="(min-width: 1441px)" srcset="{% static 'payments/images/hero_image1/sunset_cloudy_climber_diedro_1920.webp' %}" />
-      <source media="(min-width: 1025px)" srcset="{% static 'payments/images/hero_image1/sunset_cloudy_climber_diedro_1440.webp' %}" />
-      <source media="(min-width: 641px)" srcset="{% static 'payments/images/hero_image1/sunset_cloudy_climber_diedro_1024.webp' %}" />
-      <source media="(max-width: 640px)" srcset="{% static 'payments/images/hero_image1/sunset_cloudy_climber_diedro_640.webp' %}" />
-      <img src="{% static 'payments/images/hero_image1/sunset_cloudy_climber_diedro_1920.webp' %}" alt="Climber ascending a rock face at sunset" />
-    </picture>
-  </div>
-
-  <!-- Include Progress Bar Partial -->
-  {% include 'partials/progress_bar.html' with progressbar_modifier='progressbar--step-3' %}
-
-  <!-- Order Complete Content -->
-  <div class="container p-3 p-md-5 mt-5 mb-5">
-    <div class="card mb-4">
-      <div class="card-header">
-        <h1 class="mb-0">Order Confirmation</h1>
+<!-- Hero Image -->
+<div class="hero-wrapper mb-5">
+  <picture>
+    <source media="(min-width: 1441px)" srcset="{% static 'payments/images/hero_image1/sunset_cloudy_climber_diedro_1920.webp' %}">
+    <source media="(min-width: 1025px)" srcset="{% static 'payments/images/hero_image1/sunset_cloudy_climber_diedro_1440.webp' %}">
+    <source media="(min-width: 641px)" srcset="{% static 'payments/images/hero_image1/sunset_cloudy_climber_diedro_1024.webp' %}">
+    <source media="(max-width: 640px)" srcset="{% static 'payments/images/hero_image1/sunset_cloudy_climber_diedro_640.webp' %}">
+    <img src="{% static 'payments/images/hero_image1/sunset_cloudy_climber_diedro_1920.webp' %}" alt="Climber ascending a rock face at sunset">
+  </picture>
+</div>
+<!-- Include Progress Bar Partial -->
+{% include 'partials/progress_bar.html' with progressbar_modifier='progressbar--step-3' %}
+<!-- Order Complete Content -->
+<div class="container p-3 p-md-5 mt-5 mb-5">
+  <div class="card mb-4">
+    <div class="card-header">
+      <h1 class="mb-0">Order Confirmation</h1>
+    </div>
+    <div class="card-body">
+      <div class="text-center mb-4">
+        <i class="fa-solid fa-circle-check text-success" style="font-size: 4rem;"></i>
+        <h2 class="mt-3">Thank you for your order!</h2>
+        <p class="text-muted">
+          Your order information is below. A confirmation email will be sent to
+          <strong>{{ order.email }}</strong>
+          .
+        </p>
       </div>
-      <div class="card-body">
-        <div class="text-center mb-4">
-          <i class="fa-solid fa-circle-check text-success" style="font-size: 4rem;"></i>
-          <h2 class="mt-3">Thank you for your order!</h2>
-          <p class="text-muted">
-            Your order information is below. A confirmation email will be sent to <strong>{{ order.email }}</strong>.
+      <!-- Order Summary -->
+      <div class="row">
+        <div class="col-md-8">
+          <h4>Order Details</h4>
+          <p>
+            <em>Order Number:</em>
+            {{ order.order_number }}
           </p>
-        </div>
-
-        <!-- Order Summary -->
-        <div class="row">
-          <div class="col-md-8">
-            <h4>Order Details</h4>
-            <p>
-              <em>Order Number:</em> {{ order.order_number }}
-            </p>
-            <p>
-              <em>Order Date:</em> {{ order.date_created }}
-            </p>
-
-            {% if order.items.all %}
-              <h5 class="mt-4">Products</h5>
-              {% for item in order.items.all %}
-                <div class="d-flex justify-content-between align-items-center mb-2">
-                  <div class="d-flex align-items-center">
-                    {% if item.product.image %}
-                      <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="me-3 img-cart-thumbnail" />
-                    {% else %}
-                      <img src="{% static 'images/noimage.png' %}" alt="No image available" class="me-3 img-cart-thumbnail" />
-                    {% endif %}
-                    <div>
-                      <span class="fw-bold">{{ item.product.name }}</span>
-                      <small class="text-muted d-block">Quantity: {{ item.quantity }}</small>
-                    </div>
-                  </div>
-                  <span>€{{ item.item_total|floatformat:2 }}</span>
-                </div>
-              {% endfor %}
-              <h5 class="mt-4">Delivery Details</h5>
-              <p>
-                <em>Full Name:</em> {{ order.first_name }} {{ order.last_name }}
-              </p>
-              <p>
-                <em>Address:</em> {{ order.address_line1 }}
-              </p>
-              {% if order.address_line2 %}
-                <p>
-                  <em>Address Line 2:</em> {{ order.address_line2 }}
-                </p>
+          <p>
+            <em>Order Date:</em>
+            {{ order.date_created }}
+          </p>
+          {% if order.items.all %}
+          <h5 class="mt-4">Products</h5>
+          {% for item in order.items.all %}
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <div class="d-flex align-items-center">
+              {% if item.product.image %}
+              <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="me-3 img-cart-thumbnail">
+              {% else %}
+              <img src="{% static 'images/noimage.png' %}" alt="No image available" class="me-3 img-cart-thumbnail">
               {% endif %}
-              <p>
-                <em>Town/City:</em> {{ order.town_or_city }}
-              </p>
-              <p>
-                <em>Postal Code:</em> {{ order.postal_code }}
-              </p>
-              <p>
-                <em>Country:</em> {{ order.country.name }}
-              </p>
-              <p>An email will be sent to you once the product items are shipped along with courier tracking details.</p>
-            {% endif %}
+              <div>
+                <span class="fw-bold">{{ item.product.name }}</span>
+                <small class="text-muted d-block">Quantity: {{ item.quantity }}</small>
+              </div>
+            </div>
+            <span>€{{ item.item_total|floatformat:2 }}</span>
+          </div>
+          {% endfor %}
+          <h5 class="mt-4">Delivery Details</h5>
+          <p>
+            <em>Full Name:</em>
+            {{ order.first_name }} {{ order.last_name }}
+          </p>
+          <p>
+            <em>Address:</em>
+            {{ order.address_line1 }}
+          </p>
+          {% if order.address_line2 %}
+          <p>
+            <em>Address Line 2:</em>
+            {{ order.address_line2 }}
+          </p>
+          {% endif %}
+          <p>
+            <em>Town/City:</em>
+            {{ order.town_or_city }}
+          </p>
+          <p>
+            <em>Postal Code:</em>
+            {{ order.postal_code }}
+          </p>
+          <p>
+            <em>Country:</em>
+            {{ order.country.name }}
+          </p>
+          <p>An email will be sent to you once the product items are shipped along with courier tracking details.</p>
+          {% endif %}
 
             {% if order.crashpads.all %}
-              <hr />
-              <h5 class="mt-4">Rentals</h5>
-              {% for booking in order.crashpads.all %}
-                <div class="d-flex justify-content-between align-items-center mb-2">
-                  <div class="d-flex align-items-center">
-                    {% if booking.crashpad.image %}
-                      <img src="{{ booking.crashpad.image.url }}" alt="{{ booking.crashpad.name }}" class="me-3 img-cart-thumbnail" />
-                    {% else %}
-                      <img src="{% static 'images/noimage.png' %}" alt="No image available" class="me-3 img-cart-thumbnail" />
-                    {% endif %}
-                    <div>
-                      <span class="fw-bold">{{ booking.crashpad.name }}</span>
-                      <small class="text-muted d-block">Booking ID: {{ booking.id }}</small>
-                      <small class="text-muted d-block">{{ booking.check_in }} to {{ booking.check_out }}</small>
-                      <small class="text-muted d-block">{{ booking.rental_days }} days at €{{ booking.daily_rate }}/day</small>
-                    </div>
-                  </div>
-                  <span>€{{ booking.total_price|floatformat:2 }}</span>
-                </div>
-              {% endfor %}
-              <h5 class="mt-4">Crashpad Pickup Details</h5>
-              <p>Please pickup your crashpads from the following address on the first day of your booking:</p>
-              <p>
-                <em>Address:</em> {{ crashpad_pickup_address.line1 }}
-              </p>
-              {% if crashpad_pickup_address.line2 %}
-                <p>
-                  <em>Address Line 2:</em> {{ crashpad_pickup_address.line2 }}
-                </p>
+          <hr>
+          <h5 class="mt-4">Rentals</h5>
+          {% for booking in order.crashpads.all %}
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <div class="d-flex align-items-center">
+              {% if booking.crashpad.image %}
+              <img src="{{ booking.crashpad.image.url }}" alt="{{ booking.crashpad.name }}" class="me-3 img-cart-thumbnail">
+              {% else %}
+              <img src="{% static 'images/noimage.png' %}" alt="No image available" class="me-3 img-cart-thumbnail">
               {% endif %}
-              <p>
-                <em>Town/City:</em> {{ crashpad_pickup_address.town_or_city }}
-              </p>
-              <p>
-                <em>Postal Code:</em> {{ crashpad_pickup_address.postal_code }}
-              </p>
-              <p>
-                <em>Country:</em> {{ crashpad_pickup_address.country }}
-              </p>
-              <p>Return the crashpads to the same address on the last day of your booking.</p>
-            {% endif %}
+              <div>
+                <span class="fw-bold">{{ booking.crashpad.name }}</span>
+                <small class="text-muted d-block">Booking ID: {{ booking.id }}</small>
+                <small class="text-muted d-block">{{ booking.check_in }} to {{ booking.check_out }}</small>
+                <small class="text-muted d-block">{{ booking.rental_days }} days at €{{ booking.daily_rate }}/day</small>
+              </div>
+            </div>
+            <span>€{{ booking.total_price|floatformat:2 }}</span>
           </div>
-
-          <div class="col-md-4 border-start">
-            <h4>Order Summary</h4>
-            <p>
-              <em>Subtotal:</em> €{{ order.order_total|floatformat:2 }}
-            </p>
-            
-            {% if order.items.all %}
-              <p>
-                <em>Delivery:</em> €{{ order.delivery_cost|floatformat:2 }}
-              </p>
-            {% endif %}
+          {% endfor %}
+          <h5 class="mt-4">Crashpad Pickup Details</h5>
+          <p>Please pickup your crashpads from the following address on the first day of your booking:</p>
+          <p>
+            <em>Address:</em>
+            {{ crashpad_pickup_address.line1 }}
+          </p>
+          {% if crashpad_pickup_address.line2 %}
+          <p>
+            <em>Address Line 2:</em>
+            {{ crashpad_pickup_address.line2 }}
+          </p>
+          {% endif %}
+          <p>
+            <em>Town/City:</em>
+            {{ crashpad_pickup_address.town_or_city }}
+          </p>
+          <p>
+            <em>Postal Code:</em>
+            {{ crashpad_pickup_address.postal_code }}
+          </p>
+          <p>
+            <em>Country:</em>
+            {{ crashpad_pickup_address.country }}
+          </p>
+          <p>Return the crashpads to the same address on the last day of your booking.</p>
+          {% endif %}
+        </div>
+        <div class="col-md-4 border-start">
+          <h4>Order Summary</h4>
+          <p>
+            <em>Subtotal:</em>
+            €{{ order.order_total|floatformat:2 }}
+          </p>
+          {% if order.items.all %}
+          <p>
+            <em>Delivery:</em>
+            €{{ order.delivery_cost|floatformat:2 }}
+          </p>
+          {% endif %}
             
             {% if order.crashpads.all %}
-              <p>
-                <em>Handling Fee:</em> €{{ order.handling_fee|floatformat:2 }}
-                <small class="text-muted d-block">* Processing fee for crashpad rentals</small>
-              </p>
-            {% endif %}
-            
-            <hr />
-            <p class="h5">
-              <em>Total:</em> €{{ order.grand_total|floatformat:2 }}
-            </p>
-          </div>
-        </div>
-
-        <div class="text-center mt-5 p-4 bg-light rounded">
-          <p class="text-muted mb-3">
-            If you have any questions, please contact us at <strong>{{ contact_email }}</strong> or via Phone/WhatsApp on <strong>{{ whatsapp_number }}</strong>.
+          <p>
+            <em>Handling Fee:</em>
+            €{{ order.handling_fee|floatformat:2 }}
+            <small class="text-muted d-block">* Processing fee for crashpad rentals</small>
           </p>
-          <p class="h5 mb-3">Have you booked your crashpads for your bouldering adventure in Cyprus?</p>
-          <a href="{% url 'rentals:booking' %}" class="button-small"><i class="fa-solid fa-book"></i> Rent your pads now</a>
+          {% endif %}
+          <hr>
+          <p class="h5">
+            <em>Total:</em>
+            €{{ order.grand_total|floatformat:2 }}
+          </p>
         </div>
+      </div>
+      <div class="text-center mt-5 p-4 bg-light rounded">
+        <p class="text-muted mb-3">
+          If you have any questions, please contact us at
+          <strong>{{ contact_email }}</strong> or via Phone/WhatsApp on
+          <strong>{{ whatsapp_number }}</strong>
+          .
+        </p>
+        <p class="h5 mb-3">Have you booked your crashpads for your bouldering adventure in Cyprus?</p>
+        <a href="{% url 'rentals:booking' %}" class="button-small">
+          <i class="fa-solid fa-book"></i> Rent your pads now
+        </a>
       </div>
     </div>
   </div>
-
-  <!-- Hero Image -->
-  <div class="hero-wrapper">
-    <picture>
-      <source media="(min-width: 1441px)" srcset="{% static 'payments/images/hero_image2/gerakopetra_hill_boulderer_walking_1920.webp' %}" />
-      <source media="(min-width: 1025px)" srcset="{% static 'payments/images/hero_image2/gerakopetra_hill_boulderer_walking_1440.webp' %}" />
-      <source media="(min-width: 641px)" srcset="{% static 'payments/images/hero_image2/gerakopetra_hill_boulderer_walking_1024.webp' %}" />
-      <source media="(max-width: 640px)" srcset="{% static 'payments/images/hero_image2/gerakopetra_hill_boulderer_walking_640.webp' %}" />
-      <img src="{% static 'payments/images/hero_image2/gerakopetra_hill_boulderer_walking_1920.webp' %}" alt="Boulderer walking at Gerakopetra Hill" />
-    </picture>
-  </div>
+</div>
+<!-- Hero Image -->
+<div class="hero-wrapper">
+  <picture>
+    <source media="(min-width: 1441px)" srcset="{% static 'payments/images/hero_image2/gerakopetra_hill_boulderer_walking_1920.webp' %}">
+    <source media="(min-width: 1025px)" srcset="{% static 'payments/images/hero_image2/gerakopetra_hill_boulderer_walking_1440.webp' %}">
+    <source media="(min-width: 641px)" srcset="{% static 'payments/images/hero_image2/gerakopetra_hill_boulderer_walking_1024.webp' %}">
+    <source media="(max-width: 640px)" srcset="{% static 'payments/images/hero_image2/gerakopetra_hill_boulderer_walking_640.webp' %}">
+    <img src="{% static 'payments/images/hero_image2/gerakopetra_hill_boulderer_walking_1920.webp' %}" alt="Boulderer walking at Gerakopetra Hill">
+  </picture>
+</div>
 {% endblock %}

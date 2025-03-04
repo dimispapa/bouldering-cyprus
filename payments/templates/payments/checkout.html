@@ -7,89 +7,91 @@
 {% endblock %}
 
 {% block extra_css %}
-  <link rel="stylesheet" href="{% static 'payments/css/checkout.css' %}" />
+<link rel="stylesheet" href="{% static 'payments/css/checkout.css' %}">
 {% endblock %}
 
 {% block content %}
-  <!-- Background Image -->
-  {% include 'partials/rock-background.html' %}
-
-  <!-- Checkout Container -->
-  <div id="checkout-container" class="container p-3 p-md-5">
-    <!-- Cart Summary Section -->
-    <div class="card mb-4">
-      <div class="card-header d-flex justify-content-between align-items-center">
-        <h4 class="mb-0">Order Summary</h4>
-      </div>
-      <div class="card-body">
-        <div class="row">
-          <div class="col-md-8">
-            {% for item in cart_items %}
-              <div class="d-flex justify-content-between align-items-center mb-3">
-                <div class="d-flex align-items-center">
-                  {% if item.image_url %}
-                    <img src="{{ item.image_url }}" alt="{{ item.item.name }}" class="me-3 img-cart-thumbnail" />
-                  {% else %}
-                    <img src="{% static 'images/noimage.png' %}" alt="No image available" class="me-3 img-cart-thumbnail" />
-                  {% endif %}
-                  <div>
-                    <span class="fw-bold">{{ item.item.name }}</span>
-                    {% if item.type == 'rental' %}
-                      <small class="text-muted d-block">Rental: {{ item.check_in }} to {{ item.check_out }}</small>
-                      <small class="text-muted d-block">{{ item.rental_days }} days at €{{ item.daily_rate }}/day</small>
-                    {% else %}
-                      <small class="text-muted d-block">Quantity: {{ item.quantity }}</small>
-                    {% endif %}
-                  </div>
-                </div>
-                <span>€{{ item.total_price|floatformat:2 }}</span>
-              </div>
-            {% endfor %}
-            <a href="{% url 'cart_detail' %}" class="button-update"><i class="fa-solid fa-pen-to-square"></i> Edit cart</a>
-          </div>
-          <div class="col-md-4 border-start">
-            <div class="text-end">
-              <p class="mb-1">
-                Subtotal: <span class="fw-bold">€{{ cart_total|floatformat:2 }}</span>
-              </p>
-
-              {% if has_products %}
-                {% if delivery_cost %}
-                  <p class="mb-1">
-                    Delivery: <span class="fw-bold">€{{ delivery_cost|floatformat:2 }}</span>
-                    <small class="text-muted d-block">* Free delivery on orders over €{{ free_delivery_threshold|floatformat:0 }}</small>
-                  </p>
+<!-- Background Image -->
+{% include 'partials/rock-background.html' %}
+<!-- Checkout Container -->
+<div id="checkout-container" class="container p-3 p-md-5">
+  <!-- Cart Summary Section -->
+  <div class="card mb-4">
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <h4 class="mb-0">Order Summary</h4>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-8">
+          {% for item in cart_items %}
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="d-flex align-items-center">
+              {% if item.image_url %}
+              <img src="{{ item.image_url }}" alt="{{ item.item.name }}" class="me-3 img-cart-thumbnail">
+              {% else %}
+              <img src="{% static 'images/noimage.png' %}" alt="No image available" class="me-3 img-cart-thumbnail">
+              {% endif %}
+              <div>
+                <span class="fw-bold">{{ item.item.name }}</span>
+                {% if item.type == 'rental' %}
+                <small class="text-muted d-block">Rental: {{ item.check_in }} to {{ item.check_out }}</small>
+                <small class="text-muted d-block">{{ item.rental_days }} days at €{{ item.daily_rate }}/day</small>
                 {% else %}
-                  <p class="mb-1 text-success">Free delivery - order over €{{ free_delivery_threshold|floatformat:0 }}</p>
+                <small class="text-muted d-block">Quantity: {{ item.quantity }}</small>
                 {% endif %}
+              </div>
+            </div>
+            <span>€{{ item.total_price|floatformat:2 }}</span>
+          </div>
+          {% endfor %}
+          <a href="{% url 'cart_detail' %}" class="button-update">
+            <i class="fa-solid fa-pen-to-square"></i> Edit cart
+          </a>
+        </div>
+        <div class="col-md-4 border-start">
+          <div class="text-end">
+            <p class="mb-1">
+              Subtotal:
+              <span class="fw-bold">€{{ cart_total|floatformat:2 }}</span>
+            </p>
+            {% if has_products %}
+                {% if delivery_cost %}
+            <p class="mb-1">
+              Delivery:
+              <span class="fw-bold">€{{ delivery_cost|floatformat:2 }}</span>
+              <small class="text-muted d-block">* Free delivery on orders over €{{ free_delivery_threshold|floatformat:0 }}</small>
+            </p>
+            {% else %}
+            <p class="mb-1 text-success">Free delivery - order over €{{ free_delivery_threshold|floatformat:0 }}</p>
+            {% endif %}
               {% endif %}
 
               {% if has_rentals %}
-                <p class="mb-1">
-                  Handling Fee: <span class="fw-bold">€{{ handling_fee|floatformat:2 }}</span>
-                  <small class="text-muted d-block">* Processing fee for crashpad rentals</small>
-                </p>
-              {% endif %}
-              <hr class="my-2" />
-              <p class="h5">
-                Grand Total: <span class="fw-bold">€{{ grand_total|floatformat:2 }}</span>
-              </p>
-            </div>
+            <p class="mb-1">
+              Handling Fee:
+              <span class="fw-bold">€{{ handling_fee|floatformat:2 }}</span>
+              <small class="text-muted d-block">* Processing fee for crashpad rentals</small>
+            </p>
+            {% endif %}
+            <hr class="my-2">
+            <p class="h5">
+              Grand Total:
+              <span class="fw-bold">€{{ grand_total|floatformat:2 }}</span>
+            </p>
           </div>
         </div>
       </div>
     </div>
-
-    <div id="progressbar-container">
-      <!-- Include Progress Bar Partial -->
-      {% include 'partials/progress_bar.html' with progressbar_modifier='progressbar--step-2' %}
-    </div>
-
-    {% crispy order_form %}
   </div>
+  <div id="progressbar-container">
+    <!-- Include Progress Bar Partial -->
+    {% include 'partials/progress_bar.html' with progressbar_modifier='progressbar--step-2' %}
+  </div>
+  {% crispy order_form %}
+</div>
 {% endblock %}
 
 {% block postload_js %}
   {{ block.super }}
-  <script src="{% static '../static/payments/js/checkout.js' %}"></script>
+<script src="{% static '../static/payments/js/checkout.js' %}"></script>
 {% endblock %}

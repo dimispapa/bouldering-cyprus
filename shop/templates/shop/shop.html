@@ -6,121 +6,133 @@
 {% endblock %}
 
 {% block extra_css %}
-  <link rel="stylesheet" href="{% static 'shop/css/shop.css' %}" />
+<link rel="stylesheet" href="{% static 'shop/css/shop.css' %}">
 {% endblock %}
 
 {% block content %}
-
-  <!-- Hero Image -->
-  <div class="hero-wrapper">
-    <picture>
-      <source media="(min-width: 1441px)" srcset="{% static 'shop/images/hero_image8/dimis_climbing_zografos_1920.webp' %}" />
-      <source media="(min-width: 1025px)" srcset="{% static 'shop/images/hero_image8/dimis_climbing_zografos_1440.webp' %}" />
-      <source media="(min-width: 641px)" srcset="{% static 'shop/images/hero_image8/dimis_climbing_zografos_1024.webp' %}" />
-      <source media="(max-width: 640px)" srcset="{% static 'shop/images/hero_image8/dimis_climbing_zografos_640.webp' %}" />
-      <img src="{% static 'shop/images/hero_image8/dimis_climbing_zografos_1920.webp' %}" alt="Climber ascending a rock face in Zografos" />
-    </picture>
-  </div>
-
-  <!-- Content Section -->
-  <div class="container mt-5 mb-5 content-section">
-    <!-- Product Details -->
-    {% for product in products %}
+<!-- Hero Image -->
+<div class="hero-wrapper">
+  <picture>
+    <source media="(min-width: 1441px)" srcset="{% static 'shop/images/hero_image8/dimis_climbing_zografos_1920.webp' %}">
+    <source media="(min-width: 1025px)" srcset="{% static 'shop/images/hero_image8/dimis_climbing_zografos_1440.webp' %}">
+    <source media="(min-width: 641px)" srcset="{% static 'shop/images/hero_image8/dimis_climbing_zografos_1024.webp' %}">
+    <source media="(max-width: 640px)" srcset="{% static 'shop/images/hero_image8/dimis_climbing_zografos_640.webp' %}">
+    <img src="{% static 'shop/images/hero_image8/dimis_climbing_zografos_1920.webp' %}" alt="Climber ascending a rock face in Zografos">
+  </picture>
+</div>
+<!-- Content Section -->
+<div class="container mt-5 mb-5 content-section">
+  <!-- Product Details -->
+  {% for product in products %}
       {% if product.is_active %}
-        <div class="row mt-4">
-          <div class="col-md-8">
-            <!-- Product Name -->
-            <h1>{{ product.name }}</h1>
-            <!-- Product Description -->
-            {{ product.description|safe }}
-            <!-- Product Price -->
-            <h2>€{{ product.price }}</h2>
-            <!-- Product Stock -->
-            <div class="{{ product.get_stock_status.css_class }}" role="alert">
-              <strong>{{ product.get_stock_status.message }}</strong>
-            </div>
-            {% if product.is_in_stock %}
-              <!-- Quantity Selector & Add to Cart -->
-              <div class="d-flex align-items-center mt-3 p-1">
-                <form action="{% url 'cart_add' 'product' %}" method="post" class="w-100">
-                  {% csrf_token %}
-                  <input type="hidden" name="product_id" value="{{ product.id }}" />
-                  <div class="input-group">
-                    <!-- Quantity Input -->
-                    <label for="quantity-{{ product.id }}" class="input-group-text">Qty</label>
-                    <input type="number" id="quantity-{{ product.id }}" name="quantity" class="form-control me-3" value="1" min="1" />
-
-                    <!-- Add to Cart Button -->
-                    <button type="submit" class="button-small">
-                      <!-- Cart Icon -->
-                      <i class="fas fa-shopping-cart"></i>
-                      <!-- Plus Icon for Small Screens -->
-                      <i class="fa-solid fa-plus d-inline d-lg-none"></i>
-                      <!-- Text for Larger Screens -->
-                      <span class="d-none d-lg-inline">Add to Cart</span>
-                    </button>
-                  </div>
-                </form>
-              </div>
-            {% endif %}
+  <div class="row mt-4">
+    <div class="col-md-8">
+      <!-- Product Name -->
+      <h1>{{ product.name }}</h1>
+      <!-- Product Description -->
+      {{ product.description|safe }}
+      <!-- Product Price -->
+      <h2>€{{ product.price }}</h2>
+      <!-- Product Stock -->
+      <div class="{{ product.get_stock_status.css_class }}" role="alert">
+        <strong>{{ product.get_stock_status.message }}</strong>
+      </div>
+      {% if product.is_in_stock %}
+      <!-- Quantity Selector & Add to Cart -->
+      <div class="d-flex align-items-center mt-3 p-1">
+        <form action="{% url 'cart_add' 'product' %}" method="post" class="w-100">
+          {% csrf_token %}
+          <input type="hidden" name="product_id" value="{{ product.id }}">
+          <div class="input-group">
+            <!-- Quantity Input -->
+            <label for="quantity-{{ product.id }}" class="input-group-text">Qty</label>
+            <input
+              type="number"
+              id="quantity-{{ product.id }}"
+              name="quantity"
+              class="form-control me-3"
+              value="1"
+              min="1"
+            >
+            <!-- Add to Cart Button -->
+            <button type="submit" class="button-small">
+              <!-- Cart Icon -->
+              <i class="fas fa-shopping-cart"></i>
+              <!-- Plus Icon for Small Screens -->
+              <i class="fa-solid fa-plus d-inline d-lg-none"></i>
+              <!-- Text for Larger Screens -->
+              <span class="d-none d-lg-inline">Add to Cart</span>
+            </button>
           </div>
-
-          <!-- Sneak Peek Gallery -->
-          <div class="col-md-4 mt-3 mt-md-0">
-            <h2>Gallery</h2>
-            <div class="d-flex flex-wrap">
-              <!-- Main Product Image as Large Thumbnail -->
-              {% if product.image %}
-                <img src="{{ product.image.url }}" alt="{{ product.name }}" class="main-image img-thumbnail gallery-thumbnail" data-bs-toggle="modal" data-bs-target="#galleryModal" />
-              {% endif %}
-
-              <!-- Other Gallery Images -->
-              {% for image in product.gallery_images.all %}
-                <img src="{{ image.image.url }}" alt="Gallery Image" class="img-thumbnail gallery-thumbnail" data-bs-toggle="modal" data-bs-target="#galleryModal" />
-              {% empty %}
-                <p>No additional gallery images available.</p>
-              {% endfor %}
-            </div>
-          </div>
-        </div>
+        </form>
+      </div>
       {% endif %}
-    {% empty %}
-      <p>No products available.</p>
-    {% endfor %}
-  </div>
-
-  <!-- Hero Image 2 -->
-  <div class="hero-wrapper hero-wrapper--offset">
-    <picture>
-      <source media="(min-width: 1441px)" srcset="{% static 'shop/images/hero_image6/kato_droushia_bouldering_afar_1920.webp' %}" />
-      <source media="(min-width: 1025px)" srcset="{% static 'shop/images/hero_image6/kato_droushia_bouldering_afar_1440.webp' %}" />
-      <source media="(min-width: 641px)" srcset="{% static 'shop/images/hero_image6/kato_droushia_bouldering_afar_1024.webp' %}" />
-      <source media="(max-width: 640px)" srcset="{% static 'shop/images/hero_image6/kato_droushia_bouldering_afar_640.webp' %}" />
-      <img src="{% static 'shop/images/hero_image6/kato_droushia_bouldering_afar_1920.webp' %}" alt="Panoramic view of Kato Droushia bouldering area" />
-    </picture>
-  </div>
-
-  <!-- Modal Slideshow -->
-  <div id="galleryModal" class="modal fade" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h3 class="modal-title">Gallery</h3>
-          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-        </div>
-        <div class="modal-body text-center">
-          <img id="modalImage" src="" class="img-fluid" />
-        </div>
-        <div class="modal-footer">
-          <button id="prevBtn" class="button-small">Previous</button>
-          <button id="nextBtn" class="button-small">Next</button>
-        </div>
+    </div>
+    <!-- Sneak Peek Gallery -->
+    <div class="col-md-4 mt-3 mt-md-0">
+      <h2>Gallery</h2>
+      <div class="d-flex flex-wrap">
+        <!-- Main Product Image as Large Thumbnail -->
+        {% if product.image %}
+        <img
+          src="{{ product.image.url }}"
+          alt="{{ product.name }}"
+          class="main-image img-thumbnail gallery-thumbnail"
+          data-bs-toggle="modal"
+          data-bs-target="#galleryModal"
+        >
+        {% endif %}
+        <!-- Other Gallery Images -->
+        {% for image in product.gallery_images.all %}
+        <img
+          src="{{ image.image.url }}"
+          alt="Gallery Image"
+          class="img-thumbnail gallery-thumbnail"
+          data-bs-toggle="modal"
+          data-bs-target="#galleryModal"
+        >
+        {% empty %}
+        <p>No additional gallery images available.</p>
+        {% endfor %}
       </div>
     </div>
   </div>
+  {% endif %}
+    {% empty %}
+  <p>No products available.</p>
+  {% endfor %}
+</div>
+<!-- Hero Image 2 -->
+<div class="hero-wrapper hero-wrapper--offset">
+  <picture>
+    <source media="(min-width: 1441px)" srcset="{% static 'shop/images/hero_image6/kato_droushia_bouldering_afar_1920.webp' %}">
+    <source media="(min-width: 1025px)" srcset="{% static 'shop/images/hero_image6/kato_droushia_bouldering_afar_1440.webp' %}">
+    <source media="(min-width: 641px)" srcset="{% static 'shop/images/hero_image6/kato_droushia_bouldering_afar_1024.webp' %}">
+    <source media="(max-width: 640px)" srcset="{% static 'shop/images/hero_image6/kato_droushia_bouldering_afar_640.webp' %}">
+    <img src="{% static 'shop/images/hero_image6/kato_droushia_bouldering_afar_1920.webp' %}" alt="Panoramic view of Kato Droushia bouldering area">
+  </picture>
+</div>
+<!-- Modal Slideshow -->
+<div id="galleryModal" class="modal fade" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Gallery</h3>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body text-center">
+        <img id="modalImage" src="" class="img-fluid">
+      </div>
+      <div class="modal-footer">
+        <button id="prevBtn" class="button-small">Previous</button>
+        <button id="nextBtn" class="button-small">Next</button>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}
 
 {% block postload_js %}
   {{ block.super }}
-  <script src="{% static 'shop/js/shop.js' %}"></script>
+<script src="{% static 'shop/js/shop.js' %}"></script>
 {% endblock %}

@@ -7,66 +7,70 @@
 {% endblock %}
 
 {% block extra_css %}
-  <link rel="stylesheet" href="{% static 'css/accounts.css' %}" />
+<link rel="stylesheet" href="{% static 'css/accounts.css' %}">
 {% endblock %}
 
 {% block content %}
   {% include 'partials/rock-background.html' %}
-  <div class="container">
-    <div class="auth-container">
-      <h1>{% trans 'My Account' %}</h1>
-
-      <div class="account-section">
-        <h3>{% trans 'Email Address' %}</h3>
-
-        {% if user.emailaddress_set.all %}
-          <div class="email-item">
-            <div>
-              <label class="{% if user.emailaddress_set.first.verified %}primary-email{% endif %}">
-                {{ user.email }}
+<div class="container">
+  <div class="auth-container">
+    <h1>{% trans 'My Account' %}</h1>
+    <div class="account-section">
+      <h3>{% trans 'Email Address' %}</h3>
+      {% if user.emailaddress_set.all %}
+      <div class="email-item">
+        <div>
+          <label class="{% if user.emailaddress_set.first.verified %}primary-email{% endif %}">
+            {{ user.email }}
                 {% if user.emailaddress_set.first.verified %}
-                  <span class="verified-badge"><i class="fa-solid fa-circle-check"></i> {% trans 'Verified' %}</span>
-                {% else %}
-                  <span class="unverified-badge"><i class="fa-solid fa-circle-exclamation"></i> {% trans 'Unverified' %}</span>
-                {% endif %}
-              </label>
-            </div>
-
-            {% if not user.emailaddress_set.first.verified %}
-              <div class="email-actions">
-                <form action="{% url 'account_email' %}" method="post">
-                  {% csrf_token %}
-                  <button class="btn btn-sm btn-outline-secondary" type="submit" name="action_send" value="{{ user.email }}">{% trans 'Re-send Verification' %}</button>
-                </form>
-              </div>
+            <span class="verified-badge">
+              <i class="fa-solid fa-circle-check"></i> {% trans 'Verified' %}
+            </span>
+            {% else %}
+            <span class="unverified-badge">
+              <i class="fa-solid fa-circle-exclamation"></i> {% trans 'Unverified' %}
+            </span>
             {% endif %}
-          </div>
-        {% else %}
-          <p>
-            <strong>{% trans 'Warning:' %}</strong> {% trans 'You currently do not have any email address set up. You should really add an email address so you can receive notifications, reset your password, etc.' %}
-          </p>
+          </label>
+        </div>
+        {% if not user.emailaddress_set.first.verified %}
+        <div class="email-actions">
+          <form action="{% url 'account_email' %}" method="post">
+            {% csrf_token %}
+            <button
+              class="btn btn-sm btn-outline-secondary"
+              type="submit"
+              name="action_send"
+              value="{{ user.email }}"
+            >{% trans 'Re-send Verification' %}</button>
+          </form>
+        </div>
         {% endif %}
       </div>
-
-      <div class="account-section">
-        <h3>{% trans 'Newsletter Preferences' %}</h3>
-        <a href="{% url 'newsletter:manage_subscription' %}" class="button-very-small">{% trans 'Manage Newsletter' %}</a>
-      </div>
-
-      <div class="account-section">
-        <h3>{% trans 'Password Management' %}</h3>
-        <a href="{% url 'account_change_password' %}" class="button-very-small">{% trans 'Change Password' %}</a>
-      </div>
-
-      <div class="account-section">
-        <h3>{% trans 'Account Actions' %}</h3>
-        <div class="d-flex gap-3">
-          <a href="{% url 'account_logout' %}" class="button-very-small">{% trans 'Sign Out' %}</a>
-          <a href="{% url 'user_management:delete_account' %}" class="button-very-small danger">{% trans 'Delete Account' %}</a>
-        </div>
+      {% else %}
+      <p>
+        <strong>{% trans 'Warning:' %}</strong>
+        {% trans 'You currently do not have any email address set up. You should really add an email address so you can receive notifications, reset your password, etc.' %}
+      </p>
+      {% endif %}
+    </div>
+    <div class="account-section">
+      <h3>{% trans 'Newsletter Preferences' %}</h3>
+      <a href="{% url 'newsletter:manage_subscription' %}" class="button-very-small">{% trans 'Manage Newsletter' %}</a>
+    </div>
+    <div class="account-section">
+      <h3>{% trans 'Password Management' %}</h3>
+      <a href="{% url 'account_change_password' %}" class="button-very-small">{% trans 'Change Password' %}</a>
+    </div>
+    <div class="account-section">
+      <h3>{% trans 'Account Actions' %}</h3>
+      <div class="d-flex gap-3">
+        <a href="{% url 'account_logout' %}" class="button-very-small">{% trans 'Sign Out' %}</a>
+        <a href="{% url 'user_management:delete_account' %}" class="button-very-small danger">{% trans 'Delete Account' %}</a>
       </div>
     </div>
   </div>
+</div>
 {% endblock %}
 
 {% block extra_js %}

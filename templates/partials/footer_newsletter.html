@@ -1,23 +1,26 @@
 <div class="footer-newsletter mt-3">
   <p class="border-bottom border-secondary mb-3 pb-3">Subscribe to our Newsletter</p>
   <p class="small mb-2">Stay updated with our latest news and offers:</p>
-  
   <form method="{{ form_method }}" action="{{ form_action }}" class="footer-newsletter-form">
     {% csrf_token %}
     <div class="input-group">
-      <input type="email" name="email" class="form-control w-50" placeholder="Your email" 
-             id="footer-email-input" required>
+      <input
+        type="email"
+        name="email"
+        class="form-control w-50"
+        placeholder="Your email"
+        id="footer-email-input"
+        required
+      >
       <div class="input-group-append">
         <button type="submit" class="button-very-small">
           <i class="fa-solid fa-envelope-circle-check"></i>
         </button>
       </div>
     </div>
-    
     {% if not user.is_authenticated %}
-      <input type="hidden" name="newsletter_interest" value="true">
+    <input type="hidden" name="newsletter_interest" value="true">
     {% endif %}
-    
     <div id="newsletter-message" class="mt-2 small"></div>
   </form>
-</div> 
+</div>

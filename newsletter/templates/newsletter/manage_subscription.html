@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block extra_css %}
-  <style>
+<style>
     .newsletter-container {
       max-width: 550px;
       margin: 120px auto 50px;
@@ -35,59 +35,53 @@
     .unsubscribed {
       color: #dc3545;
     }
-  </style>
+</style>
 {% endblock %}
 
 {% block content %}
   {% include 'partials/rock-background.html' %}
-  <div class="container">
-    <div class="newsletter-container">
-      <h1>{% trans 'Newsletter Preferences' %}</h1>
-
-      <div class="newsletter-icon {% if is_subscribed %}subscribed{% else %}unsubscribed{% endif %}">
-        <i class="{% if is_subscribed %}fa-solid fa-envelope-circle-check{% else %}fa-regular fa-envelope{% endif %}"></i>
+<div class="container">
+  <div class="newsletter-container">
+    <h1>{% trans 'Newsletter Preferences' %}</h1>
+    <div class="newsletter-icon {% if is_subscribed %}subscribed{% else %}unsubscribed{% endif %}">
+      <i class="{% if is_subscribed %}fa-solid fa-envelope-circle-check{% else %}fa-regular fa-envelope{% endif %}"></i>
+    </div>
+    <div class="text-center mb-4">
+      {% if is_subscribed %}
+      <p>
+        {% trans 'You are currently subscribed to our newsletter.' %}
+      </p>
+      <p>
+        {% trans 'You will receive updates about new bouldering spots, events, and special offers.' %}
+      </p>
+      {% if form %}
+      <div class="mt-4 mb-4">
+        <h5>{% trans 'Update Your Information' %}</h5>
+        {% crispy form %}
       </div>
-
-      <div class="text-center mb-4">
-        {% if is_subscribed %}
-          <p>
-            {% trans 'You are currently subscribed to our newsletter.' %}
-          </p>
-          <p>
-            {% trans 'You will receive updates about new bouldering spots, events, and special offers.' %}
-          </p>
-
-          {% if form %}
-            <div class="mt-4 mb-4">
-              <h5>{% trans 'Update Your Information' %}</h5>
-              {% crispy form %}
-            </div>
-          {% endif %}
-
-          <form method="post" action="{% url 'newsletter:manage_subscription' %}">
-            {% csrf_token %}
-            <input type="hidden" name="action" value="unsubscribe" />
-            <button type="submit" class="btn btn-outline-danger mt-3">{% trans 'Unsubscribe' %}</button>
-          </form>
-        {% else %}
-          <p>
-            {% trans 'You are not currently subscribed to our newsletter.' %}
-          </p>
-          <p>
-            {% trans 'Subscribe to receive updates about new bouldering spots, events, and special offers.' %}
-          </p>
-
-          <form method="post" action="{% url 'newsletter:manage_subscription' %}">
-            {% csrf_token %}
-            <input type="hidden" name="action" value="subscribe" />
-            <button type="submit" class="button-very-small mt-3">{% trans 'Subscribe' %}</button>
-          </form>
-        {% endif %}
-      </div>
-
-      <div class="text-center mt-4">
-        <a href="{% url 'account_email' %}" class="btn btn-outline-secondary">{% trans 'Back to Account' %}</a>
-      </div>
+      {% endif %}
+      <form method="post" action="{% url 'newsletter:manage_subscription' %}">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="unsubscribe">
+        <button type="submit" class="btn btn-outline-danger mt-3">{% trans 'Unsubscribe' %}</button>
+      </form>
+      {% else %}
+      <p>
+        {% trans 'You are not currently subscribed to our newsletter.' %}
+      </p>
+      <p>
+        {% trans 'Subscribe to receive updates about new bouldering spots, events, and special offers.' %}
+      </p>
+      <form method="post" action="{% url 'newsletter:manage_subscription' %}">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="subscribe">
+        <button type="submit" class="button-very-small mt-3">{% trans 'Subscribe' %}</button>
+      </form>
+      {% endif %}
+    </div>
+    <div class="text-center mt-4">
+      <a href="{% url 'account_email' %}" class="btn btn-outline-secondary">{% trans 'Back to Account' %}</a>
     </div>
   </div>
+</div>
 {% endblock %}
