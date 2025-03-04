@@ -11,45 +11,70 @@
 <html lang="en">
   <head>
     {% block core_meta %}
-      <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-      <meta charset="UTF-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     {% endblock %}
 
     {% block meta_description %}
-      <meta name="description" content="
+    <meta name="description" content="
           Bouldering Cyprus is the ultimate guide to the best bouldering spots in Cyprus. Discover the most popular climbing areas, find detailed route descriptions, and explore stunning photography. Whether you're a beginner or an experienced climber, Bouldering Cyprus has something for everyone.
-        " />
+        ">
     {% endblock %}
 
     {% block extra_meta %}
-      <meta name="keywords" content="Bouldering Cyprus, Bouldering, Cyprus, Bouldering Spots, Bouldering Routes, Bouldering Photos, Bouldering Guide, Bouldering Guidebook, Bouldering in Cyprus, Bouldering Cyprus Guide, Bouldering Cyprus Routes, Bouldering Cyprus Photos, Climbing, Climbing in Cyprus, Climbing Spots, Climbing Routes, Climbing Photos, Climbing Guide, Climbing in Cyprus, Climbing Cyprus Guide, Climbing Cyprus Routes, Climbing Cyprus Photos, Climbing Cyprus Guidebook, Crashpad Rental, Crashpad, Crashpad Rental Cyprus, Crashpad Rental in Cyprus, Crashpad Rental Paphos, Crashpad Rental Droushia" />
+    <meta name="keywords" content="Bouldering Cyprus, Bouldering, Cyprus, Bouldering Spots, Bouldering Routes, Bouldering Photos, Bouldering Guide, Bouldering Guidebook, Bouldering in Cyprus, Bouldering Cyprus Guide, Bouldering Cyprus Routes, Bouldering Cyprus Photos, Climbing, Climbing in Cyprus, Climbing Spots, Climbing Routes, Climbing Photos, Climbing Guide, Climbing in Cyprus, Climbing Cyprus Guide, Climbing Cyprus Routes, Climbing Cyprus Photos, Climbing Cyprus Guidebook, Crashpad Rental, Crashpad, Crashpad Rental Cyprus, Crashpad Rental in Cyprus, Crashpad Rental Paphos, Crashpad Rental Droushia">
     {% endblock %}
-
     <title>
       Bouldering Cyprus -{% block extra_title %}
         The Ultimate Guide to Bouldering in Cyprus
       {% endblock %}
     </title>
-
     <!-- Favicon -->
-    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/favicon/favicon-rocks-16.png' %}" />
-    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/favicon/favicon-rocks-32.png' %}" />
-    <link rel="icon" type="image/png" sizes="64x64" href="{% static 'images/favicon/favicon-rocks-64.png' %}" />
-    <link rel="icon" type="image/png" sizes="128x128" href="{% static 'images/favicon/favicon-rocks-128.png' %}" />
-    <link rel="icon" type="image/png" sizes="256x256" href="{% static 'images/favicon/favicon-rocks-256.png' %}" />
-
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="{% static 'images/favicon/favicon-rocks-16.png' %}"
+    >
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="{% static 'images/favicon/favicon-rocks-32.png' %}"
+    >
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="64x64"
+      href="{% static 'images/favicon/favicon-rocks-64.png' %}"
+    >
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="128x128"
+      href="{% static 'images/favicon/favicon-rocks-128.png' %}"
+    >
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="256x256"
+      href="{% static 'images/favicon/favicon-rocks-256.png' %}"
+    >
     <!-- Apple Touch Icon (using 128px as it's closest to recommended 180px) -->
-    <link rel="apple-touch-icon" href="{% static 'images/favicon/favicon-rocks-128.png' %}" />
-
+    <link rel="apple-touch-icon" href="{% static 'images/favicon/favicon-rocks-128.png' %}">
     <!-- Browser Theme -->
-    <meta name="theme-color" content="#ffffff" />
-
+    <meta name="theme-color" content="#ffffff">
     {% block core_css %}
-      <!-- CSS Bootstrap -->
-      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
-      <!-- Custom CSS file -->
-      <link rel="stylesheet" href="{% static 'css/base.css' %}" />
+    <!-- CSS Bootstrap -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    >
+    <!-- Custom CSS file -->
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
     {% endblock %}
 
     {% block extra_css %}
@@ -57,16 +82,16 @@
     {% endblock %}
 
     {% block core_js %}
-      <!-- JavaScript Bootstrap -->
-      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-      <!-- Font Awesome script -->
-      <script src="https://kit.fontawesome.com/3f60c2fc78.js" crossorigin="anonymous"></script>
-      <!-- Stripe script -->
-      <script src="https://js.stripe.com/v3/"></script>
-      <!-- jQuery script -->
-      <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-      <!-- Sentry script -->
-      <script src="https://js-de.sentry-cdn.com/6176576e869325b26661cd76ba088591.min.js" crossorigin="anonymous"></script>
+    <!-- JavaScript Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome script -->
+    <script src="https://kit.fontawesome.com/3f60c2fc78.js" crossorigin="anonymous"></script>
+    <!-- Stripe script -->
+    <script src="https://js.stripe.com/v3/"></script>
+    <!-- jQuery script -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <!-- Sentry script -->
+    <script src="https://js-de.sentry-cdn.com/6176576e869325b26661cd76ba088591.min.js" crossorigin="anonymous"></script>
     {% endblock %}
 
     {% block extra_js %}
@@ -80,26 +105,45 @@
       <nav class="navbar navbar-expand-lg fixed-top">
         <div class="container-fluid">
           <a class="navbar-brand" href="{% url 'home' %}">Bouldering Cyprus</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
               <li class="nav-item">
                 <a class="nav-link mx-3 {% if request.path == home_url %}
                     active
                     page
-                  {% endif %}" href="{% url 'home' %}"><i class="fa-solid fa-house"></i> Home</a>
+                  {% endif %}" href="{% url 'home' %}">
+                  <i class="fa-solid fa-house"></i>
+                  Home
+                </a>
               </li>
               <li class="nav-item">
                 <a class="nav-link mx-3 {% if request.path == shop_url %}
                     active
                     page
-                  {% endif %}" href="{% url 'shop' %}"><i class="fa-solid fa-book"></i> Guidebook</a>
+                  {% endif %}" href="{% url 'shop' %}">
+                  <i class="fa-solid fa-book"></i>
+                  Guidebook
+                </a>
               </li>
               <li class="nav-item">
                 <a class="nav-link mx-3 {% if request.path == booking_url %}
                     active
                     page
-                  {% endif %}" href="{% url 'rentals:booking' %}"><i class="fa-solid fa-layer-group"></i> Crashpad Rental</a>
+                  {% endif %}" href="{% url 'rentals:booking' %}">
+                  <i class="fa-solid fa-layer-group"></i>
+                  Crashpad Rental
+                </a>
               </li>
               <li class="nav-item">
                 <a class="nav-link mx-3 {% if request.path == cart_url %}
@@ -109,44 +153,62 @@
                   <div class="position-relative">
                     <i class="fa-solid fa-cart-shopping nav-icon"></i>
                     {% if cart_item_count > 0 %}
-                      <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill">
-                        {{ cart_item_count }}
-                        <span class="visually-hidden">Cart item count</span>
-                      </span>
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill">
+                      {{ cart_item_count }}
+                      <span class="visually-hidden">Cart item count</span>
+                    </span>
                     {% endif %}
                   </div>
                 </a>
               </li>
               <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle {% if request.path == account_url %}
-                          active {% endif %}" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <a
+                  class="nav-link dropdown-toggle {% if request.path == account_url %}
+                          active {% endif %}"
+                  href="#"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
                   {% if user.is_authenticated %}
-                    <i class="fa-solid fa-user nav-icon {% if request.path == account_url %}
+                  <i class="fa-solid fa-user nav-icon {% if request.path == account_url %}
                           active {% endif %}"></i>
                   {% else %}
-                    <i class="fa-solid fa-right-to-bracket nav-icon {% if request.path == account_url %}
+                  <i class="fa-solid fa-right-to-bracket nav-icon {% if request.path == account_url %}
                           active {% endif %}"></i>
                   {% endif %}
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end">
                   {% if user.is_authenticated %}
-                    <li>
-                      <a class="dropdown-item" href="{% url 'account_email' %}"><i class="fa-solid fa-user nav-icon {% if request.path == account_url %}
-                        active {% endif %}"></i> My Account</a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="{% url 'account_logout' %}"><i class="fa-solid fa-right-to-bracket nav-icon {% if request.path == account_url %}
-                        active {% endif %}"></i> Sign Out</a>
-                    </li>
+                  <li>
+                    <a class="dropdown-item" href="{% url 'account_email' %}">
+                      <i class="fa-solid fa-user nav-icon {% if request.path == account_url %}
+                        active {% endif %}"></i>
+                      My Account
+                    </a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="{% url 'account_logout' %}">
+                      <i class="fa-solid fa-right-to-bracket nav-icon {% if request.path == account_url %}
+                        active {% endif %}"></i>
+                      Sign Out
+                    </a>
+                  </li>
                   {% else %}
-                    <li>
-                      <a class="dropdown-item" href="{% url 'account_login' %}"><i class="fa-solid fa-right-to-bracket nav-icon {% if request.path == account_url %}
-                        active {% endif %}"></i> Sign In</a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="{% url 'account_signup' %}"><i class="fa-solid fa-user-plus nav-icon {% if request.path == account_url %}
-                        active {% endif %}"></i> Sign Up</a>
-                    </li>
+                  <li>
+                    <a class="dropdown-item" href="{% url 'account_login' %}">
+                      <i class="fa-solid fa-right-to-bracket nav-icon {% if request.path == account_url %}
+                        active {% endif %}"></i>
+                      Sign In
+                    </a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="{% url 'account_signup' %}">
+                      <i class="fa-solid fa-user-plus nav-icon {% if request.path == account_url %}
+                        active {% endif %}"></i>
+                      Sign Up
+                    </a>
+                  </li>
                   {% endif %}
                 </ul>
               </li>
@@ -155,17 +217,15 @@
         </div>
       </nav>
     </header>
-
     <!-- Main Content -->
     <main>
       <!-- Include Toast for messages -->
       {% include 'partials/toasts.html' %}
 
       {% block content %}
-        <!-- Content from child templates will be injected here -->
+      <!-- Content from child templates will be injected here -->
       {% endblock %}
     </main>
-
     <!-- Footer -->
     <footer class="footer text-center py-3">
       <div class="container">
@@ -179,25 +239,30 @@
               <a href="#">Contact Us</a>
             </p>
           </div>
-
           <!-- Copyright Section -->
           <div class="col-4 d-flex flex-column justify-content-center">
             <p>
-              &copy; {{ year|default:2025 }} Bouldering Cyprus. <br /> All Rights Reserved.
+              &copy; {{ year|default:2025 }} Bouldering Cyprus.
+              <br>
+              All Rights Reserved.
             </p>
           </div>
-
           <!-- Social Media Section -->
           <div class="col-4 d-flex flex-column justify-content-center">
             <p class="border-bottom border-secondary mb-3 pb-3">Follow Us</p>
             <div class="social-media-icons d-flex justify-content-around w-100">
-              <a href="https://www.facebook.com/boulderingcyprus/" target="_blank" class="fs-2 social-icons"><i class="fa-brands fa-facebook"></i></a>
-              <a href="https://instagram.com/bouldering_cyprus/" target="_blank" class="fs-2 social-icons"><i class="fa-brands fa-instagram"></i></a>
-              <a href="https://www.youtube.com/@cyprusbouldering9957" target="_blank" class="fs-2 social-icons"><i class="fa-brands fa-youtube"></i></a>
+              <a href="https://www.facebook.com/boulderingcyprus/" target="_blank" class="fs-2 social-icons">
+                <i class="fa-brands fa-facebook"></i>
+              </a>
+              <a href="https://instagram.com/bouldering_cyprus/" target="_blank" class="fs-2 social-icons">
+                <i class="fa-brands fa-instagram"></i>
+              </a>
+              <a href="https://www.youtube.com/@cyprusbouldering9957" target="_blank" class="fs-2 social-icons">
+                <i class="fa-brands fa-youtube"></i>
+              </a>
             </div>
           </div>
         </div>
-
         <!-- Newsletter Signup -->
         <div class="row">
           <div class="col-12 footer-col">
@@ -207,12 +272,11 @@
         </div>
       </div>
     </footer>
-
     {% block postload_js %}
-      <script src="{% static 'js/navbar.js' %}"></script>
-      <script>window.SENTRY_ENABLED = {{ SENTRY_ENABLED|lower }};</script>
-      <script src="{% static 'js/sentry.js' %}"></script>
-      <script src="{% static 'js/toasts.js' %}" type="module"></script>
+    <script src="{% static 'js/navbar.js' %}"></script>
+    <script>window.SENTRY_ENABLED = {{ SENTRY_ENABLED|lower }};</script>
+    <script src="{% static 'js/sentry.js' %}"></script>
+    <script src="{% static 'js/toasts.js' %}" type="module"></script>
     {% endblock %}
   </body>
 </html>

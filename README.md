@@ -188,12 +188,20 @@ This project utilizes a robust stack of technologies and tools to deliver a seam
 - **[Django 4.2 LTS](https://docs.djangoproject.com/en/4.2/)**: A high-level Python web framework that enables rapid development and clean, pragmatic design. Followed the [Model-View-Template](https://docs.djangoproject.com/en/4.2/topics/class-based-views/intro/) approach for the templates.
 - **[Bootstrap 5](https://getbootstrap.com/)**: For responsive design and pre-styled components.
 
-### Libraries & Packages
+### Django Libraries & Packages
 - **[Django Allauth](https://django-allauth.readthedocs.io/)**: For user authentication, registration, and account management.
 - **[Django Crispy Forms](https://django-crispy-forms.readthedocs.io/)**: For rendering beautiful and customizable forms.
 - **[Django Summernote](https://github.com/summernote/django-summernote)**: For rich text editing in the admin interface.
 - **[Django Storages](https://django-storages.readthedocs.io/)**: For handling file storage with AWS S3.
 - **[Django REST Framework](https://www.django-rest-framework.org/)**: For building robust APIs for the rentals booking system.
+
+### JavaScript Libraries
+| Library | Version | Use |
+| ------- | ------- | --- |
+| [jQuery](https://jquery.com/) | 3.7.1 | DOM manipulation, AJAX requests |
+| [Stripe.js](https://stripe.com/docs/js) | Latest | Payment form handling |
+| [Bootstrap JS](https://getbootstrap.com/) | 5.3.2 | UI components, modals, tooltips |
+| [Flatpickr](https://flatpickr.js.org/) | 4.6.13 | Date picker for rental bookings |
 
 #### Testing Libraries & Tools
 - **[Selenium](https://www.selenium.dev/)**: For automated browser testing and frontend integration tests
@@ -221,6 +229,7 @@ This project utilizes a robust stack of technologies and tools to deliver a seam
 - **[Heroku](https://www.heroku.com/)**: For application hosting.
 - **[AWS CloudFront](https://aws.amazon.com/cloudfront/)**: For content delivery network services to cache static files and improve performance.
 - **[PostgreSQL](https://www.postgresql.org/)**: As the production database.
+
 
 # Testing & Monitoring
 
@@ -383,6 +392,7 @@ To run the project locally:
 | [Bootstrap Documentation](https://getbootstrap.com/docs/) | Frontend framework | Responsive design implementation |
 | [AWS S3 Documentation](https://docs.aws.amazon.com/s3/) | File storage | Static and media file management |
 | [Sentry Documentation](https://docs.sentry.io/) | Error monitoring | Implementation of error tracking |
+
 
 ## Content
 | Source | Use | Notes |

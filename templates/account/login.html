@@ -7,59 +7,74 @@
 {% endblock %}
 
 {% block extra_css %}
-  <link rel="stylesheet" href="{% static 'css/accounts.css' %}">
+<link rel="stylesheet" href="{% static 'css/accounts.css' %}">
 {% endblock %}
 
 {% block content %}
   {% include 'partials/rock-background.html' %}
-  <div class="container">
-    <div class="auth-container">
-      <h1>{% trans 'Sign In' %}</h1>
-
-      <form class="login" method="POST" action="{% url 'account_login' %}">
-        {% csrf_token %}
+<div class="container">
+  <div class="auth-container">
+    <h1>{% trans 'Sign In' %}</h1>
+    <form class="login" method="POST" action="{% url 'account_login' %}">
+      {% csrf_token %}
 
         {% if form.errors %}
-          <div class="alert alert-danger">
-            <p>
-              {% trans 'Please correct the errors below:' %}
-            </p>
-            {{ form.non_field_errors }}
-          </div>
-        {% endif %}
-
-        <div class="form-group">
-          <label for="id_login">{% trans 'Email' %}:</label>
-          <input type="email" name="login" placeholder="{% trans 'Email address' %}" autocomplete="email" required id="id_login" class="form-control" />
-          {{ form.login.errors }}
-        </div>
-
-        <div class="form-group">
-          <label for="id_password">{% trans 'Password' %}:</label>
-          <input type="password" name="password" placeholder="{% trans 'Password' %}" autocomplete="current-password" required id="id_password" class="form-control" />
-          {{ form.password.errors }}
-        </div>
-
-        <div class="form-group form-check">
-          <input type="checkbox" name="remember" id="id_remember" class="form-check-input" />
-          <label for="id_remember" class="form-check-label">{% trans 'Remember Me' %}</label>
-        </div>
-
-        {% if redirect_field_value %}
-          <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
-        {% endif %}
-
-        <button class="button-very-small w-100" type="submit">{% trans 'Sign In' %}</button>
-      </form>
-
-      <div class="auth-links">
+      <div class="alert alert-danger">
         <p>
-          <a href="{% url 'account_reset_password' %}">{% trans 'Forgot Password?' %}</a>
+          {% trans 'Please correct the errors below:' %}
         </p>
-        <p>
-          {% trans "Don't have an account?" %} <a href="{% url 'account_signup' %}">{% trans 'Sign Up' %}</a>
-        </p>
+        {{ form.non_field_errors }}
       </div>
+      {% endif %}
+      <div class="form-group">
+        <label for="id_login">{% trans 'Email' %}:</label>
+        <input
+          type="email"
+          name="login"
+          placeholder="{% trans 'Email address' %}"
+          autocomplete="email"
+          required
+          id="id_login"
+          class="form-control"
+        >
+        {{ form.login.errors }}
+      </div>
+      <div class="form-group">
+        <label for="id_password">{% trans 'Password' %}:</label>
+        <input
+          type="password"
+          name="password"
+          placeholder="{% trans 'Password' %}"
+          autocomplete="current-password"
+          required
+          id="id_password"
+          class="form-control"
+        >
+        {{ form.password.errors }}
+      </div>
+      <div class="form-group form-check">
+        <input
+          type="checkbox"
+          name="remember"
+          id="id_remember"
+          class="form-check-input"
+        >
+        <label for="id_remember" class="form-check-label">{% trans 'Remember Me' %}</label>
+      </div>
+      {% if redirect_field_value %}
+      <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}">
+      {% endif %}
+      <button class="button-very-small w-100" type="submit">{% trans 'Sign In' %}</button>
+    </form>
+    <div class="auth-links">
+      <p>
+        <a href="{% url 'account_reset_password' %}">{% trans 'Forgot Password?' %}</a>
+      </p>
+      <p>
+        {% trans "Don't have an account?" %}
+        <a href="{% url 'account_signup' %}">{% trans 'Sign Up' %}</a>
+      </p>
     </div>
   </div>
+</div>
 {% endblock %}
