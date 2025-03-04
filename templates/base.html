@@ -149,7 +149,7 @@
                 <a class="nav-link mx-3 {% if request.path == cart_url %}
                     active
                     page
-                  {% endif %}" href="{% url 'cart_detail' %}">
+                  {% endif %}" href="{% url 'cart_detail' %}" aria-label="Cart">
                   <div class="position-relative">
                     <i class="fa-solid fa-cart-shopping nav-icon"></i>
                     {% if cart_item_count > 0 %}
@@ -169,6 +169,7 @@
                   role="button"
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
+                  aria-label="Toggle user account menu"
                 >
                   {% if user.is_authenticated %}
                   <i class="fa-solid fa-user nav-icon {% if request.path == account_url %}
@@ -251,13 +252,13 @@
           <div class="col-4 d-flex flex-column justify-content-center">
             <p class="border-bottom border-secondary mb-3 pb-3">Follow Us</p>
             <div class="social-media-icons d-flex justify-content-around w-100">
-              <a href="https://www.facebook.com/boulderingcyprus/" target="_blank" class="fs-2 social-icons">
+              <a href="https://www.facebook.com/boulderingcyprus/" target="_blank" class="fs-2 social-icons" aria-label="Our Facebook Page">
                 <i class="fa-brands fa-facebook"></i>
               </a>
-              <a href="https://instagram.com/bouldering_cyprus/" target="_blank" class="fs-2 social-icons">
+              <a href="https://instagram.com/bouldering_cyprus/" target="_blank" class="fs-2 social-icons" aria-label="Our Instagram Page">
                 <i class="fa-brands fa-instagram"></i>
               </a>
-              <a href="https://www.youtube.com/@cyprusbouldering9957" target="_blank" class="fs-2 social-icons">
+              <a href="https://www.youtube.com/@cyprusbouldering9957" target="_blank" class="fs-2 social-icons" aria-label="Our YouTube Channel">
                 <i class="fa-brands fa-youtube"></i>
               </a>
             </div>
