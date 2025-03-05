@@ -219,7 +219,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (selectedCrashpads.size > 0 && dateRange.startDate && dateRange.endDate) {
       // Calculate number of days
-      const days = dateRange.endDate.diff(dateRange.startDate, "days");
+      const days = dateRange.endDate.diff(dateRange.startDate, "days") + 1;
 
       // Calculate total cost for all selected crashpads
       let totalCost = 0;

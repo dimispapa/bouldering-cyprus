@@ -8,6 +8,7 @@ from .serializers import CrashpadSerializer, BookingSerializer
 from django.views.generic import TemplateView
 from datetime import datetime
 import logging
+from django.contrib import messages
 
 logger = logging.getLogger(__name__)
 
@@ -18,22 +19,14 @@ def validate_dates(check_in, check_out):
     """
     now = datetime.now().date()
 
-    if check_in >= check_out:
-        Response({'error': 'Check-out date must be after check-in date'},
-                 status=status.HTTP_400_BAD_REQUEST)
-        return False
+    if check_in > check_out:
+        return False, 'Check-in date cannot be after check-out date'
 
     if check_in < now:
-        Response(
-            {
-                'error':
-                'Check-in date cannot be in the past. '
-                f'Please select a date from {now} onwards.'
-            },
-            status=status.HTTP_400_BAD_REQUEST)
-        return False
+        return False, f'Check-in date cannot be in the past. ' \
+                      f'Please select a date from {now} onwards.'
 
-    return True
+    return True, None
 
 
 class CrashpadViewSet(viewsets.ReadOnlyModelViewSet):
@@ -80,8 +73,15 @@ class CrashpadViewSet(viewsets.ReadOnlyModelViewSet):
         try:
             check_in_date = parse_date(check_in)
             check_out_date = parse_date(check_out)
-            if not validate_dates(check_in_date, check_out_date):
-                raise ValueError('Invalid dates')
+            if not (check_in_date and check_out_date):
+                raise ValueError('Invalid date format')
+
+            # Validate dates
+            is_valid, error_message = validate_dates(check_in_date,
+                                                     check_out_date)
+            if not is_valid:
+                return Response({'error': error_message},
+                                status=status.HTTP_400_BAD_REQUEST)
 
             # Get booked crashpad IDs for the date range
             unavailable_crashpad_ids = \
@@ -153,15 +153,20 @@ class BookingView(TemplateView):
                 check_in_date = parse_date(check_in)
                 check_out_date = parse_date(check_out)
 
-                # Only add valid dates to context
-                if validate_dates(check_in_date, check_out_date):
+                if not (check_in_date and check_out_date):
+                    raise ValueError('Invalid date format')
+
+                # Validate dates
+                is_valid, error_message = validate_dates(
+                    check_in_date, check_out_date)
+                if is_valid:
                     context['check_in'] = check_in
                     context['check_out'] = check_out
 
                     # Get available crashpads with prefetched gallery images
                     unavailable_crashpad_ids = \
                         CrashpadBooking.get_unavailable_crashpads_ids(
-                                check_in_date, check_out_date)
+                            check_in_date, check_out_date)
 
                     # Prefetch related gallery images to avoid N+1 queries
                     available_crashpads = Crashpad.objects.exclude(
@@ -170,11 +175,15 @@ class BookingView(TemplateView):
 
                     context['available_crashpads'] = available_crashpads
                 else:
-                    raise ValueError('Invalid dates')
+                    messages.error(self.request, error_message)
+                    logger.error(f'Invalid dates: {error_message}')
+                    context['date_error'] = error_message
+
             except (ValueError, TypeError) as e:
-                # If dates are invalid, don't add them to context
-                logger.error(f'Invalid dates: {e}')
-                pass
+                messages.error(self.request, 'Invalid date format')
+                logger.error(f'Date parsing error: {e}')
+                context['date_error'] = 'Invalid date format'
+
         else:
             # If no dates provided,
             # show all crashpads with prefetched gallery images
