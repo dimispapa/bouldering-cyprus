@@ -686,6 +686,7 @@ To run the project locally:
 | [FontAwesome](https://fontawesome.com/) | Icons | Used throughout the site |
 | [Google Fonts](https://fonts.google.com/) | Fonts | Used throughout the site |
 | [Flaticon](https://www.flaticon.com/free-icons/rocks) | Favicons | Used for the browser tab icon |
+| [Icons8](https://icons8.com/icons) | Icons | Used for social media icons CDN for the newsletter |
 | Original Content | Product descriptions | Written specifically for this application |
 | Original Content | Bouldering information | Based on local and personal knowledge from years of exploration and passion for the sport |
 
