@@ -80,6 +80,9 @@
   transform: translateY(0);
 }
 
+.daterangepicker {
+  font-size: 1.6rem;
+}
 .daterangepicker td.active,
 .daterangepicker td.active:hover {
   background-color: #ed6c2c;
@@ -94,6 +97,32 @@
 .daterangepicker .btn-primary:hover {
   background-color: #d45212;
   border-color: #d45212;
+}
+.daterangepicker .calendar-table {
+  font-size: 1.8rem !important;
+}
+.daterangepicker .drp-selected {
+  font-size: 1.2rem;
+}
+@media (max-width: 767px) {
+  .daterangepicker {
+    display: flex;
+    flex-direction: column;
+  }
+  .daterangepicker .drp-calendar.left {
+    order: 1;
+  }
+  .daterangepicker .drp-calendar.right {
+    order: 3;
+  }
+  .daterangepicker .drp-buttons {
+    order: 2;
+    margin: 8px 0;
+  }
+  .daterangepicker .drp-selected {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
 }
 
 .description-container .description {
