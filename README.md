@@ -381,6 +381,34 @@ This project utilizes a robust stack of technologies and tools to deliver a seam
   - Validates calculations
   - Tests string representations
 
+#### Payment Utility Tests (`payments/test_payment_utils.py`)
+- **Error Message Tests:**
+  - Tests error message generation for different error types
+  - Validates message content for stock issues
+  - Tests message content for date-related errors
+
+- **Stock Validation Tests:**
+  - Tests validation of cart items
+  - Validates error handling for insufficient stock
+  - Tests date validation for rentals
+  - Verifies error reporting
+
+- **Order Creation Tests:**
+  - Tests order lookup with payment intents
+  - Validates retry mechanism for order creation
+  - Tests order creation timing and race conditions
+
+- **Order Item Creation Tests:**
+  - Tests creation of product order items
+  - Tests creation of rental bookings
+  - Validates mixed order types
+  - Verifies stock updates after order creation
+
+- **Email Notification Tests:**
+  - Tests order confirmation emails
+  - Tests rental confirmation emails
+  - Validates error handling in email sending
+
 #### Newsletter Tests (`newsletter/test_newsletter.py`)
 - **Subscription Tests:**
   - Tests subscription/unsubscription flows
@@ -408,7 +436,18 @@ This project utilizes a robust stack of technologies and tools to deliver a seam
   - Simulates payment flows
   - Handles test sessions and authentication
 
+### Test Coverage
+
+![Coverage](https://img.shields.io/badge/coverage-89%25-brightgreen)
+
+The application has an overall test coverage of 89% from automated testing. Below is a summary of the test coverage report:
+
+![Test Coverage Report](docs/images/test_reports/coverage-test-report.png)
+
+
 ## Manual Testing
+Automated testing is complemented by manual testing to ensure the application is fully functional and user-friendly. Below is a summary of the manual testing performed:
+
 - **Responsive Design:** Tested across multiple devices and screen sizes
 - **Browser Compatibility:** Tested on Chrome, Firefox, Safari, and Edge
 - **User Flows:** Tested complete user journeys:
@@ -434,6 +473,7 @@ This project utilizes a robust stack of technologies and tools to deliver a seam
   - Logged info at various steps throughout the application for easier debugging of errors and warnings
   - Logging handler set up to notify admin via email of critical errors
 
+# Bugs & Fixes
 ## Fixed Bugs
 Fixed bugs are listed below from latest to earliest, with the commit hash and a link to the commit.
 
@@ -479,6 +519,16 @@ Fixed bugs are listed below from latest to earliest, with the commit hash and a 
 | AWS S3 Configuration | Issues with AWS S3 settings for production | Updated S3 configuration for proper file storage | [318a5af](https://github.com/dimispapa/bouldering-cyprus/commit/318a5af) |
 | Arrow Styling Issues | Inconsistent arrow styling on homepage | Fixed arrow styling and animation | [be93e77](https://github.com/dimispapa/bouldering-cyprus/commit/be93e77) |
 | Navigation Hover Effect | Missing hover effect on navigation items | Added bold hover effect to improve user experience | [c668ae4](https://github.com/dimispapa/bouldering-cyprus/commit/c668ae4) |
+
+## Version Control and Repository Management
+
+- **Repository Management:**
+  - Used GitHub for version control
+  - Implemented branches for development and deployment
+  - Implemented pull requests for merging branches into main
+  - Used GitHub rules to prevent merging to main with errors
+  - Implemented code scanning and security checks
+
 
 ## Code Validation
 
