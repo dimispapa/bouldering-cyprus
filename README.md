@@ -166,8 +166,8 @@ Wireframe handrawn sketches were created to plan the layout of the website at th
 ![Wireframe Sketch Home & Shop Mobile](./docs/images/wireframes/wire-home-shop-mob.jpeg)
 ![Wireframe Sketch Rentals & Cart Desktop](./docs/images/wireframes/wire-rentals-cart-desk.jpeg)
 ![Wireframe Sketch Rentals & Cart Mobile](./docs/images/wireframes/wire-rentals-cart-mob.jpeg)
-
-
+![Wireframe Sketch Checkout Desktop](./docs/images/wireframes/wire-checkout-desk.jpeg)
+![Wireframe Sketch Checkout Mobile](./docs/images/wireframes/wire-checkout-mob.jpeg)
 
 # Data Architecture
 
@@ -290,6 +290,129 @@ The following diagram illustrates the complete checkout-to-payment-to-order work
 ![Payment Process Flow](./docs/images/process_flows/payment-flow.png)
 
 # Functionality & Features
+## Home Page
+The home page is the main page of the website. It is the first page that users see when they visit the website. The home page is designed to be a welcoming and informative page that introduces the user to the website and its features. It also includes a scrolling/parallax effect with hero images interchanging smoothly with one fading and the next taking its place, while text boxes move up and down the page to provide information about the website and its features.
+
+Besides the main navbar at the header and the footer, that exist on all pages, the home page also has a side navigation menu that allows the user to quickly look at the contents of the page and navigate to them faster. Scroll buttons also allow the user to quickly get to the next text box.
+
+## Shop Page
+The shop page is the page that displays the products that are available for purchase. The shop page is designed to be a user-friendly page that allows users to browse the products and add them to their cart.
+
+Basic validation prevents users to over-buy products, with the cart updating in real-time to show if the stock is available and indicating if the stock has gone below a certain threshold. Adding to cart redirects to the cart page.
+
+## Cart Page
+The cart page is the page that displays the items that the user has added to their cart in a summary table.
+
+The cart page allows users to view their cart and make changes to it. The user can update the quantity of products (guidebooks) or remove them from the cart. The cart can hold both guidebooks and crashpad rentals, but the latter cannot be edited, only removed form the cart due to the limited stock of crashpads.
+
+The checkout button redirects you to the checkout page, where the user can complete the order.
+
+## Checkout Page
+The checkout page is the page that allows the user to enter their delivery information and complete the order.
+
+The checkout page is integrated with Stripe UI Elements, (both payment and express elements) that allows users to enter their delivery information and complete the order. The user can also view the order summary and click edit to redirect back to the cart page to make changes to the order.
+
+## Checkout Success Page
+The checkout success page is the page that displays the order details and a confirmation message.
+
+The order confirmation page is designed to be a user-friendly page that allows users to view their order details and a confirmation message.
+
+## Account Page
+The account page is a basic user management page that allows the user to view their account information and make changes to it, including changing their password, deleting their account and managing their newsletter subscription.
+
+All known allauth operations are available on the website, including signup, login, logout, password reset and account deletion.
+
+## Footer Elements
+### Newsletter Subscription
+The newsletter subscription is a basic newsletter subscription form that allows users to subscribe to the newsletter in a few steps.
+
+### Social Media Links
+The social media links are a basic social media icons that allows users to follow the website on social media, Facebook, Instagram and YouTube.
+
+### Copyright Information
+The copyright information is a basic copyright information that allows users to know who the website belongs to.
+
+### Privacy Policy
+The privacy policy is a basic privacy policy that allows users to know how the website collects and uses their data.
+
+## Admin Portal
+### Overview
+The Django Admin interface has been customized to provide comprehensive management capabilities for the e-commerce platform. Superusers can access the admin portal at `/admin` to manage all aspects of the application.
+
+### Product Management
+- Add, edit, and remove products (guidebooks) with full details
+- Upload product images directly to AWS S3 storage
+- Manage product stock levels and pricing
+- View product sales history and performance
+
+### Crashpad Management
+- Add new crashpads with specifications and pricing tiers
+- Upload crashpad images to AWS S3 storage
+- Monitor crashpad availability and rental status
+- View booking history for each crashpad
+
+### Order Processing
+- View and process customer orders
+- Track order status and payment confirmation
+- Access customer details and delivery information
+- Generate order reports and analytics
+
+### Rental Management
+- Monitor active and upcoming crashpad rentals
+- View rental calendar and availability
+- Process rental extensions and modifications
+- Track rental payment status
+
+### Newsletter System
+- Manage newsletter subscriber list
+- Create and send newsletters via built-in custom management commands
+- Track newsletter engagement metrics
+- Manage subscriber preferences and unsubscriptions
+
+### User Management
+- View and manage user accounts
+- Monitor user activity and order history
+- Handle user permissions and access levels
+- Process account deletions and GDPR requests
+
+## Dynamic Content Updates
+The admin portal integrates with the frontend templates to ensure:
+- New products automatically appear in the shop
+- Added crashpads are immediately available for rental
+- Updated images are served through AWS CloudFront CDN
+- Stock levels are reflected in real-time
+- Newsletter subscriptions are instantly recorded
+
+## Data Security
+- Secure file uploads to AWS S3
+- Protected admin access with Django's authentication system
+- Audit logs for admin actions
+
+## Management Commands
+Custom Django management commands allow administrators to:
+- Send newsletters to subscribers
+- Generate reports on sales and rentals
+- Perform database maintenance tasks
+- Manage system configurations
+
+Example command for sending newsletters if opting to use the CLI instead of the admin portal:
+```bash
+python manage.py send_newsletter --template=monthly_update
+```
+
+## Future Features
+### Crashpad Availability Calendar
+- Add a crashpad availability calendar to the crashpad page to allow users to see the availability of the crashpad and book it, rather than selecting a date range.
+
+### Processing Cancellations & Refunds
+- Add a process for handling cancellations and refunds, including a refund policy and a way to process refunds via Stripe.
+
+### Order Fulfilment & Delivery
+- Add a process for fulfilling orders and delivering them to the customer, including a way to track the order and a way to notify the customer of the order status, courier details and estimated delivery date.
+- Reliably calculate delivery rates based on agreed courier rates and the delivery address, apply them on the checkout page.
+
+### Customer Reviews
+- Add a customer review system to allow users to review the products they have purchased.
 
 
 # Technologies & Tools Stack
@@ -483,6 +606,10 @@ Fixed bugs are listed below from latest to earliest, with the commit hash and a 
 
 | Bug | Description | Fix | Commit |
 |-----|-------------|-----|--------|
+| Account Nav Icon Colors | Hidden navigation icons in account pages had incorrect colors | Fixed CSS styling for account navigation icons | [d48268d](https://github.com/dimispapa/bouldering-cyprus/commit/d48268d) |
+| Welcome Email Not Sending | Newsletter welcome email was not being sent to new subscribers | Fixed issue with welcome newsletter sending functionality | [80f64dd](https://github.com/dimispapa/bouldering-cyprus/commit/80f64dd) |
+| Cart/Checkout UI Issues | Cart and checkout pages had UI inconsistencies | Improved UI/UX of cart and checkout pages plus footer | [e606d70](https://github.com/dimispapa/bouldering-cyprus/commit/e606d70) |
+| Same Day Booking Issue | Users could not book crashpads for same day | Fixed validation to allow same day bookings | [f8f30ba](https://github.com/dimispapa/bouldering-cyprus/commit/f8f30ba) |
 | CDN Loading Performance | Slow page loading due to CDN resource loading | Moved CDN resources to local files and optimized loading sequence | [e928309](https://github.com/dimispapa/bouldering-cyprus/commit/e928309) |
 | CDN Migration Bug | Functionality broken after moving CDN resources locally | Fixed script references and ensured proper loading order | [b1693ac](https://github.com/dimispapa/bouldering-cyprus/commit/b1693ac) |
 | Accessibility Issues | HTML validation errors affecting accessibility | Fixed form labels, added missing alt attributes, and corrected ARIA roles | [e1e3c92](https://github.com/dimispapa/bouldering-cyprus/commit/e1e3c92) |
@@ -699,9 +826,10 @@ To run the project locally:
 | Original Photography and Copyright by Silvio Augusto Rusmigo | Bouldering/Landscape images | Taken specifically for the Cyprus Bouldering Guide book and relevant promotional material, including the website |
 
 # Acknowledgements
-* I would like to thank my Code Institute mentor Rory Patrick Sheridan for his guidance and support throughout this Code Institute Course. He always encouraged me to learn and grow as a developer.
+* I would like to thank my Code Institute mentor Rory Patrick Sheridan for his guidance and support throughout this Code Institute Course. He always encouraged me to learn and grow as a developer and provided with tips of areas to research outside the course's content which was massive help.
 * Special thanks to the bouldering community in Cyprus for their input and feedback during the photography process.
 * Many thanks to my girlfriend for her support and encouragement throughout this project, as well as last minute testing and bug reporting!
 * Same goes to my dear friend Marios for his help when hosting me during the final stages of submitting this project.
 * Also thanks to my father for taking the time, despite not being the most tech-savvy person, to go through the website and provide feedback.
 * I would also like to acknowledge the Code Institute for providing the knowledge and resources needed to create this e-commerce application.
+
