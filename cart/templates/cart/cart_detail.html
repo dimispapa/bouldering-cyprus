@@ -108,7 +108,7 @@
                       <span>€{{ delivery_cost|floatformat:2 }}</span>
                       <small class="d-block text-muted">* Free delivery on orders over €{{ free_delivery_threshold|floatformat:0 }}</small>
                     {% else %}
-                      <span class="text-success">Free delivery - order over €{{ free_delivery_threshold|floatformat:0 }}</span>
+                      <span class="text-success">Free delivery applied - order over €{{ free_delivery_threshold|floatformat:0 }}</span>
                     {% endif %}
                   </div>
                   <hr />

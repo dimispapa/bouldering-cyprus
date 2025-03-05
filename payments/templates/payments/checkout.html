@@ -25,6 +25,7 @@
     <div class="card-header d-flex justify-content-between align-items-center">
       <h1 class="mb-0 text-content">Order Summary</h1>
     </div>
+    <!-- Cart Items Section -->
     <div class="card-body">
       <div class="row">
         <div class="col-md-8">
@@ -42,17 +43,19 @@
                 <small class="text-muted d-block">Rental: {{ item.check_in }} to {{ item.check_out }}</small>
                 <small class="text-muted d-block">{{ item.rental_days }} days at €{{ item.daily_rate }}/day</small>
                 {% else %}
-                <small class="text-muted d-block">Quantity: {{ item.quantity }}</small>
+                <small class="text-muted d-block">Quantity: {{ item.quantity }} * <span class="fw-bold">€{{ item.total_price|floatformat:2 }}</span></small>
                 {% endif %}
               </div>
             </div>
-            <span>€{{ item.total_price|floatformat:2 }}</span>
           </div>
           {% endfor %}
-          <a href="{% url 'cart_detail' %}" class="button-update">
-            <i class="fa-solid fa-pen-to-square"></i>
-            Edit cart
-          </a>
+          <!-- Edit Cart Button -->
+          <div class="d-flex justify-content-end d-md-block">
+            <a href="{% url 'cart_detail' %}" class="button-update mb-2">
+              <i class="fa-solid fa-pen-to-square"></i>
+              Edit cart
+            </a>
+          </div>
         </div>
         <div class="col-md-4 border-start">
           <div class="text-end">
@@ -68,7 +71,7 @@
               <small class="text-muted d-block">* Free delivery on orders over €{{ free_delivery_threshold|floatformat:0 }}</small>
             </p>
             {% else %}
-            <p class="mb-1 text-success">Free delivery - order over €{{ free_delivery_threshold|floatformat:0 }}</p>
+            <p class="mb-1 text-success">Free delivery applied - order over €{{ free_delivery_threshold|floatformat:0 }}</p>
             {% endif %}
               {% endif %}
 
