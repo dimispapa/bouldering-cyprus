@@ -3,7 +3,9 @@ from django.contrib.sites.models import Site
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail, CustomArg
 from django.conf import settings
-from .models import NewsletterSubscriber
+from .models import NewsletterSubscriber, NewsletterMail
+from django.contrib import messages
+
 
 logger = logging.getLogger(__name__)
 
@@ -118,3 +120,26 @@ def send_newsletter_email(newsletter,
     except Exception as e:
         logger.error(f"Error sending newsletter: {str(e)}")
         return False
+
+
+def send_welcome_email(request, subscriber):
+    """
+    Send a welcome email to a new subscriber.
+    """
+    # Get the welcome email template
+    welcome_email = NewsletterMail.objects.get(id=1)
+    # Send the welcome email
+    logger.info(f"Sending welcome email to {subscriber.email}")
+    success = send_newsletter_email(newsletter=welcome_email,
+                                    recipient_list=[subscriber])
+    if success:
+        logger.info(f"Welcome email sent to {subscriber.email}")
+        messages.success(request,
+                         "Thank you for subscribing to our newsletter!")
+    else:
+        logger.error(f"Error sending welcome email for "
+                     f"{subscriber.email}")
+        messages.error(
+            request, "An error occurred while processing your "
+            "subscribtion to our newsletter. Please try again "
+            "later or contact us at info@bouldering-cyprus.com.")

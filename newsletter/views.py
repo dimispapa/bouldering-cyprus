@@ -2,7 +2,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_GET
-from .models import NewsletterSubscriber, NewsletterMail
+from .models import NewsletterSubscriber
+from .sendgrid_utils import send_welcome_email
 import logging
 
 logger = logging.getLogger(__name__)
@@ -66,29 +67,12 @@ def manage_subscription(request):
                 subscriber = NewsletterSubscriber.objects.create(
                     user=user, is_active=True)
                 logger.info(f"Created new subscriber: {subscriber}")
-                # Send welcome email
-                try:
-                    # Get the welcome email template
-                    welcome_email = NewsletterMail.objects.get(id=1)
-                    # Send the welcome email
-                    from .sendgrid_utils import send_newsletter_email
-                    logger.info(f"Sending welcome email to {subscriber.email}")
-                    success = send_newsletter_email(
-                        newsletter=welcome_email,
-                        recipient_list=[subscriber.email])
-                    if success:
-                        messages.success(
-                            request,
-                            "Thank you for subscribing to our newsletter!")
-                    else:
-                        logger.error(f"Error sending welcome email for "
-                                     f"{subscriber.email}")
-                        messages.error(
-                            request, "An error occurred while processing your "
-                            "subscribe request. Please try again later.")
+            # Send welcome email
+            try:
+                send_welcome_email(request, subscriber)
 
-                except Exception as e:
-                    logger.error(f"Error sending welcome email: {e}")
+            except Exception as e:
+                logger.error(f"Error sending welcome email: {e}")
 
         # If the user wants to unsubscribe, handle the unsubscription
         elif action == 'unsubscribe':
