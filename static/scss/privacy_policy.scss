@@ -1,0 +1,43 @@
+.privacy-policy {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 6rem auto 2rem;
+    margin-top: 10rem;
+
+    h1 {
+        color: #ed6c2c;
+        margin-bottom: 2rem;
+    }
+
+    h2 {
+        color: #ed6c2c;
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+    }
+
+    p {
+        margin-bottom: 1rem;
+        line-height: 1.6;
+    }
+
+    ul {
+        margin-bottom: 1rem;
+        padding-left: 2rem;
+    }
+
+    li {
+        margin-bottom: 0.5rem;
+    }
+}
+
+.last-updated {
+    font-style: italic;
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid #ddd;
+}
+
+// Set black navbar for visible on white background
+.navbar {
+    background-color: black;
+}
