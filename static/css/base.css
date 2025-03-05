@@ -232,7 +232,8 @@ h4 {
 .navbar i.nav-icon.active {
   color: #000;
 }
-.navbar a.dropdown-item {
+.navbar a.dropdown-item,
+.navbar a.dropdown-item i {
   font-size: 1.2rem;
   color: #000;
   transition: color 0.3s ease;
@@ -240,25 +241,31 @@ h4 {
   padding-right: 5px;
 }
 @media (max-width: 1600px) {
-  .navbar a.dropdown-item {
+  .navbar a.dropdown-item,
+  .navbar a.dropdown-item i {
     font-size: 1rem;
   }
 }
 @media (max-width: 767px) {
-  .navbar a.dropdown-item {
+  .navbar a.dropdown-item,
+  .navbar a.dropdown-item i {
     font-size: 0.8rem;
   }
 }
 @media (max-width: 991px) {
-  .navbar a.dropdown-item {
+  .navbar a.dropdown-item,
+  .navbar a.dropdown-item i {
     color: #ed6c2c;
   }
 }
-.navbar a.dropdown-item:hover {
+.navbar a.dropdown-item:hover,
+.navbar a.dropdown-item i:hover {
   color: #ed6c2c;
   font-weight: 600;
 }
-.navbar a.dropdown-item:active, .navbar a.dropdown-item:focus {
+.navbar a.dropdown-item:active, .navbar a.dropdown-item:focus,
+.navbar a.dropdown-item i:active,
+.navbar a.dropdown-item i:focus {
   background-color: rgba(237, 108, 44, 0.1) !important;
   color: #d45212 !important;
 }
@@ -285,10 +292,12 @@ h4 {
 .navbar-scrolled i.nav-icon:hover {
   color: #000;
 }
-.navbar-scrolled a.dropdown-item {
+.navbar-scrolled a.dropdown-item,
+.navbar-scrolled a.dropdown-item i {
   color: #ed6c2c;
 }
-.navbar-scrolled a.dropdown-item:hover {
+.navbar-scrolled a.dropdown-item:hover,
+.navbar-scrolled a.dropdown-item i:hover {
   color: #000;
 }
 .navbar-scrolled .badge {
