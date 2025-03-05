@@ -6,6 +6,7 @@ This is a real personal project that I aspire to progress further, refine and pu
 
 <div style="text-align:center">
 <a href="https://bouldering-cyprus-53e1273cde1e.herokuapp.com/">ACCESS THE APPLICATION</a></div>
+<a href="https://bouldering-cyprus-53e1273cde1e.herokuapp.com/"><img src="./docs/images/website/home-page-bouldering-cy.png" alt="Access Application" width="100%"></a></div>
 
 # App Overview
 
