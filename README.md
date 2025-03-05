@@ -158,33 +158,147 @@ The colour palette images below were created using the [coolors](https://coolors
 - Semi-transparent variants (0.9 opacity) are used for overlay effects and hover states
 - Transparent variants (0.1 opacity) are used for subtle backgrounds and transitions
 
-## Database
-### Design
+## Wireframes
+Wireframe handrawn sketches were created to plan the layout of the website at the design stage. The final sketches are below:
+
+![Wireframe Sketch Home & Shop Desktop](./docs/images/wireframes/wire-home-shop-desk.jpeg)
+![Wireframe Sketch Home & Shop Mobile](./docs/images/wireframes/wire-home-shop-mob.jpeg)
+![Wireframe Sketch Rentals & Cart Desktop](./docs/images/wireframes/wire-rentals-cart-desk.jpeg)
+![Wireframe Sketch Rentals & Cart Mobile](./docs/images/wireframes/wire-rentals-cart-mob.jpeg)
+
+
+
+# Data Architecture
+
+## Database & ORM
+- **[PostgreSQL](https://www.postgresql.org/)**: Production database
+- **[SQLite](https://www.sqlite.org/)**: Development/testing database
+- **[Django ORM](https://docs.djangoproject.com/en/4.2/topics/db/)**: Database abstraction layer
+
+## Database Design
 The database design focuses on efficiently managing products, orders, rentals, and user data. The main models include:
 
-- **User Model:** Extended Django user model with additional profile information.
-- **Product Model:** Stores information about guidebooks and other products available for purchase.
-- **Order Model:** Tracks customer orders, payment status, and delivery information.
-- **OrderItem Model:** Links products to orders with quantity and price information.
-- **Rental Model:** Manages crashpad rentals with date ranges and availability.
-- **Newsletter Model:** Stores subscriber information for the newsletter system.
+- **User Model:** Extended Django user model with additional profile information
+- **Product Model:** Stores information about guidebooks and other products available for purchase
+- **Order Model:** Tracks customer orders, payment status, and delivery information
+- **OrderItem Model:** Links products to orders with quantity and price information
+- **Rental Model:** Manages crashpad rentals with date ranges and availability
+- **Newsletter Model:** Stores subscriber information for the newsletter system
 
-### Implementation
+### Entity Relationship Diagram
+The following diagram illustrates the relationships between the database models. This was generated using the [pydot](https://django-extensions.readthedocs.io/en/latest/graph_models.html) django extension which created a .dot file (see [erd_diagram.dot](./docs/erd_diagram.dot)) which was then used by the [dreampuf](https://dreampuf.github.io/GraphvizOnline/) GraphViz generator to generate this diagram.
+
+![Entity Relationship Diagram](./docs/images/erd/bouldering-cy-erd.png)
+
+## Data Models Schema
+
+| Model | Fields | Field Types | Field Options | Related Model | Description |
+|-------|---------|-------------|---------------|---------------|-------------|
+| Product | name | CharField | max_length=255 | - | Product name |
+| | description | TextField | blank=True, null=True | - | Product description |
+| | price | DecimalField | max_digits=10, decimal_places=2 | - | Product price |
+| | stock | PositiveIntegerField | default=0 | - | Available stock |
+| | image | ImageField | upload_to="products/", blank=True, null=True | - | Product image |
+| | created_at | DateTimeField | auto_now_add=True | - | Creation timestamp |
+| | updated_at | DateTimeField | auto_now=True | - | Last update timestamp |
+| | is_active | BooleanField | default=True | - | Product availability status |
+| GalleryImage | product | ForeignKey | on_delete=CASCADE | Product | Related product |
+| | image | ImageField | upload_to=product_gallery_upload_path | - | Gallery image |
+| Order | order_number | CharField | max_length=32, unique=True | - | Unique order identifier |
+| | user | ForeignKey | on_delete=SET_NULL, null=True | User | Customer who placed order |
+| | first_name | CharField | max_length=50 | - | Customer first name |
+| | last_name | CharField | max_length=50 | - | Customer last name |
+| | email | EmailField | max_length=250 | - | Customer email |
+| | phone | CharField | max_length=20 | - | Customer phone |
+| | address_line1 | CharField | max_length=250 | - | Shipping address line 1 |
+| | address_line2 | CharField | max_length=250, null=True | - | Shipping address line 2 |
+| | town_or_city | CharField | max_length=100 | - | Shipping city |
+| | postal_code | CharField | max_length=20 | - | Shipping postal code |
+| | country | CountryField | - | - | Shipping country |
+| | date_created | DateTimeField | auto_now_add=True | - | Order creation date |
+| | date_updated | DateTimeField | auto_now=True | - | Order last update |
+| OrderItem | order | ForeignKey | on_delete=CASCADE | Order | Related order |
+| | product | ForeignKey | on_delete=CASCADE | Product | Ordered product |
+| | quantity | IntegerField | default=1 | - | Quantity ordered |
+| | item_total | DecimalField | max_digits=10, decimal_places=2 | - | Total for line item |
+| Crashpad | name | CharField | max_length=100 | - | Crashpad name |
+| | brand | CharField | max_length=100 | - | Crashpad brand |
+| | model | CharField | max_length=100 | - | Crashpad model |
+| | dimensions | CharField | max_length=100 | - | Crashpad dimensions |
+| | description | TextField | - | - | Crashpad description |
+| | day_rate | DecimalField | max_digits=10, decimal_places=2 | - | Daily rental rate |
+| | seven_day_rate | DecimalField | max_digits=10, decimal_places=2 | - | Weekly rental rate |
+| | fourteen_day_rate | DecimalField | max_digits=10, decimal_places=2 | - | Fortnightly rental rate |
+| | image | ImageField | upload_to='crashpads/' | - | Crashpad image |
+| CrashpadBooking | crashpad | ForeignKey | on_delete=CASCADE | Crashpad | Booked crashpad |
+| | order | ForeignKey | on_delete=CASCADE | Order | Related order |
+| | check_in | DateField | - | - | Rental start date |
+| | check_out | DateField | - | - | Rental end date |
+| | rental_days | IntegerField | editable=False | - | Total rental days |
+| | daily_rate | DecimalField | max_digits=10, decimal_places=2 | - | Applied daily rate |
+| | total_price | DecimalField | max_digits=10, decimal_places=2 | - | Total rental price |
+| | status | CharField | max_length=10, choices | - | Booking status |
+| | created_at | DateTimeField | auto_now_add=True | - | Booking creation date |
+| | updated_at | DateTimeField | auto_now=True | - | Booking last update |
+| | customer_name | CharField | max_length=255 | - | Customer full name |
+| | customer_email | EmailField | - | - | Customer email |
+| | customer_phone | CharField | max_length=20 | - | Customer phone |
+
+## Implementation
 The database is implemented using PostgreSQL in production and SQLite for development/testing. Django ORM is used for database operations, providing a clean abstraction layer for data management.
 
-Queries have been optimised for performance were possible, making use of Django ORM's `select_related` and `prefetch_related` methods to reduce the number of database queries for related objects, effectively minimising the number of N+1 query issues.
+Queries have been optimised for performance where possible, making use of Django ORM's `select_related` and `prefetch_related` methods to reduce the number of database queries for related objects.
 
-## Technologies & Tools Stack
+# Payment Workflow
+
+The payment workflow is implemented using Stripe. The Stripe API is used to process payments securely and set up webhooks to handle payment events.
+
+## Checkout, Payment & Order Process Overview
+
+The checkout process follows a robust flow designed to ensure payment security, data integrity, and a smooth user experience:
+
+1. **Cart Validation**: Before entering checkout, the system validates that the cart is not empty and all items are in stock.
+
+2. **Checkout Form**: Users enter their delivery and contact information through a form built with Django Crispy Forms.
+
+3. **Payment Processing**: The application uses Stripe Elements to securely collect payment information without sensitive card data touching the server.
+
+4. **Order Data Storage**: Before payment confirmation, all order data is stored in the Stripe Payment Intent's metadata as a fallback mechanism.
+
+5. **Dual-Path Order Creation**: The system implements a redundant order creation process:
+   - **Primary Path**: Stripe webhooks receive payment confirmation events and create orders server-side
+   - **Fallback Path**: The browser-based checkout success page attempts to create the order if the webhook hasn't already done so
+
+6. **Stock Management**: Product stock levels are updated only after successful payment confirmation.
+
+7. **Order Confirmation**: Users receive both on-screen confirmation and email notifications for their orders.
+
+## Redundancy and Error Handling
+
+The payment system is designed with multiple layers of redundancy:
+
+- **Session vs. Metadata**: Order data is stored in both the user's session and the Payment Intent metadata
+- **Webhook vs. Browser**: Orders can be created via either the webhook handler or the browser redirect
+- **Multiple Stock Checks**: Stock is validated at multiple points to prevent overselling
+- **Idempotent Operations**: All order creation operations are idempotent to prevent duplicate orders
+
+## Process Flow Diagram
+
+The following diagram illustrates the complete checkout-to-payment-to-order workflow:
+
+![Payment Process Flow](./docs/images/process_flows/payment-flow.png)
+
+# Technologies & Tools Stack
 
 This project utilizes a robust stack of technologies and tools to deliver a seamless experience in development and functionality:
 
-### Programming Languages
+## Programming Languages
 - **[Python](https://www.python.org/)**: The core programming language used for backend logic and full-stack application development. Followed the [PEP8](https://pep8.org/) style guide for Python code by using the [Flake8](https://flake8.pycqa.org/) linter.
 - **[JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript)**: For dynamic front-end functionality and interactive features. Some backend functionality was implemented in JavaScript, such as initiating the payment process with Stripe and making API calls to store order metadata.
 - **[HTML5](https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5)**: Structuring web pages, holding static content and placing placeholders for dynamic content with semantic markup. Made use of Bootstrap 5 classes for quick responsive styling as well as Django Template Language for dynamic content based on context data.
 - **[CSS3](https://developer.mozilla.org/en-US/docs/Web/CSS)**: For styling the front-end and ensuring a responsive design. CSS was written in SCSS and compiled to CSS using the [live SASS compiler](https://marketplace.visualstudio.com/items?itemName=glenn2223.live-sass).
 
-### Frameworks
+## Frameworks
 - **[Django 4.2 LTS](https://docs.djangoproject.com/en/4.2/)**: A high-level Python web framework that enables rapid development and clean, pragmatic design. Followed the [Model-View-Template](https://docs.djangoproject.com/en/4.2/topics/class-based-views/intro/) approach for the templates.
 - **[Bootstrap 5](https://getbootstrap.com/)**: For responsive design and pre-styled components.
 
@@ -201,7 +315,9 @@ This project utilizes a robust stack of technologies and tools to deliver a seam
 | [jQuery](https://jquery.com/) | 3.7.1 | DOM manipulation, AJAX requests |
 | [Stripe.js](https://stripe.com/docs/js) | Latest | Payment form handling |
 | [Bootstrap JS](https://getbootstrap.com/) | 5.3.2 | UI components, modals, tooltips |
-| [Flatpickr](https://flatpickr.js.org/) | 4.6.13 | Date picker for rental bookings |
+| [Daterangepicker](https://www.daterangepicker.com/) | 3.1.0 | Date picker for rental bookings |
+| [Moment.js](https://momentjs.com/) | 2.30.1 | Date and time parsing and formatting |
+| [Moment-timezone.js](https://momentjs.com/timezone/) | 0.5.43 | Timezone support |
 
 #### Testing Libraries & Tools
 - **[Selenium](https://www.selenium.dev/)**: For automated browser testing and frontend integration tests
@@ -217,6 +333,7 @@ This project utilizes a robust stack of technologies and tools to deliver a seam
 - **[Stripe](https://stripe.com/)**: For secure payment processing.
 - **[AWS S3](https://aws.amazon.com/s3/)**: For storing static and media files.
 - **[Sentry](https://sentry.io/)**: For error tracking and monitoring.
+- **[SendGrid](https://sendgrid.com/)**: For email marketing and notifications.
 
 ### Development Tools
 - **[Git](https://git-scm.com/)**: For version control.
@@ -228,8 +345,6 @@ This project utilizes a robust stack of technologies and tools to deliver a seam
 ### Deployment & Hosting
 - **[Heroku](https://www.heroku.com/)**: For application hosting.
 - **[AWS CloudFront](https://aws.amazon.com/cloudfront/)**: For content delivery network services to cache static files and improve performance.
-- **[PostgreSQL](https://www.postgresql.org/)**: As the production database.
-
 
 # Testing & Monitoring
 
@@ -313,6 +428,57 @@ This project utilizes a robust stack of technologies and tools to deliver a seam
   - Contextual error information
   - Frontend/backend error logging
   - Alert configuration for critical issues
+
+- **Logging:**
+  - Configured logging with multiple loggers for different parts of the application
+  - Logged info at various steps throughout the application for easier debugging of errors and warnings
+  - Logging handler set up to notify admin via email of critical errors
+
+## Fixed Bugs
+Fixed bugs are listed below from latest to earliest, with the commit hash and a link to the commit.
+
+| Bug | Description | Fix | Commit |
+|-----|-------------|-----|--------|
+| CDN Loading Performance | Slow page loading due to CDN resource loading | Moved CDN resources to local files and optimized loading sequence | [e928309](https://github.com/dimispapa/bouldering-cyprus/commit/e928309) |
+| CDN Migration Bug | Functionality broken after moving CDN resources locally | Fixed script references and ensured proper loading order | [b1693ac](https://github.com/dimispapa/bouldering-cyprus/commit/b1693ac) |
+| Accessibility Issues | HTML validation errors affecting accessibility | Fixed form labels, added missing alt attributes, and corrected ARIA roles | [e1e3c92](https://github.com/dimispapa/bouldering-cyprus/commit/e1e3c92) |
+| HTML Validation Issues | Various HTML validation errors | Fixed invalid HTML structure and attributes | [d5517cc](https://github.com/dimispapa/bouldering-cyprus/commit/d5517cc) |
+| Sentry Context Variable | Sentry error tracking running during tests | Added SENTRY_ENABLED variable to control when error tracking is active | [f9cc8af](https://github.com/dimispapa/bouldering-cyprus/commit/f9cc8af) |
+| Database N+1 Query Problem | Inefficient database queries causing performance issues | Optimized queries using select_related and prefetch_related | [550eb2d](https://github.com/dimispapa/bouldering-cyprus/commit/550eb2d) |
+| Order Saving Issue | Orders only saving the first time they were created | Fixed logic in order creation to prevent duplicate saves | [183b41f](https://github.com/dimispapa/bouldering-cyprus/commit/183b41f) |
+| Date Validation Function | Issue with rental date validation function | Fixed validation logic to properly check date ranges | [cc05edb](https://github.com/dimispapa/bouldering-cyprus/commit/cc05edb) |
+| Template Title Error | Incorrect title in template | Fixed template title to match page content | [63cbdff](https://github.com/dimispapa/bouldering-cyprus/commit/63cbdff) |
+| Newsletter Email Rendering | Images and links in newsletter emails not rendering correctly | Fixed static URL paths for email templates | [65eb6bd](https://github.com/dimispapa/bouldering-cyprus/commit/65eb6bd) |
+| Unsubscribe URL | Incorrect unsubscribe URL in newsletter emails | Fixed URL generation in email templates | [2b9e518](https://github.com/dimispapa/bouldering-cyprus/commit/2b9e518) |
+| Cart Rental Days Calculation | Incorrect calculation of rental days in cart | Fixed calculation logic for rental period | [b6a1669](https://github.com/dimispapa/bouldering-cyprus/commit/b6a1669) |
+| Mobile Keyboard Popup | Mobile keyboard automatically appearing on date picker | Prevented keyboard popup on date picker fields | [8096dc1](https://github.com/dimispapa/bouldering-cyprus/commit/8096dc1) |
+| Crashpad Pickup Address | Issue with crashpad pickup address object | Fixed object structure and reference | [e93ae81](https://github.com/dimispapa/bouldering-cyprus/commit/e93ae81) |
+| Security Information Exposure | Sensitive information exposed in API response | Removed sensitive data from API responses | [66f6f6e](https://github.com/dimispapa/bouldering-cyprus/commit/66f6f6e) |
+| Cart JSON Serialization | Inconsistent cart data serialization | Fixed JSON serialization for cart data | [80bf001](https://github.com/dimispapa/bouldering-cyprus/commit/80bf001) |
+| Crashpad Availability Checks | Incorrect availability checking for crashpads | Fixed API checks for crashpad availability | [35818d3](https://github.com/dimispapa/bouldering-cyprus/commit/35818d3) |
+| Webhook Form Data Handling | Issue with form data in webhook retry | Fixed handling of form data during webhook retries | [3c47e0b](https://github.com/dimispapa/bouldering-cyprus/commit/3c47e0b) |
+| Cart Clearing After Success | Cart not properly clearing after successful checkout | Fixed cart clearing logic after successful order | [dd2de83](https://github.com/dimispapa/bouldering-cyprus/commit/dd2de83) |
+| Empty Cart Addition | Issue when adding items to an empty cart | Fixed cart initialization for first item | [15e1999](https://github.com/dimispapa/bouldering-cyprus/commit/15e1999) |
+| Duplicate Order Creation | Orders being created twice due to race conditions | Implemented uniqueness constraints and delayed view handler | [1f6013c](https://github.com/dimispapa/bouldering-cyprus/commit/1f6013c) |
+| Payment Intent Amount | Final payment intent amount not including delivery | Ensured delivery costs are included in final payment amount | [c73e052](https://github.com/dimispapa/bouldering-cyprus/commit/c73e052) |
+| Integer Conversion Error | Invalid integer error when updating payment intent | Fixed type conversion for payment amount | [251d3f4](https://github.com/dimispapa/bouldering-cyprus/commit/251d3f4) |
+| Email SMTP Settings | Email configuration issues preventing sending | Fixed SMTP settings for proper email delivery | [2b5c5a1](https://github.com/dimispapa/bouldering-cyprus/commit/2b5c5a1) |
+| Webhook Handler Test Variable | Incorrect setting of test webhook handler variable | Fixed variable assignment for test environment | [05ba871](https://github.com/dimispapa/bouldering-cyprus/commit/05ba871) |
+| Form Data Redundancy | Redundant code in form data handling | Removed duplicate code and streamlined form processing | [8eac5e8](https://github.com/dimispapa/bouldering-cyprus/commit/8eac5e8) |
+| DOM Security Vulnerability | DOM text reinterpreted as HTML causing security risk | Fixed text handling to prevent XSS vulnerability | [cc7bc10](https://github.com/dimispapa/bouldering-cyprus/commit/cc7bc10) |
+| Exposed Error Details | Error details exposed in JSON responses | Removed sensitive error information from responses | [e84c47d](https://github.com/dimispapa/bouldering-cyprus/commit/e84c47d) |
+| Email Port Configuration | Incorrect email port settings | Updated email port configuration for proper delivery | [276ff94](https://github.com/dimispapa/bouldering-cyprus/commit/276ff94) |
+| Operand Addition Error | Issue with decimal + float operand addition | Fixed type handling for numeric operations | [ab6aa1f](https://github.com/dimispapa/bouldering-cyprus/commit/ab6aa1f) |
+| Static Files Cache Busting | Browser caching old versions of static files | Enabled cache busting for static files | [d93159d](https://github.com/dimispapa/bouldering-cyprus/commit/d93159d) |
+| S3 Storage Configuration | Issues with AWS S3 file storage settings | Fixed S3 settings and custom storage configuration | [2d7799a](https://github.com/dimispapa/bouldering-cyprus/commit/2d7799a) |
+| Navbar Color Responsiveness | Navbar color issues on different screen sizes | Fixed responsive color styling for navbar | [ec07820](https://github.com/dimispapa/bouldering-cyprus/commit/ec07820) |
+| S3 Custom Storage Spacing | Formatting issue in custom storage class | Added proper spacing in S3 storage configuration | [a8ebc12](https://github.com/dimispapa/bouldering-cyprus/commit/a8ebc12) |
+| Down Arrow Visibility | Down arrow hiding unexpectedly on homepage | Fixed visibility and added bounce animation to arrows | [e59eaf9](https://github.com/dimispapa/bouldering-cyprus/commit/e59eaf9) |
+| Static Root Configuration | Missing STATIC_ROOT setting for deployment | Added proper static root configuration | [4f8e691](https://github.com/dimispapa/bouldering-cyprus/commit/4f8e691) |
+| Python Version Format | Incorrect Python version format in configuration | Fixed version specification format | [f7bf45a](https://github.com/dimispapa/bouldering-cyprus/commit/f7bf45a) |
+| AWS S3 Configuration | Issues with AWS S3 settings for production | Updated S3 configuration for proper file storage | [318a5af](https://github.com/dimispapa/bouldering-cyprus/commit/318a5af) |
+| Arrow Styling Issues | Inconsistent arrow styling on homepage | Fixed arrow styling and animation | [be93e77](https://github.com/dimispapa/bouldering-cyprus/commit/be93e77) |
+| Navigation Hover Effect | Missing hover effect on navigation items | Added bold hover effect to improve user experience | [c668ae4](https://github.com/dimispapa/bouldering-cyprus/commit/c668ae4) |
 
 ## Code Validation
 
@@ -402,8 +568,8 @@ The application is deployed on Heroku with the following configuration:
 1. **Create a Heroku App:** Set up a new app on Heroku.
 2. **Configure Environment Variables:** Set up all necessary environment variables in Heroku settings.
 3. **Database Setup:** Provision a PostgreSQL database.
-4. **Static Files:** Configure AWS S3 for static and media file storage.
-5. **Deploy:** Connect GitHub repository and enable automatic deployments.
+4. **Static Files:** Configure AWS S3 for static and media file storage. Use Cloudfront to cache static files and improve performance.
+5. **Deploy:** Connect GitHub repository and enable automatic deployments. Enables Github security checks and code scanning, prevent commits to main branch with errors.
 
 ## Environment Variables
 The following environment variables are required:
@@ -435,26 +601,37 @@ To run the project locally:
 | Source | Use | Notes |
 | ------ | --- | ----- |
 | [Django Documentation](https://docs.djangoproject.com/) | Framework reference | Extensive research on Django concepts |
+| [Static and Media Files in Django](https://testdriven.io/blog/django-static-files/) | File storage | Static and media file management |
 | [Stripe Documentation](https://stripe.com/docs) | Payment integration | Implementation of secure checkout |
 | [Bootstrap Documentation](https://getbootstrap.com/docs/) | Frontend framework | Responsive design implementation |
 | [AWS S3 Documentation](https://docs.aws.amazon.com/s3/) | File storage | Static and media file management |
 | [Sentry Documentation](https://docs.sentry.io/) | Error monitoring | Implementation of error tracking |
-
+| [Setting up Cloudfront](https://medium.com/@askarpasha/setting-up-a-cloudfront-cdn-for-an-amazon-s3-bucket-b553677551be) | Content delivery network | Implementation of content delivery network |
+| [Cloudfront Documentation](https://docs.aws.amazon.com/cloudfront/latest/DeveloperGuide/Introduction.html) | Content delivery network | Implementation of content delivery network |
+| [Sass language](https://sass-lang.com/) | CSS preprocessor | Implementation of CSS preprocessor / SCSS |
+| [How to use Sass](https://www.freecodecamp.org/news/how-to-use-sass-with-css/#:~:text=scss%20is%20the%20source%20file,use%20Sass%20in%20your%20projects.) | CSS preprocessor | Implementation of CSS preprocessor / SCSS |
+| [Element-first scss media queries](https://cheewebdevelopment.com/element-first-scss-media-queries/) | CSS preprocessor | Implementation of CSS preprocessor / SCSS |
+| [Ngrok](https://ngrok.com/) | Local development | Local development testing - forwarding local server to public URL suitable for Stripe webhook testing in development |
+| [Django Crispy Forms](https://django-crispy-forms.readthedocs.io/en/latest/) | Form handling | Implementation of form handling |
 
 ## Content
 | Source | Use | Notes |
 | ------ | --- | ----- |
 | [FontAwesome](https://fontawesome.com/) | Icons | Used throughout the site |
+| [Google Fonts](https://fonts.google.com/) | Fonts | Used throughout the site |
+| [Flaticon](https://www.flaticon.com/free-icons/rocks) | Favicons | Used for the browser tab icon |
 | Original Content | Product descriptions | Written specifically for this application |
-| Original Content | Bouldering information | Based on local knowledge and research |
+| Original Content | Bouldering information | Based on local and personal knowledge from years of exploration and passion for the sport |
 
 ## Media
 | Source | Use | Notes |
 | ------ | --- | ----- |
-| Original Photography | Product images | Taken specifically for this application |
-| Original Photography | Bouldering spot images | Captured at various locations in Cyprus |
+| Original Photography and Copyright by Silvio Augusto Rusmigo | Bouldering/Landscape images | Taken specifically for the Cyprus Bouldering Guide book and relevant promotional material, including the website |
 
 # Acknowledgements
-* I would like to thank my Code Institute mentor for their guidance and support throughout this project.
-* Special thanks to the bouldering community in Cyprus for their input and feedback during the development process.
-* I would also like to acknowledge the Code Institute for providing the knowledge and resources needed to create this application.
+* I would like to thank my Code Institute mentor Rory Patrick Sheridan for his guidance and support throughout this Code Institute Course. He always encouraged me to learn and grow as a developer.
+* Special thanks to the bouldering community in Cyprus for their input and feedback during the photography process.
+* Many thanks to my girlfriend for her support and encouragement throughout this project, as well as last minute testing and bug reporting!
+* Same goes to my dear friend Marios for his help when hosting me during the final stages of submitting this project.
+* Also thanks to my father for taking the time, despite not being the most tech-savvy person, to go through the website and provide feedback.
+* I would also like to acknowledge the Code Institute for providing the knowledge and resources needed to create this e-commerce application.

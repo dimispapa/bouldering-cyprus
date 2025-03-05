@@ -32,8 +32,7 @@ urlpatterns = [
     path("payments/", include("payments.urls")),
     path('api-auth/', include('rest_framework.urls')),
     path('rentals/', include('rentals.urls')),
-    # For testing error pages (remove in production)
-    path('404/', TemplateView.as_view(template_name='404.html'), name='404'),
-    path('500/', TemplateView.as_view(template_name='500.html'), name='500'),
-    path('403/', TemplateView.as_view(template_name='403.html'), name='403'),
+    path('privacy-policy/',
+         TemplateView.as_view(template_name='privacy_policy.html'),
+         name='privacy_policy'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

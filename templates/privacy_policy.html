@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_title %}
+  Privacy Policy
+{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/privacy_policy.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row bg-dark w-100"></div>
+</div>
+<div class="privacy-policy container-fluid">
+    <h1>Privacy Policy for Bouldering Cyprus</h1>
+    
+    <h2>Introduction</h2>
+    <p>Welcome to Bouldering Cyprus. We respect your privacy and are committed to protecting your personal data. This privacy policy explains how we collect, use, and safeguard your information when you visit our website or make purchases.</p>
+    
+    <h2>Information We Collect</h2>
+    <h3>Personal Information</h3>
+    <p>When you create an account, place an order, or subscribe to our newsletter, we collect:</p>
+    <ul>
+        <li>Name and contact details (email address, phone number, postal address)</li>
+        <li>Payment information (processed securely through Stripe)</li>
+        <li>Order history and preferences</li>
+        <li>Account login credentials</li>
+    </ul>
+
+    <h3>Automatically Collected Information</h3>
+    <p>When you browse our site, we automatically collect:</p>
+    <ul>
+        <li>IP address and device information</li>
+        <li>Browser type and version</li>
+        <li>Pages visited and time spent on our website</li>
+        <li>Referring website addresses</li>
+    </ul>
+
+    <h2>How We Use Your Information</h2>
+    <p>We use your information to:</p>
+    <ul>
+        <li>Process and fulfill your orders for guidebooks and crashpad rentals</li>
+        <li>Manage your account and provide customer support</li>
+        <li>Send order confirmations and updates</li>
+        <li>Deliver our newsletter if you've subscribed</li>
+        <li>Improve our website and services</li>
+        <li>Comply with legal obligations</li>
+    </ul>
+
+    <h2>Cookies</h2>
+    <p>Our website uses cookies to enhance your browsing experience. These include:</p>
+    <ul>
+        <li>Essential cookies for website functionality</li>
+        <li>Analytics cookies to understand how visitors use our site</li>
+        <li>Third-party cookies from services like Stripe for payment processing</li>
+    </ul>
+
+    <h2>Data Sharing and Third Parties</h2>
+    <p>We share your data with:</p>
+    <ul>
+        <li>Payment processors (Stripe) to complete transactions</li>
+        <li>Delivery services to fulfill orders</li>
+        <li>Cloud storage providers (AWS) to store website data</li>
+        <li>Email service providers to send newsletters and order confirmations</li>
+        <li>Analytics services to improve our website</li>
+    </ul>
+    <p>We do not sell your personal information to third parties.</p>
+
+    <h2>Data Security</h2>
+    <p>We implement appropriate security measures to protect your personal information from unauthorized access, alteration, or disclosure.</p>
+
+    <h2>Your Rights</h2>
+    <p>You have the right to:</p>
+    <ul>
+        <li>Access the personal data we hold about you</li>
+        <li>Request correction of inaccurate information</li>
+        <li>Request deletion of your data</li>
+        <li>Withdraw consent for marketing communications</li>
+        <li>Request a copy of your data in a portable format</li>
+    </ul>
+
+    <h2>Changes to This Policy</h2>
+    <p>We may update this privacy policy from time to time. Any changes will be posted on this page with an updated revision date.</p>
+
+    <h2>Contact Us</h2>
+    <p>If you have questions about this privacy policy or our data practices, please contact us at:</p>
+    <p>Email: <a href="mailto:info@boulderingcyprus.com">info@boulderingcyprus.com</a></p>
+
+    <p class="last-updated">Last Updated: 02/02/2025</p>
+</div>
+{% endblock %} 
