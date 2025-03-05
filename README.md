@@ -158,6 +158,16 @@ The colour palette images below were created using the [coolors](https://coolors
 - Semi-transparent variants (0.9 opacity) are used for overlay effects and hover states
 - Transparent variants (0.1 opacity) are used for subtle backgrounds and transitions
 
+## Wireframes
+Wireframe handrawn sketches were created to plan the layout of the website at the design stage. The final sketches are below:
+
+![Wireframe Sketch Home & Shop Desktop](./docs/images/wireframes/wire-home-shop-desk.jpeg)
+![Wireframe Sketch Home & Shop Mobile](./docs/images/wireframes/wire-home-shop-mob.jpeg)
+![Wireframe Sketch Rentals & Cart Desktop](./docs/images/wireframes/wire-rentals-cart-desk.jpeg)
+![Wireframe Sketch Rentals & Cart Mobile](./docs/images/wireframes/wire-rentals-cart-mob.jpeg)
+
+
+
 # Data Architecture
 
 ## Database & ORM
@@ -239,6 +249,45 @@ The database is implemented using PostgreSQL in production and SQLite for develo
 
 Queries have been optimised for performance where possible, making use of Django ORM's `select_related` and `prefetch_related` methods to reduce the number of database queries for related objects.
 
+# Payment Workflow
+
+The payment workflow is implemented using Stripe. The Stripe API is used to process payments securely and set up webhooks to handle payment events.
+
+## Checkout, Payment & Order Process Overview
+
+The checkout process follows a robust flow designed to ensure payment security, data integrity, and a smooth user experience:
+
+1. **Cart Validation**: Before entering checkout, the system validates that the cart is not empty and all items are in stock.
+
+2. **Checkout Form**: Users enter their delivery and contact information through a form built with Django Crispy Forms.
+
+3. **Payment Processing**: The application uses Stripe Elements to securely collect payment information without sensitive card data touching the server.
+
+4. **Order Data Storage**: Before payment confirmation, all order data is stored in the Stripe Payment Intent's metadata as a fallback mechanism.
+
+5. **Dual-Path Order Creation**: The system implements a redundant order creation process:
+   - **Primary Path**: Stripe webhooks receive payment confirmation events and create orders server-side
+   - **Fallback Path**: The browser-based checkout success page attempts to create the order if the webhook hasn't already done so
+
+6. **Stock Management**: Product stock levels are updated only after successful payment confirmation.
+
+7. **Order Confirmation**: Users receive both on-screen confirmation and email notifications for their orders.
+
+## Redundancy and Error Handling
+
+The payment system is designed with multiple layers of redundancy:
+
+- **Session vs. Metadata**: Order data is stored in both the user's session and the Payment Intent metadata
+- **Webhook vs. Browser**: Orders can be created via either the webhook handler or the browser redirect
+- **Multiple Stock Checks**: Stock is validated at multiple points to prevent overselling
+- **Idempotent Operations**: All order creation operations are idempotent to prevent duplicate orders
+
+## Process Flow Diagram
+
+The following diagram illustrates the complete checkout-to-payment-to-order workflow:
+
+![Payment Process Flow](./docs/images/process_flows/payment-flow.png)
+
 # Technologies & Tools Stack
 
 This project utilizes a robust stack of technologies and tools to deliver a seamless experience in development and functionality:
@@ -284,6 +333,7 @@ This project utilizes a robust stack of technologies and tools to deliver a seam
 - **[Stripe](https://stripe.com/)**: For secure payment processing.
 - **[AWS S3](https://aws.amazon.com/s3/)**: For storing static and media files.
 - **[Sentry](https://sentry.io/)**: For error tracking and monitoring.
+- **[SendGrid](https://sendgrid.com/)**: For email marketing and notifications.
 
 ### Development Tools
 - **[Git](https://git-scm.com/)**: For version control.
@@ -379,6 +429,57 @@ This project utilizes a robust stack of technologies and tools to deliver a seam
   - Frontend/backend error logging
   - Alert configuration for critical issues
 
+- **Logging:**
+  - Configured logging with multiple loggers for different parts of the application
+  - Logged info at various steps throughout the application for easier debugging of errors and warnings
+  - Logging handler set up to notify admin via email of critical errors
+
+## Fixed Bugs
+Fixed bugs are listed below from latest to earliest, with the commit hash and a link to the commit.
+
+| Bug | Description | Fix | Commit |
+|-----|-------------|-----|--------|
+| CDN Loading Performance | Slow page loading due to CDN resource loading | Moved CDN resources to local files and optimized loading sequence | [e928309](https://github.com/dimispapa/bouldering-cyprus/commit/e928309) |
+| CDN Migration Bug | Functionality broken after moving CDN resources locally | Fixed script references and ensured proper loading order | [b1693ac](https://github.com/dimispapa/bouldering-cyprus/commit/b1693ac) |
+| Accessibility Issues | HTML validation errors affecting accessibility | Fixed form labels, added missing alt attributes, and corrected ARIA roles | [e1e3c92](https://github.com/dimispapa/bouldering-cyprus/commit/e1e3c92) |
+| HTML Validation Issues | Various HTML validation errors | Fixed invalid HTML structure and attributes | [d5517cc](https://github.com/dimispapa/bouldering-cyprus/commit/d5517cc) |
+| Sentry Context Variable | Sentry error tracking running during tests | Added SENTRY_ENABLED variable to control when error tracking is active | [f9cc8af](https://github.com/dimispapa/bouldering-cyprus/commit/f9cc8af) |
+| Database N+1 Query Problem | Inefficient database queries causing performance issues | Optimized queries using select_related and prefetch_related | [550eb2d](https://github.com/dimispapa/bouldering-cyprus/commit/550eb2d) |
+| Order Saving Issue | Orders only saving the first time they were created | Fixed logic in order creation to prevent duplicate saves | [183b41f](https://github.com/dimispapa/bouldering-cyprus/commit/183b41f) |
+| Date Validation Function | Issue with rental date validation function | Fixed validation logic to properly check date ranges | [cc05edb](https://github.com/dimispapa/bouldering-cyprus/commit/cc05edb) |
+| Template Title Error | Incorrect title in template | Fixed template title to match page content | [63cbdff](https://github.com/dimispapa/bouldering-cyprus/commit/63cbdff) |
+| Newsletter Email Rendering | Images and links in newsletter emails not rendering correctly | Fixed static URL paths for email templates | [65eb6bd](https://github.com/dimispapa/bouldering-cyprus/commit/65eb6bd) |
+| Unsubscribe URL | Incorrect unsubscribe URL in newsletter emails | Fixed URL generation in email templates | [2b9e518](https://github.com/dimispapa/bouldering-cyprus/commit/2b9e518) |
+| Cart Rental Days Calculation | Incorrect calculation of rental days in cart | Fixed calculation logic for rental period | [b6a1669](https://github.com/dimispapa/bouldering-cyprus/commit/b6a1669) |
+| Mobile Keyboard Popup | Mobile keyboard automatically appearing on date picker | Prevented keyboard popup on date picker fields | [8096dc1](https://github.com/dimispapa/bouldering-cyprus/commit/8096dc1) |
+| Crashpad Pickup Address | Issue with crashpad pickup address object | Fixed object structure and reference | [e93ae81](https://github.com/dimispapa/bouldering-cyprus/commit/e93ae81) |
+| Security Information Exposure | Sensitive information exposed in API response | Removed sensitive data from API responses | [66f6f6e](https://github.com/dimispapa/bouldering-cyprus/commit/66f6f6e) |
+| Cart JSON Serialization | Inconsistent cart data serialization | Fixed JSON serialization for cart data | [80bf001](https://github.com/dimispapa/bouldering-cyprus/commit/80bf001) |
+| Crashpad Availability Checks | Incorrect availability checking for crashpads | Fixed API checks for crashpad availability | [35818d3](https://github.com/dimispapa/bouldering-cyprus/commit/35818d3) |
+| Webhook Form Data Handling | Issue with form data in webhook retry | Fixed handling of form data during webhook retries | [3c47e0b](https://github.com/dimispapa/bouldering-cyprus/commit/3c47e0b) |
+| Cart Clearing After Success | Cart not properly clearing after successful checkout | Fixed cart clearing logic after successful order | [dd2de83](https://github.com/dimispapa/bouldering-cyprus/commit/dd2de83) |
+| Empty Cart Addition | Issue when adding items to an empty cart | Fixed cart initialization for first item | [15e1999](https://github.com/dimispapa/bouldering-cyprus/commit/15e1999) |
+| Duplicate Order Creation | Orders being created twice due to race conditions | Implemented uniqueness constraints and delayed view handler | [1f6013c](https://github.com/dimispapa/bouldering-cyprus/commit/1f6013c) |
+| Payment Intent Amount | Final payment intent amount not including delivery | Ensured delivery costs are included in final payment amount | [c73e052](https://github.com/dimispapa/bouldering-cyprus/commit/c73e052) |
+| Integer Conversion Error | Invalid integer error when updating payment intent | Fixed type conversion for payment amount | [251d3f4](https://github.com/dimispapa/bouldering-cyprus/commit/251d3f4) |
+| Email SMTP Settings | Email configuration issues preventing sending | Fixed SMTP settings for proper email delivery | [2b5c5a1](https://github.com/dimispapa/bouldering-cyprus/commit/2b5c5a1) |
+| Webhook Handler Test Variable | Incorrect setting of test webhook handler variable | Fixed variable assignment for test environment | [05ba871](https://github.com/dimispapa/bouldering-cyprus/commit/05ba871) |
+| Form Data Redundancy | Redundant code in form data handling | Removed duplicate code and streamlined form processing | [8eac5e8](https://github.com/dimispapa/bouldering-cyprus/commit/8eac5e8) |
+| DOM Security Vulnerability | DOM text reinterpreted as HTML causing security risk | Fixed text handling to prevent XSS vulnerability | [cc7bc10](https://github.com/dimispapa/bouldering-cyprus/commit/cc7bc10) |
+| Exposed Error Details | Error details exposed in JSON responses | Removed sensitive error information from responses | [e84c47d](https://github.com/dimispapa/bouldering-cyprus/commit/e84c47d) |
+| Email Port Configuration | Incorrect email port settings | Updated email port configuration for proper delivery | [276ff94](https://github.com/dimispapa/bouldering-cyprus/commit/276ff94) |
+| Operand Addition Error | Issue with decimal + float operand addition | Fixed type handling for numeric operations | [ab6aa1f](https://github.com/dimispapa/bouldering-cyprus/commit/ab6aa1f) |
+| Static Files Cache Busting | Browser caching old versions of static files | Enabled cache busting for static files | [d93159d](https://github.com/dimispapa/bouldering-cyprus/commit/d93159d) |
+| S3 Storage Configuration | Issues with AWS S3 file storage settings | Fixed S3 settings and custom storage configuration | [2d7799a](https://github.com/dimispapa/bouldering-cyprus/commit/2d7799a) |
+| Navbar Color Responsiveness | Navbar color issues on different screen sizes | Fixed responsive color styling for navbar | [ec07820](https://github.com/dimispapa/bouldering-cyprus/commit/ec07820) |
+| S3 Custom Storage Spacing | Formatting issue in custom storage class | Added proper spacing in S3 storage configuration | [a8ebc12](https://github.com/dimispapa/bouldering-cyprus/commit/a8ebc12) |
+| Down Arrow Visibility | Down arrow hiding unexpectedly on homepage | Fixed visibility and added bounce animation to arrows | [e59eaf9](https://github.com/dimispapa/bouldering-cyprus/commit/e59eaf9) |
+| Static Root Configuration | Missing STATIC_ROOT setting for deployment | Added proper static root configuration | [4f8e691](https://github.com/dimispapa/bouldering-cyprus/commit/4f8e691) |
+| Python Version Format | Incorrect Python version format in configuration | Fixed version specification format | [f7bf45a](https://github.com/dimispapa/bouldering-cyprus/commit/f7bf45a) |
+| AWS S3 Configuration | Issues with AWS S3 settings for production | Updated S3 configuration for proper file storage | [318a5af](https://github.com/dimispapa/bouldering-cyprus/commit/318a5af) |
+| Arrow Styling Issues | Inconsistent arrow styling on homepage | Fixed arrow styling and animation | [be93e77](https://github.com/dimispapa/bouldering-cyprus/commit/be93e77) |
+| Navigation Hover Effect | Missing hover effect on navigation items | Added bold hover effect to improve user experience | [c668ae4](https://github.com/dimispapa/bouldering-cyprus/commit/c668ae4) |
+
 ## Code Validation
 
 ### HTML Validation
@@ -467,8 +568,8 @@ The application is deployed on Heroku with the following configuration:
 1. **Create a Heroku App:** Set up a new app on Heroku.
 2. **Configure Environment Variables:** Set up all necessary environment variables in Heroku settings.
 3. **Database Setup:** Provision a PostgreSQL database.
-4. **Static Files:** Configure AWS S3 for static and media file storage.
-5. **Deploy:** Connect GitHub repository and enable automatic deployments.
+4. **Static Files:** Configure AWS S3 for static and media file storage. Use Cloudfront to cache static files and improve performance.
+5. **Deploy:** Connect GitHub repository and enable automatic deployments. Enables Github security checks and code scanning, prevent commits to main branch with errors.
 
 ## Environment Variables
 The following environment variables are required:
@@ -500,26 +601,37 @@ To run the project locally:
 | Source | Use | Notes |
 | ------ | --- | ----- |
 | [Django Documentation](https://docs.djangoproject.com/) | Framework reference | Extensive research on Django concepts |
+| [Static and Media Files in Django](https://testdriven.io/blog/django-static-files/) | File storage | Static and media file management |
 | [Stripe Documentation](https://stripe.com/docs) | Payment integration | Implementation of secure checkout |
 | [Bootstrap Documentation](https://getbootstrap.com/docs/) | Frontend framework | Responsive design implementation |
 | [AWS S3 Documentation](https://docs.aws.amazon.com/s3/) | File storage | Static and media file management |
 | [Sentry Documentation](https://docs.sentry.io/) | Error monitoring | Implementation of error tracking |
-
+| [Setting up Cloudfront](https://medium.com/@askarpasha/setting-up-a-cloudfront-cdn-for-an-amazon-s3-bucket-b553677551be) | Content delivery network | Implementation of content delivery network |
+| [Cloudfront Documentation](https://docs.aws.amazon.com/cloudfront/latest/DeveloperGuide/Introduction.html) | Content delivery network | Implementation of content delivery network |
+| [Sass language](https://sass-lang.com/) | CSS preprocessor | Implementation of CSS preprocessor / SCSS |
+| [How to use Sass](https://www.freecodecamp.org/news/how-to-use-sass-with-css/#:~:text=scss%20is%20the%20source%20file,use%20Sass%20in%20your%20projects.) | CSS preprocessor | Implementation of CSS preprocessor / SCSS |
+| [Element-first scss media queries](https://cheewebdevelopment.com/element-first-scss-media-queries/) | CSS preprocessor | Implementation of CSS preprocessor / SCSS |
+| [Ngrok](https://ngrok.com/) | Local development | Local development testing - forwarding local server to public URL suitable for Stripe webhook testing in development |
+| [Django Crispy Forms](https://django-crispy-forms.readthedocs.io/en/latest/) | Form handling | Implementation of form handling |
 
 ## Content
 | Source | Use | Notes |
 | ------ | --- | ----- |
 | [FontAwesome](https://fontawesome.com/) | Icons | Used throughout the site |
+| [Google Fonts](https://fonts.google.com/) | Fonts | Used throughout the site |
+| [Flaticon](https://www.flaticon.com/free-icons/rocks) | Favicons | Used for the browser tab icon |
 | Original Content | Product descriptions | Written specifically for this application |
-| Original Content | Bouldering information | Based on local knowledge and research |
+| Original Content | Bouldering information | Based on local and personal knowledge from years of exploration and passion for the sport |
 
 ## Media
 | Source | Use | Notes |
 | ------ | --- | ----- |
-| Original Photography | Product images | Taken specifically for this application |
-| Original Photography | Bouldering spot images | Captured at various locations in Cyprus |
+| Original Photography and Copyright by Silvio Augusto Rusmigo | Bouldering/Landscape images | Taken specifically for the Cyprus Bouldering Guide book and relevant promotional material, including the website |
 
 # Acknowledgements
-* I would like to thank my Code Institute mentor for their guidance and support throughout this project.
-* Special thanks to the bouldering community in Cyprus for their input and feedback during the development process.
-* I would also like to acknowledge the Code Institute for providing the knowledge and resources needed to create this application.
+* I would like to thank my Code Institute mentor Rory Patrick Sheridan for his guidance and support throughout this Code Institute Course. He always encouraged me to learn and grow as a developer.
+* Special thanks to the bouldering community in Cyprus for their input and feedback during the photography process.
+* Many thanks to my girlfriend for her support and encouragement throughout this project, as well as last minute testing and bug reporting!
+* Same goes to my dear friend Marios for his help when hosting me during the final stages of submitting this project.
+* Also thanks to my father for taking the time, despite not being the most tech-savvy person, to go through the website and provide feedback.
+* I would also like to acknowledge the Code Institute for providing the knowledge and resources needed to create this e-commerce application.
