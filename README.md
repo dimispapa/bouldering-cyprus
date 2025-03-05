@@ -520,16 +520,6 @@ Fixed bugs are listed below from latest to earliest, with the commit hash and a 
 | Arrow Styling Issues | Inconsistent arrow styling on homepage | Fixed arrow styling and animation | [be93e77](https://github.com/dimispapa/bouldering-cyprus/commit/be93e77) |
 | Navigation Hover Effect | Missing hover effect on navigation items | Added bold hover effect to improve user experience | [c668ae4](https://github.com/dimispapa/bouldering-cyprus/commit/c668ae4) |
 
-## Version Control and Repository Management
-
-- **Repository Management:**
-  - Used GitHub for version control
-  - Implemented branches for development and deployment
-  - Implemented pull requests for merging branches into main
-  - Used GitHub rules to prevent merging to main with errors
-  - Implemented code scanning and security checks
-
-
 ## Code Validation
 
 ### HTML Validation
@@ -608,18 +598,34 @@ A test was carried out on the deployed website using the Lighthouse Audit tool w
 | Account | Mobile | ![Lighthouse Audit](./docs/images/lighthouse/lighthouse-account-mobile.png) | No major problems |
 | Account | Desktop | ![Lighthouse Audit](./docs/images/lighthouse/lighthouse-account-desktop.png) | No major problems |
 
-## Java
+# Development & Deployment
 
-# Deployment
+## Version Control and Repository Management
+
+- **Repository Management:**
+  - Used GitHub for version control
+  - Implemented branches for development and deployment
+  - Implemented pull requests for merging branches into main
+  - Used GitHub rules to prevent merging to main with errors
+  - Implemented code scanning and security checks
 
 ## Deployment to Heroku
-The application is deployed on Heroku with the following configuration:
+The application is deployed on [Heroku](https://www.heroku.com/) with the following configuration:
 
 1. **Create a Heroku App:** Set up a new app on Heroku.
 2. **Configure Environment Variables:** Set up all necessary environment variables in Heroku settings.
-3. **Database Setup:** Provision a PostgreSQL database.
-4. **Static Files:** Configure AWS S3 for static and media file storage. Use Cloudfront to cache static files and improve performance.
-5. **Deploy:** Connect GitHub repository and enable automatic deployments. Enables Github security checks and code scanning, prevent commits to main branch with errors.
+3. **Project setup:** Ensure a Procfile is present in the root directory along with a runtime.txt file to specify the Python version.
+4. **Database Setup:** Provision a PostgreSQL database.
+5. **Static Files:** Configure AWS S3 for static and media file storage. Use Cloudfront to cache static files and improve performance.
+6. **Deploy:** Connect GitHub repository and enable automatic deployments. Enables Github security checks and code scanning, prevent commits to main branch with errors.
+
+## How to Clone the Repository
+
+1. Clone the repository: `git clone https://github.com/dimispapa/bouldering-cyprus.git`
+2. Install dependencies: `pip install -r requirements.txt`
+3. Set up environment variables in an `env.py` file
+4. Run migrations: `python manage.py migrate`
+5. Create a superuser: `python manage.py createsuperuser`
 
 ## Environment Variables
 The following environment variables are required:
@@ -629,11 +635,20 @@ The following environment variables are required:
 - `AWS_ACCESS_KEY_ID`: AWS access key
 - `AWS_SECRET_ACCESS_KEY`: AWS secret key
 - `AWS_STORAGE_BUCKET_NAME`: S3 bucket name
-- `STRIPE_PUBLIC_KEY`: Stripe public key
-- `STRIPE_SECRET_KEY`: Stripe secret key
+- `AWS_S3_REGION_NAME`: S3 region name
+- `AWS_CLOUDFRONT_DOMAIN`: Cloudfront domain
+- `STRIPE_TEST_PUBLIC_KEY`: Stripe test public key
+- `STRIPE_TEST_SECRET_KEY`: Stripe test secret key
 - `STRIPE_WEBHOOK_SECRET`: Stripe webhook secret
 - `EMAIL_HOST_KEY`: SendGrid API key
 - `DEFAULT_EMAIL`: Default sender email
+
+The following environment variables are used as processing/routing flags:
+
+- `SENTRY_ENABLED`: Enable Sentry error tracking
+- `DEBUG`: Enable debug mode
+- `PRODUCTION`: Enable production mode
+- `TEST_WEBHOOK_HANDLER`: Enable test webhook handler
 
 ## Local Development
 To run the project locally:
