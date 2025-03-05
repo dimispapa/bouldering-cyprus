@@ -84,7 +84,8 @@
         }
     }
 
-    a.dropdown-item {
+    a.dropdown-item,
+    a.dropdown-item i {
         // Font sizes
         font-size: $s-font;
         @include for-size(desktop-lg, down) {
@@ -139,7 +140,8 @@
         }
     }
 
-    a.dropdown-item {
+    a.dropdown-item,
+    a.dropdown-item i {
         color: $orange;
         &:hover {
             color: $black;

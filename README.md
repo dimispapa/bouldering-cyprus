@@ -289,6 +289,9 @@ The following diagram illustrates the complete checkout-to-payment-to-order work
 
 ![Payment Process Flow](./docs/images/process_flows/payment-flow.png)
 
+# Functionality & Features
+
+
 # Technologies & Tools Stack
 
 This project utilizes a robust stack of technologies and tools to deliver a seamless experience in development and functionality:
