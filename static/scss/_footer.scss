@@ -25,4 +25,12 @@ footer {
             color: $orange;
         }
     }
+
+    #footer-contact, #footer-copyright {
+        @include for-size(768px, up) {
+            border-bottom: none !important;
+        }
+    }
+    
+    
 }

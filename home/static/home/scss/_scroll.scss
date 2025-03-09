@@ -18,8 +18,8 @@
         font-size: 1.5rem;
     }
     // Color
-    color: $off-pink;
-    text-shadow: 2px 2px 1px $black;
+    color: $white-semi-transparent;
+    text-shadow: 1px 1px 20px $black;
     animation: $bounce-infinite;
     z-index: $z-index-scroll-arrow;
     transition:
@@ -33,7 +33,7 @@
     // Hover
     @include for-size(tablet-lg, up) {
         &:hover {
-            color: $orange;
+            color: darken($white, 10%);
         }
     }
     // Text
@@ -66,13 +66,13 @@
     // Animation
     animation: $bounce-infinite;
     // Color
-    color: $off-pink;
-    text-shadow: 2px 2px 1px $black;
+    color: $white-semi-transparent;
+    text-shadow: 1px 1px 20px $black;
     transition: color $transition-fast;
     // Hover
     @include for-size(tablet-lg, up) {
         &:hover {
-            color: $orange;
+            color: darken($white, 10%);
         }
     }
     // Text

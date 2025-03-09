@@ -8,7 +8,7 @@
     z-index: 1050;
     animation: $bounce-infinite;
     // Style mixin
-    @include button-style($off-pink-semi-transparent, $black-semi-transparent);
+    @include button-style($white-semi-transparent, $black-semi-transparent);
     // Padding
     padding: 5px 10px;
 

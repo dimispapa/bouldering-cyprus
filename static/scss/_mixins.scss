@@ -48,7 +48,7 @@ $breakpoints: (
 ========================================================= */
 @mixin button-style($bg-color, $shadow-color) {
   background-color: $bg-color;
-  box-shadow: 5px 5px 10px 1px $shadow-color;
+  box-shadow: 3px 3px 0px 0px $shadow-color;
   color: $black;
   border: none;
   padding: 10px 20px;

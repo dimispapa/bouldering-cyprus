@@ -5,10 +5,21 @@
 .text-box {
     width: 100%;
     margin: 500px auto;
-    padding: 30px;
+    padding: 30px 400px;
+    @include for-size(1200px, down) {
+        padding: 30px 300px;
+    }
+    @include for-size(tablet-lg, down) {
+        padding: 30px 200px;
+    }
+    @include for-size(tablet, down) {
+        padding: 20px 100px;
+    }
+    @include for-size(phone-sm, down) {
+        padding: 15px 50px;
+    }
     line-height: 1.8;
     background-color: $white;
-    border-radius: 10px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     opacity: 0;
     transform: translateY(50px);

@@ -321,7 +321,7 @@ h4 {
 /* Buttons */
 .button-large {
   background-color: #f4edd2;
-  box-shadow: 5px 5px 10px 1px #ed6c2c;
+  box-shadow: 3px 3px 0px 0px #ed6c2c;
   color: #000;
   border: none;
   padding: 10px 20px;
@@ -361,7 +361,7 @@ h4 {
 
 .button-small {
   background-color: #f4edd2;
-  box-shadow: 5px 5px 10px 1px #ed6c2c;
+  box-shadow: 3px 3px 0px 0px #ed6c2c;
   color: #000;
   border: none;
   padding: 10px 20px;
@@ -401,7 +401,7 @@ h4 {
 
 .button-very-small {
   background-color: #f4edd2;
-  box-shadow: 5px 5px 10px 1px #ed6c2c;
+  box-shadow: 3px 3px 0px 0px #ed6c2c;
   color: #000;
   border: none;
   padding: 10px 20px;
@@ -472,6 +472,11 @@ footer a {
 }
 footer a:hover {
   color: #ed6c2c;
+}
+@media (min-width: 768px) {
+  footer #footer-contact, footer #footer-copyright {
+    border-bottom: none !important;
+  }
 }
 
 .progressbar {
