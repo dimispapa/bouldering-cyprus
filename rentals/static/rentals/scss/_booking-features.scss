@@ -45,7 +45,6 @@
 
 // Date picker customization
 .daterangepicker {
-    font-size: $l-font;
     td.active,
     td.active:hover {
         background-color: $orange;
@@ -54,7 +53,6 @@
     td.available:hover {
         background-color: $orange-transparent;
     }
-
     // Date picker button
     .btn-primary {
         background-color: $orange;
@@ -63,38 +61,6 @@
         &:hover {
             background-color: darken($orange, 10%);
             border-color: darken($orange, 10%);
-        }
-    }
-
-    .calendar-table {
-        font-size: $xl-font !important;
-    }
-
-    // Date picker selected text
-    .drp-selected {
-        font-size: $s-font;
-    }
-
-    // Add mobile layout adjustments
-    @include for-size(phone, down) {
-        display: flex;
-        flex-direction: column;
-        .drp-calendar {
-            &.left {
-                order: 1;
-            }
-            &.right {
-                order: 3;
-            }
-        }
-        .drp-buttons {
-            order: 2;
-            margin: 8px 0;
-        }
-        // Date picker selected text
-        .drp-selected {
-            font-size: $xs-font;
-            margin-bottom: 0.5rem;
         }
     }
 }
