@@ -91,16 +91,22 @@
 }
 
 #hero-image3 {
-  background-image: url(../images/hero_image3/climbers_walking_with_pads_kato_droushia_1920.webp);
+  background-image: url(../images/hero_image3/chris_climbing_at_stoma_1920.webp);
+  background-position: 50% 110%;
 }
 @media (max-width: 1441px) {
   #hero-image3 {
-    background-image: url(../images/hero_image3/climbers_walking_with_pads_kato_droushia_1440.webp);
+    background-image: url(../images/hero_image3/chris_climbing_at_stoma_1440.webp);
   }
 }
 @media (max-width: 1024px) {
   #hero-image3 {
-    background-image: url(../images/hero_image3/climbers_walking_with_pads_kato_droushia_1024.webp);
+    background-image: url(../images/hero_image3/chris_climbing_at_stoma_1024.webp);
+  }
+}
+@media (max-width: 640px) {
+  #hero-image3 {
+    background-position: 40% 50%;
   }
 }
 
@@ -129,6 +135,20 @@
 @media (max-width: 1024px) {
   #hero-image5 {
     background-image: url(../images/hero_image5/bouldering_group_sunset_1024.webp);
+  }
+}
+
+#hero-image6 {
+  background-image: url(../images/hero_image6/climbers_walking_with_pads_kato_droushia_1920.webp);
+}
+@media (max-width: 1441px) {
+  #hero-image6 {
+    background-image: url(../images/hero_image6/climbers_walking_with_pads_kato_droushia_1440.webp);
+  }
+}
+@media (max-width: 1024px) {
+  #hero-image6 {
+    background-image: url(../images/hero_image6/climbers_walking_with_pads_kato_droushia_1024.webp);
   }
 }
 
@@ -245,7 +265,7 @@
 .text-box {
   width: 100%;
   margin: 500px auto;
-  padding: 200px 800px;
+  padding: 100px 600px;
   line-height: 1.8;
   background-color: #ffffff;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
@@ -255,27 +275,27 @@
 }
 @media (max-width: 1920px) {
   .text-box {
-    padding: 150px 600px;
+    padding: 80px 500px;
   }
 }
 @media (max-width: 1600px) {
   .text-box {
-    padding: 150px 400px;
+    padding: 60px 300px;
   }
 }
 @media (max-width: 1200px) {
   .text-box {
-    padding: 100px 300px;
+    padding: 40px 200px;
   }
 }
 @media (max-width: 1024px) {
   .text-box {
-    padding: 80px 200px;
+    padding: 30px 100px;
   }
 }
 @media (max-width: 768px) {
   .text-box {
-    padding: 30px 100px;
+    padding: 20px 75px;
   }
 }
 @media (max-width: 420px) {
@@ -286,6 +306,12 @@
 .text-box.visible {
   opacity: 1;
   transform: translateY(0);
+}
+.text-box a.link {
+  color: #000;
+}
+.text-box a.link:hover {
+  color: #ed6c2c;
 }
 
 #text-box1 {

@@ -6,21 +6,21 @@
     width: 100%;
     margin: 500px auto;
     // Padding
-    padding: 200px 800px;
+    padding: 100px 600px;
     @include for-size(monitor, down) {
-        padding: 150px 600px;
+        padding: 80px 500px;
     }
     @include for-size(desktop-lg, down) {
-        padding: 150px 400px;
+        padding: 60px 300px;
     }
     @include for-size(1200px, down) {
-        padding: 100px 300px;
+        padding: 40px 200px;
     }
     @include for-size(tablet-lg, down) {
-        padding: 80px 200px;
+        padding: 30px 100px;
     }
     @include for-size(tablet, down) {
-        padding: 30px 100px;
+        padding: 20px 75px;
     }
     @include for-size(phone-sm, down) {
         padding: 15px 50px;
@@ -30,11 +30,20 @@
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     opacity: 0;
     transform: translateY(50px);
-    transition: opacity $transition-slow, transform $transition-slow;
-    
+    transition:
+        opacity $transition-slow,
+        transform $transition-slow;
+
     &.visible {
         opacity: 1;
         transform: translateY(0);
+    }
+
+    a.link {
+        color: $black;
+        &:hover {
+            color: $orange;
+        }
     }
 }
 

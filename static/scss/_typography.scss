@@ -34,14 +34,11 @@ h6,
 
 .text-content {
     color: $black;
-    font-size: $m-font;
+    font-size: $s-font;
     @include for-size(tablet-lg, down) {
-        font-size: $s-font;
-    }
-    @include for-size(phone, down) {
         font-size: $xs-font;
     }
-    @include for-size(phone-sm, down) {
+    @include for-size(phone, down) {
         font-size: $xxs-font;
     }
 }

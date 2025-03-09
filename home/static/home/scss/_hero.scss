@@ -60,14 +60,19 @@
 }
 
 #hero-image3 {
-    background-image: url(../images/hero_image3/climbers_walking_with_pads_kato_droushia_1920.webp);
+    background-image: url(../images/hero_image3/chris_climbing_at_stoma_1920.webp);
+    background-position: 50% 110%;
 
     @include for-size (1441px, down) {
-        background-image: url(../images/hero_image3/climbers_walking_with_pads_kato_droushia_1440.webp);
+        background-image: url(../images/hero_image3/chris_climbing_at_stoma_1440.webp);
     }
 
     @include for-size(tablet-lg, down) {
-        background-image: url(../images/hero_image3/climbers_walking_with_pads_kato_droushia_1024.webp);
+        background-image: url(../images/hero_image3/chris_climbing_at_stoma_1024.webp);
+    }
+
+    @include for-size(640px, down) {
+        background-position: 40% 50%;
     }
 }
 
@@ -92,5 +97,17 @@
 
     @include for-size(tablet-lg, down) {
         background-image: url(../images/hero_image5/bouldering_group_sunset_1024.webp);
+    }
+}
+
+#hero-image6 {
+    background-image: url(../images/hero_image6/climbers_walking_with_pads_kato_droushia_1920.webp);
+
+    @include for-size (1441px, down) {
+        background-image: url(../images/hero_image6/climbers_walking_with_pads_kato_droushia_1440.webp);
+    }
+
+    @include for-size(tablet-lg, down) {
+        background-image: url(../images/hero_image6/climbers_walking_with_pads_kato_droushia_1024.webp);
     }
 }
