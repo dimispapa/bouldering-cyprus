@@ -245,7 +245,7 @@
 .text-box {
   width: 100%;
   margin: 500px auto;
-  padding: 30px 400px;
+  padding: 200px 800px;
   line-height: 1.8;
   background-color: #ffffff;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
@@ -253,19 +253,29 @@
   transform: translateY(50px);
   transition: opacity 1s ease, transform 1s ease;
 }
+@media (max-width: 1920px) {
+  .text-box {
+    padding: 150px 600px;
+  }
+}
+@media (max-width: 1600px) {
+  .text-box {
+    padding: 150px 400px;
+  }
+}
 @media (max-width: 1200px) {
   .text-box {
-    padding: 30px 300px;
+    padding: 100px 300px;
   }
 }
 @media (max-width: 1024px) {
   .text-box {
-    padding: 30px 200px;
+    padding: 80px 200px;
   }
 }
 @media (max-width: 768px) {
   .text-box {
-    padding: 20px 100px;
+    padding: 30px 100px;
   }
 }
 @media (max-width: 420px) {

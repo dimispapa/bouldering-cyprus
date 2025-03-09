@@ -5,15 +5,22 @@
 .text-box {
     width: 100%;
     margin: 500px auto;
-    padding: 30px 400px;
+    // Padding
+    padding: 200px 800px;
+    @include for-size(monitor, down) {
+        padding: 150px 600px;
+    }
+    @include for-size(desktop-lg, down) {
+        padding: 150px 400px;
+    }
     @include for-size(1200px, down) {
-        padding: 30px 300px;
+        padding: 100px 300px;
     }
     @include for-size(tablet-lg, down) {
-        padding: 30px 200px;
+        padding: 80px 200px;
     }
     @include for-size(tablet, down) {
-        padding: 20px 100px;
+        padding: 30px 100px;
     }
     @include for-size(phone-sm, down) {
         padding: 15px 50px;

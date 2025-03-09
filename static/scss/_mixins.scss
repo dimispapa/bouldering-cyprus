@@ -10,7 +10,8 @@ $breakpoints: (
   tablet: 768px,
   tablet-lg: 1024px,
   desktop: 1025px,
-  desktop-lg: 1600px
+  desktop-lg: 1600px,
+  monitor: 1920px
 );
 
 @mixin for-size($breakpoint, $direction: down) {
