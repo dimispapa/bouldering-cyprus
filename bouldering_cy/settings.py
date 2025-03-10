@@ -34,6 +34,7 @@ if PRODUCTION:
     SITE_ID = 3
     SITE_DOMAIN = "bouldering-cyprus-53e1273cde1e.herokuapp.com"
     if os.environ.get("MAIN_BRANCH").lower() == "false":
+        SITE_ID = 4
         SITE_DOMAIN = "bouldering-cyprus-dev-03fa16bfa03b.herokuapp.com/"
     SITE_URL = f"https://{SITE_DOMAIN}"
 else:
