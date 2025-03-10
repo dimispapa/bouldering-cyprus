@@ -50,8 +50,11 @@ print(f"SITE_URL setting is: {SITE_URL}")
 
 ALLOWED_HOSTS = [
     SITE_DOMAIN,
-    os.environ.get("NGROK_TUNNEL"),
 ]
+# If the NGROK_TUNNEL environment variable is set,
+# add the ngrok tunnel to the allowed hosts
+if "NGROK_TUNNEL" in os.environ:
+    ALLOWED_HOSTS.append(os.environ.get("NGROK_TUNNEL"))
 
 # Application definition
 
