@@ -35,12 +35,16 @@ if PRODUCTION:
     SITE_DOMAIN = "bouldering-cyprus-53e1273cde1e.herokuapp.com"
     if os.environ.get("MAIN_BRANCH").lower() == "false":
         SITE_ID = 4
-        SITE_DOMAIN = "bouldering-cyprus-dev-03fa16bfa03b.herokuapp.com/"
+        SITE_DOMAIN = "bouldering-cyprus-dev-03fa16bfa03b.herokuapp.com"
     SITE_URL = f"https://{SITE_DOMAIN}"
 else:
     SITE_ID = 2
     SITE_DOMAIN = "127.0.0.1"
     SITE_URL = f"http://{SITE_DOMAIN}:8000"
+
+print(f"SITE_ID setting is: {SITE_ID}")
+print(f"SITE_DOMAIN setting is: {SITE_DOMAIN}")
+print(f"SITE_URL setting is: {SITE_URL}")
 
 ALLOWED_HOSTS = [
     SITE_DOMAIN,
