@@ -33,7 +33,9 @@ DEBUG = not PRODUCTION
 if PRODUCTION:
     SITE_ID = 3
     SITE_DOMAIN = "bouldering-cyprus-53e1273cde1e.herokuapp.com"
-    if os.environ.get("MAIN_BRANCH").lower() == "false":
+    # If the PROD_DEV_BRANCH environment variable is set,
+    # use the development branch
+    if "PROD_DEV_BRANCH" in os.environ:
         SITE_ID = 4
         SITE_DOMAIN = "bouldering-cyprus-dev-03fa16bfa03b.herokuapp.com"
     SITE_URL = f"https://{SITE_DOMAIN}"
@@ -245,10 +247,11 @@ STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
 ]
 
-# Static/Media files - AWS S3 settings in PRODUCTION
-AWS_CLOUDFRONT_DOMAIN = os.environ.get("AWS_CLOUDFRONT_DOMAIN")
+# Static/Media file base locations
 STATICFILES_LOCATION = "static"
 MEDIAFILES_LOCATION = "media"
+
+# AWS S3/CloudFront settings in PRODUCTION
 if PRODUCTION:
     # Cache control
     AWS_S3_OBJECT_PARAMETERS = {
@@ -256,7 +259,8 @@ if PRODUCTION:
         "CacheControl": "max-age=94608000",
     }
 
-    # AWS S3 Bucket config
+    # AWS S3/CloudFront Bucket config
+    AWS_CLOUDFRONT_DOMAIN = os.environ.get("AWS_CLOUDFRONT_DOMAIN")
     AWS_STORAGE_BUCKET_NAME = os.environ.get("AWS_STORAGE_BUCKET_NAME")
     AWS_S3_REGION_NAME = os.environ.get("AWS_S3_REGION_NAME")
     AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
